@@ -25,7 +25,7 @@
  * would have the "colours_operators" and "output_number" extensions.
  * @author fenichel@google.com (Rachel Fenichel)
  */
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 import {Colours} from '../core/colours.js';
 
 const VerticalExtensions = {};
