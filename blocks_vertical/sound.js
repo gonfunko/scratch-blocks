@@ -23,24 +23,9 @@ import {Categories} from '../src/categories.js';
 
 Blockly.Blocks['sound_sounds_menu'] = {
   /**
-   * Sound effects drop-down menu.
+   * Sound effects drop-down menu. Populated dynamically by scratch-gui.
    * @this Blockly.Block
    */
-  init: function() {
-    this.jsonInit({
-      "message0": "%1",
-      "args0": [
-        {
-          "type": "field_dropdown",
-          "name": "SOUND_MENU",
-          "options": [
-            ['', ''],
-          ]
-        }
-      ],
-      "extensions": ["colours_sounds", "output_string"]
-    });
-  }
 };
 
 Blockly.Blocks['sound_play'] = {
