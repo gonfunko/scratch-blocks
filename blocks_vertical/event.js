@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 import {Categories} from '../src/categories.js';
 import * as Constants from '../src/constants.js';
 
