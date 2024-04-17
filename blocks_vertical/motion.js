@@ -20,7 +20,6 @@
 
 import * as Blockly from 'blockly/core';
 import {Categories} from '../src/categories.js';
-import {Colours} from '../core/colours.js';
 
 
 Blockly.Blocks['motion_movesteps'] = {
@@ -133,11 +132,7 @@ Blockly.Blocks['motion_pointtowards_menu'] = {
           ]
         }
       ],
-      "colour": Colours.motion.secondary,
-      "colourSecondary": Colours.motion.secondary,
-      "colourTertiary": Colours.motion.tertiary,
-      "colourQuaternary": Colours.motion.quaternary,
-      "extensions": ["output_string"]
+      "extensions": ["colours_motion", "output_string"]
     });
   }
 };
@@ -180,11 +175,7 @@ Blockly.Blocks['motion_goto_menu'] = {
           ]
         }
       ],
-      "colour": Colours.motion.secondary,
-      "colourSecondary": Colours.motion.secondary,
-      "colourTertiary": Colours.motion.tertiary,
-      "colourQuaternary": Colours.motion.quaternary,
-      "extensions": ["output_string"]
+      "extensions": ["colours_motion", "output_string"]
     });
   }
 };
@@ -279,11 +270,7 @@ Blockly.Blocks['motion_glideto_menu'] = {
           ]
         }
       ],
-      "colour": Colours.motion.secondary,
-      "colourSecondary": Colours.motion.secondary,
-      "colourTertiary": Colours.motion.tertiary,
-      "colourQuaternary": Colours.motion.quaternary,
-      "extensions": ["output_string"]
+      "extensions": ["colours_motion", "output_string"]
     });
   }
 };
