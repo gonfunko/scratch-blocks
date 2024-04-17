@@ -22,7 +22,7 @@
  * @fileoverview Math blocks for Blockly.
  * @author q.neutron@gmail.com (Quynh Neutron)
  */
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 import {Colours} from '../core/colours.js';
 
 Blockly.Blocks['math_number'] = {
