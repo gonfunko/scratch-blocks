@@ -16,6 +16,7 @@ import '../blocks_vertical/operators.js';
 import '../blocks_vertical/sensing.js';
 import '../blocks_vertical/sound.js';
 import * as scratchBlocksUtils from '../core/scratch_blocks_utils.js';
+import {StackClickEvent} from './events_stack_click.js';
 import {
   ContinuousToolbox,
   ContinuousFlyout,
@@ -37,5 +38,25 @@ export function inject(container, options) {
     },
   });
   const workspace = Blockly.inject(container, options);
+  registerStackClickListeners(workspace);
   return workspace;
+}
+
+function registerStackClickListeners(workspace) {
+  const blockClickHandler = (event, eventWorkspace) => {
+    if (event.type === Blockly.Events.CLICK && event.targetType === 'block') {
+      const rootBlock = eventWorkspace.getBlockById(event.blockId).getRootBlock();
+      const stackClick = new StackClickEvent(rootBlock.id, eventWorkspace.id);
+      Blockly.Events.fire(stackClick);
+    }
+  }
+  
+  const flyoutWorkspace = workspace.getFlyout().getWorkspace();
+  
+  workspace.addChangeListener((event) => {
+    blockClickHandler(event, workspace);
+  });
+  flyoutWorkspace.addChangeListener((event) => {
+    blockClickHandler(event, flyoutWorkspace);
+  });
 }
