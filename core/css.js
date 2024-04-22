@@ -420,7 +420,7 @@ const styles = `
     cursor: pointer;
   }
 
-  .blocklyFlyoutLabelText {
+  .zelos-renderer.scratch-theme .blocklyFlyoutLabelText {
     font-family: "Helvetica Neue", Helvetica, sans-serif;
     font-size: 14pt;
     fill: #575E75;
