@@ -374,8 +374,6 @@ function deleteProcedureDefCallback(procCode,
     definitionRoot) {
   var callers = getCallers(procCode,
       definitionRoot.workspace, definitionRoot, false /* allowRecursive */);
-  console.log('callers');
-  console.log(callers);
   if (callers.length > 0) {
     return false;
   }
