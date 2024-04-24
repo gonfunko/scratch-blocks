@@ -394,7 +394,7 @@ function deleteProcedureDefCallback(procCode,
 
 const ScratchProcedures = {
   externalProcedureDefCallback: null,
-  createProcedureDefCallback_,
+  createProcedureDefCallback,
   deleteProcedureDefCallback,
   getProceduresCategory,
   makeEditOption,
