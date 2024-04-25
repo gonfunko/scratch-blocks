@@ -70,11 +70,6 @@ export class FieldColourSlider extends FieldColour {
 
   doValueUpdate_(newValue) {
     super.doValueUpdate_(newValue);
-    if (this.sourceBlock_) {
-      // Set the colours to this value.
-      // The renderer expects to be able to use the secondary colour as the fill for a shadow.
-      this.sourceBlock_.setColour(newValue);
-    }
     this.updateSliderHandles_();
     this.updateDom_();
   }
