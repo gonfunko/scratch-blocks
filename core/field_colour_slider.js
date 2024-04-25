@@ -48,9 +48,6 @@ export class FieldColourSlider extends Blockly.FieldColour {
   constructor(colour, opt_validator) {
     super(colour, opt_validator);
 
-    // Flag to track whether or not the slider callbacks should execute
-    this.sliderCallbacksEnabled_ = false;
-
     /**
      * Path to the eyedropper svg icon.
      */
@@ -70,42 +67,12 @@ export class FieldColourSlider extends Blockly.FieldColour {
     return new FieldColourSlider(options['colour']);
   }
 
-  /**
-   * Install this field on a block.
-   * @param {!Blockly.Block} block The block containing this field.
-   */
-  init(block) {
-    if (this.fieldGroup_) {
-      // Colour slider has already been initialized once.
-      return;
-    }
-    super.init(block);
-    this.setValue(this.getValue());
-  }
-
-  /**
-   * Return the current colour.
-   * @return {string} Current colour in '#rrggbb' format.
-   */
-  getValue() {
-    return this.colour_;
-  }
-
-  /**
-   * Set the colour.
-   * @param {string} colour The new colour in '#rrggbb' format.
-   */
-  setValue(colour) {
-    if (this.sourceBlock_ && Blockly.Events.isEnabled() &&
-        this.colour_ != colour) {
-      Blockly.Events.fire(new Blockly.Events.BlockChange(
-          this.sourceBlock_, 'field', this.name, this.colour_, colour));
-    }
-    this.colour_ = colour;
+  doValueUpdate_(newValue) {
+    super.doValueUpdate_(newValue);
     if (this.sourceBlock_) {
       // Set the colours to this value.
       // The renderer expects to be able to use the secondary colour as the fill for a shadow.
-      this.sourceBlock_.setColour(colour);
+      this.sourceBlock_.setColour(newValue);
     }
     this.updateSliderHandles_();
     this.updateDom_();
@@ -153,7 +120,6 @@ export class FieldColourSlider extends Blockly.FieldColour {
    * @private
    */
   updateDom_() {
-
     if (this.hueSlider_) {
       // Update the slider backgrounds
       this.setGradient_(this.hueSlider_, 'hue');
@@ -173,29 +139,10 @@ export class FieldColourSlider extends Blockly.FieldColour {
    */
   updateSliderHandles_() {
     if (this.hueSlider_) {
-      // Don't let the following calls to setValue for each of the sliders
-      // trigger the slider callbacks (which then call setValue on this field again
-      // unnecessarily)
-      this.sliderCallbacksEnabled_ = false;
       this.hueSlider_.value = this.hue_;
       this.saturationSlider_.value = this.saturation_;
       this.brightnessSlider_.value = this.brightness_;
-      this.sliderCallbacksEnabled_ = true;
     }
-  }
-
-  /**
-   * Get the text from this field.  Used when the block is collapsed.
-   * @return {string} Current text.
-   */
-  getText() {
-    var colour = this.colour_;
-    // Try to use #rgb format if possible, rather than #rrggbb.
-    var m = colour.match(/^#(.)\1(.)\2(.)\3$/);
-    if (m) {
-      colour = '#' + m[1] + m[2] + m[3];
-    }
-    return colour;
   }
 
   /**
@@ -226,7 +173,6 @@ export class FieldColourSlider extends Blockly.FieldColour {
   sliderCallbackFactory_(channel) {
     var thisField = this;
     return function(event) {
-      if (!thisField.sliderCallbacksEnabled_) return;
       var channelValue = event.target.value;
       switch (channel) {
         case 'hue':
@@ -252,14 +198,14 @@ export class FieldColourSlider extends Blockly.FieldColour {
    */
   activateEyedropperInternal_() {
     var thisField = this;
-    FieldColourSlider.activateEyedropper_(function(value) {
+    FieldColourSlider.activateEyedropper_(function(chosenColour) {
       // Update the internal hue/saturation/brightness values so sliders update.
-      const components = Blockly.utils.colour.hexToRgb(value);
-      const hsv = thisField.rgbToHsv(components[0], components[1], components[2]);
-      thisField.hue_ = hsv[0];
-      thisField.saturation_ = hsv[1];
-      thisField.brightness_ = hsv[2];
-      thisField.setValue(value);
+      const components = Blockly.utils.colour.hexToRgb(chosenColour);
+      const {hue, saturation, value} = thisField.rgbToHsv(components[0], components[1], components[2]);
+      thisField.hue_ = hue;
+      thisField.saturation_ = saturation;
+      thisField.brightness_ = value;
+      thisField.setValue(chosenColour);
     });
   }
 
@@ -276,10 +222,10 @@ export class FieldColourSlider extends Blockly.FieldColour {
     // Init color component values that are used while the editor is open
     // in order to keep the slider values stable.
     const components = Blockly.utils.colour.hexToRgb(this.getValue());
-    var hsv = this.rgbToHsv(components[0], components[1], components[2]);
-    this.hue_ = hsv[0];
-    this.saturation_ = hsv[1];
-    this.brightness_ = hsv[2];
+    var {hue, saturation, value} = this.rgbToHsv(components[0], components[1], components[2]);
+    this.hue_ = hue;
+    this.saturation_ = saturation;
+    this.brightness_ = value;
 
     var hueElements = this.createLabelDom_(Blockly.Msg.COLOUR_HUE_LABEL);
     div.appendChild(hueElements[0]);
@@ -332,9 +278,6 @@ export class FieldColourSlider extends Blockly.FieldColour {
     // Set value updates the slider positions
     // Do this before attaching callbacks to avoid extra events from initial set
     this.setValue(this.getValue());
-
-    // Enable callbacks for the sliders
-    this.sliderCallbacksEnabled_ = true;
 
     this.hueChangeEventKey_ = Blockly.browserEvents.bind(
         this.hueSlider_, 'input', this, this.sliderCallbackFactory_('hue'));
@@ -391,7 +334,7 @@ export class FieldColourSlider extends Blockly.FieldColour {
       }
     }
 
-    return [hue, saturation, value];
+    return {hue, saturation, value};
   }
 }
 
