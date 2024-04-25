@@ -23,6 +23,7 @@
  * @author fraser@google.com (Neil Fraser)
  */
 import * as Blockly from 'blockly/core';
+import {FieldColour} from '@blockly/field-colour';
 
 /**
  * Class for a slider-based colour input field.
@@ -35,7 +36,7 @@ import * as Blockly from 'blockly/core';
  * @extends {Blockly.Field}
  * @constructor
  */
-export class FieldColourSlider extends Blockly.FieldColour {
+export class FieldColourSlider extends FieldColour {
   /**
    * Function to be called if eyedropper can be activated.
    * If defined, an eyedropper button will be added to the color picker.
