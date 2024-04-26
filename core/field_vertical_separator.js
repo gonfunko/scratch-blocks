@@ -55,20 +55,10 @@ class FieldVerticalSeparator extends Blockly.Field {
   /**
    * Install this field on a block.
    */
-  init() {
-    if (this.fieldGroup_) {
-      // Image has already been initialized once.
-      return;
-    }
+  initView() {
     const height = 10 * this.getConstants().GRID_UNIT;
     this.size_ = new Blockly.utils.Size(1, height);
 
-    // Build the DOM.
-    /** @type {SVGElement} */
-    this.fieldGroup_ = Blockly.utils.dom.createSvgElement('g', {}, null);
-    if (!this.visible_) {
-      this.fieldGroup_.style.display = 'none';
-    }
     /** @type {SVGElement} */
     this.lineElement_ = Blockly.utils.dom.createSvgElement('line',
         {
@@ -79,8 +69,6 @@ class FieldVerticalSeparator extends Blockly.Field {
           'x2': 0,
           'y2': height
         }, this.fieldGroup_);
-
-    this.sourceBlock_.getSvgRoot().appendChild(this.fieldGroup_);
   }
 
   /**
@@ -95,21 +83,16 @@ class FieldVerticalSeparator extends Blockly.Field {
   };
 
   /**
-   * Dispose of all DOM objects belonging to this text.
-   */
-  dispose() {
-    this.fieldGroup_.remove();
-    this.fieldGroup_ = null;
-    this.lineElement_ = null;
-  }
-
-  /**
    * Get the value of this field. A no-op in this case.
    * @return {string} null.
    * @override
    */
   getValue() {
     return null;
+  }
+
+  getText() {
+    return '';
   }
 
   /**
@@ -119,17 +102,6 @@ class FieldVerticalSeparator extends Blockly.Field {
    */
   setValue(
       /* eslint-disable no-unused-vars */ src
-      /* eslint-enable no-unused-vars */) {
-    return;
-  }
-
-  /**
-   * Set the text of this field. A no-op in this case.
-   * @param {?string} alt New text.
-   * @override
-   */
-  setText(
-      /* eslint-disable no-unused-vars */ alt
       /* eslint-enable no-unused-vars */) {
     return;
   }
