@@ -91,7 +91,7 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
       }
       block.moveBy(moveX, 0);
       this.listeners.push(Blockly.browserEvents.bind(block.flyoutCheckbox.svgRoot,
-      'mousedown', null, this.checkboxClicked_(block.flyoutCheckbox)));
+          'mousedown', null, this.checkboxClicked_(block.flyoutCheckbox)));
     }
     super.addBlockListeners_(root, block, rect);
   }
