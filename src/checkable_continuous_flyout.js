@@ -73,7 +73,6 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
 
   clearOldCheckboxes() {
     for (const checkbox of this.checkboxes_.values()) {
-      checkbox.block.flyoutCheckbox = null;
       checkbox.svgRoot.remove();
     }
     this.checkboxes_.clear();
@@ -82,7 +81,8 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
   addBlockListeners_(root, block, rect) {
     if (block.checkboxInFlyout) {
       const coordinates = block.getRelativeToSurfaceXY();
-      this.createCheckbox_(block, coordinates.x, coordinates.y, block.getHeightWidth());
+      const checkbox = this.createCheckbox_(
+          block, coordinates.x, coordinates.y, block.getHeightWidth());
       let moveX = coordinates.x;
       if (this.RTL) {
         moveX -= (CheckableContinuousFlyout.CHECKBOX_SIZE + CheckableContinuousFlyout.CHECKBOX_MARGIN);
@@ -90,8 +90,8 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
         moveX += CheckableContinuousFlyout.CHECKBOX_SIZE + CheckableContinuousFlyout.CHECKBOX_MARGIN;
       }
       block.moveBy(moveX, 0);
-      this.listeners.push(Blockly.browserEvents.bind(block.flyoutCheckbox.svgRoot,
-          'mousedown', null, this.checkboxClicked_(block.flyoutCheckbox)));
+      this.listeners.push(Blockly.browserEvents.bind(checkbox.svgRoot,
+          'mousedown', null, this.checkboxClicked_(checkbox)));
     }
     super.addBlockListeners_(root, block, rect);
   }
@@ -161,9 +161,9 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
       Blockly.utils.dom.addClass((checkboxObj.svgRoot), 'checked');
     }
 
-    block.flyoutCheckbox = checkboxObj;
     this.workspace_.getCanvas().insertBefore(checkboxGroup, svgRoot);
     this.checkboxes_.set(block.id, checkboxObj);
+    return checkboxObj;
   }
 
   /**
