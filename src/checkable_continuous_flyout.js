@@ -63,7 +63,7 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
      * @type {!Object.<string, !Object>}
      * @private
      */
-    this.checkboxes_ = {};
+    this.checkboxes_ = new Map();
   }
 
   show(flyoutDef) {
@@ -72,13 +72,11 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
   }
 
   clearOldCheckboxes() {
-    for (const checkboxId in this.checkboxes_) {
-      if (!this.checkboxes_.hasOwnProperty(checkboxId)) continue;
-      const checkbox = this.checkboxes_[checkboxId];
+    for (const checkbox of this.checkboxes_.values()) {
       checkbox.block.flyoutCheckbox = null;
       checkbox.svgRoot.remove();
     }
-    this.checkboxes_ = {};
+    this.checkboxes_.clear();
   }
 
   addBlockListeners_(root, block, rect) {
@@ -168,7 +166,7 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
 
     block.flyoutCheckbox = checkboxObj;
     this.workspace_.getCanvas().insertBefore(checkboxGroup, svgRoot);
-    this.checkboxes_[block.id] = checkboxObj;
+    this.checkboxes_.set(block.id, checkboxObj);
   }
 
   /**
@@ -178,7 +176,7 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
    * @public
    */
   setCheckboxState(blockId, value) {
-    var checkboxObj = this.checkboxes_[blockId];
+    var checkboxObj = this.checkboxes_.get(blockId);
     if (!checkboxObj || checkboxObj.clicked === value) {
       return;
     }
