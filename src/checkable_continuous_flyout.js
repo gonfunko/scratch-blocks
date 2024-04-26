@@ -89,9 +89,6 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
       } else {
         moveX += CheckableContinuousFlyout.CHECKBOX_SIZE + CheckableContinuousFlyout.CHECKBOX_MARGIN;
       }
-      if (Number.isNaN(moveX)) {
-        debugger;
-      }
       block.moveBy(moveX, 0);
       this.listeners.push(Blockly.browserEvents.bind(block.flyoutCheckbox.svgRoot,
       'mousedown', null, this.checkboxClicked_(block.flyoutCheckbox)));
