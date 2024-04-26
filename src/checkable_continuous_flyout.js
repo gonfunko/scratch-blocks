@@ -126,12 +126,12 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
     var checkboxState = this.getCheckboxState(block.id);
     var svgRoot = block.getSvgRoot();
     var extraSpace = CheckableContinuousFlyout.CHECKBOX_SIZE + CheckableContinuousFlyout.CHECKBOX_MARGIN;
-    var width = this.RTL ? this.getWidth() / this.workspace_.scale - extraSpace : cursorX;
-    var height = cursorY + blockHW.height / 2 - CheckableContinuousFlyout.CHECKBOX_SIZE / 2;
+    var xOffset = this.RTL ? this.getWidth() / this.workspace_.scale - extraSpace : cursorX;
+    var yOffset = cursorY + blockHW.height / 2 - CheckableContinuousFlyout.CHECKBOX_SIZE / 2;
     var touchMargin = CheckableContinuousFlyout.CHECKBOX_TOUCH_PADDING;
     var checkboxGroup = Blockly.utils.dom.createSvgElement('g',
         {
-          'transform': 'translate(' + width + ', ' + height + ')',
+          'transform': `translate(${xOffset}, ${yOffset})`,
           'fill': 'transparent',
         }, null);
     Blockly.utils.dom.createSvgElement('rect',
