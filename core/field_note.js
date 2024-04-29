@@ -368,13 +368,8 @@ export class FieldNote extends Blockly.FieldTextInput {
    * Show a field with piano keys.
    * @private
    */
-  showEditor_(event) {
-    // Mobile browsers have issues with in-line textareas (focus & keyboards).
-    super.showEditor_(event, this.useTouchInteraction_);
-
-    // If there is an existing drop-down someone else owns, hide it immediately and clear it.
-    Blockly.DropDownDiv.hideWithoutAnimation();
-    Blockly.DropDownDiv.clearContent();
+  showEditor_(event, quietInput = false) {
+    super.showEditor_(event, quietInput);
 
     // Build the SVG DOM.
     var div = Blockly.DropDownDiv.getContentDiv();
@@ -666,7 +661,7 @@ export class FieldNote extends Blockly.FieldTextInput {
    */
   selectNoteWithMouseEvent_(e) {
     var newNoteNum = Number(e.target.getAttribute('data-pitch')) + this.displayedOctave_ * 12;
-    this.setNoteNum_(newNoteNum);
+    this.setEditorValue_(newNoteNum);
     this.playNoteInternal_();
   }
 
@@ -712,7 +707,7 @@ export class FieldNote extends Blockly.FieldTextInput {
     }
 
     var newNote = Number(this.getText()) + (octaves * 12);
-    this.setNoteNum_(newNote);
+    this.setEditorValue_(newNote);
 
     this.animationTarget_ = this.fieldEditorWidth_ * octaves * -1;
     this.animationPos_ = 0;
@@ -738,23 +733,15 @@ export class FieldNote extends Blockly.FieldTextInput {
     requestAnimationFrame(this.stepOctaveAnimation_.bind(this));
   }
 
-  /**
-   * Set the selected note number, and update the piano display and the input field.
-   * @param {number} noteNum The MIDI note number to select.
-   * @private
-   */
-  setNoteNum_(noteNum) {
-    noteNum = this.doClassValidation_(noteNum);
-    this.setValue(noteNum);
-    this.htmlInput_.value = noteNum;
+  doValueUpdate_(newValue) {
+    super.doValueUpdate_(newValue);
 
     if (!this.textElement_) {
       // Not rendered yet.
       return;
     }
+
     this.updateSelection_();
-    // Cached width is obsolete.  Clear it.
-    this.size_.width = 0;
   }
 
   /**
