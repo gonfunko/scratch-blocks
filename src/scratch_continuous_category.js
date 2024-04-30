@@ -2,6 +2,11 @@ import * as Blockly from 'blockly/core';
 import {ContinuousCategory} from '@blockly/continuous-toolbox';
 
 class ScratchContinuousCategory extends ContinuousCategory {
+  constructor(categoryDef, toolbox) {
+    categoryDef['toolboxitemid'] = categoryDef['id'];
+    super(categoryDef, toolbox);
+  }
+
   createIconDom_() {
     if (this.toolboxItemDef_.iconURI) {
       const icon = document.createElement('img');
