@@ -92,13 +92,32 @@ class FieldNumberPicker extends Blockly.FieldNumber {
   }
 
   /**
+   * Return an appropriate restrictor, depending on whether this FieldNumber
+   * allows decimal or negative numbers.
+   * @return {!RegExp} Regular expression for this FieldNumber's restrictor.
+   */
+  getNumRestrictor() {
+    var pattern = "[\\d]"; // Always allow digits.
+    if (this.decimalAllowed_) {
+      pattern += "|[\\.]";
+    }
+    if (this.negativeAllowed_) {
+      pattern += "|[-]";
+    }
+    if (this.exponentialAllowed_) {
+      pattern += "|[eE]";
+    }
+    return new RegExp(pattern);
+  }
+
+  /**
    * Show the inline free-text editor on top of the text and the num-pad if
    * appropriate.
    * @private
    */
   showEditor_(e, ) {
     // Do not focus on mobile devices so we can show the num-pad
-    var showNumPad = Blockly.Touch.TOUCH_ENABLED;
+    var showNumPad = e && e.pointerType === 'touch';
     super.showEditor_(e, showNumPad);
 
     // Show a numeric keypad in the drop-down on touch
@@ -108,16 +127,23 @@ class FieldNumberPicker extends Blockly.FieldNumber {
     }
   }
 
+  onHtmlInputKeyDown_(e) {
+    super.onHtmlInputKeyDown_(e);
+    // key can be things like "Backspace", so only validate when it represents a single
+    // character so as to allow non-textual input to work as normal.
+    if (e.key.length === 1) {
+      const validator = this.getNumRestrictor();
+      if (!e.key.match(validator)) {
+        e.preventDefault();
+      }
+    }
+  }
+
   /**
    * Show the number pad.
    * @private
    */
   showNumPad_() {
-    // If there is an existing drop-down someone else owns, hide it immediately
-    // and clear it.
-    Blockly.DropDownDiv.hideWithoutAnimation();
-    Blockly.DropDownDiv.clearContent();
-
     var contentDiv = Blockly.DropDownDiv.getContentDiv();
 
     // Accessibility properties
@@ -270,29 +296,25 @@ class FieldNumberPicker extends Blockly.FieldNumber {
     e.preventDefault();
   }
 
-  doClassValidation_(
-    newValue
-  ) {
-    if (newValue === '') return newValue;
-    return super.doClassValidation_(newValue);
+  doClassValidation_(newValue) {
+    // We validate at the point of input (see onHtmlInputKeyDown_), so
+    // skip the superclass' validation (which can conflict with ours) when the
+    // field value as a whole changes.
+    return newValue;
   }
 
   /**
    * Update the displayed value and resize/scroll the text field as needed.
    * @param {string} newValue The new text to display.
    * @param {string} newSelection The new index to put the cursor
-   * @private.
+   * @private
    */
   updateDisplay_(newValue, newSelection) {
-    var htmlInput = this.htmlInput_;
-    // Updates the display. The actual setValue occurs when editing ends.
-    htmlInput.value = newValue;
-    this.setValue(newValue);
+    this.setEditorValue_(newValue);
     // Resize and scroll the text field appropriately
-    super.resizeEditor_();
+    const htmlInput = this.htmlInput_
     htmlInput.setSelectionRange(newSelection, newSelection);
     htmlInput.scrollLeft = htmlInput.scrollWidth;
-    // this.validate_();
   }
 
   /**
