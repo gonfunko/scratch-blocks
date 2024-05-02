@@ -296,13 +296,6 @@ class FieldNumberPicker extends Blockly.FieldNumber {
     e.preventDefault();
   }
 
-  doClassValidation_(newValue) {
-    // We validate at the point of input (see onHtmlInputKeyDown_), so
-    // skip the superclass' validation (which can conflict with ours) when the
-    // field value as a whole changes.
-    return newValue;
-  }
-
   /**
    * Update the displayed value and resize/scroll the text field as needed.
    * @param {string} newValue The new text to display.
