@@ -2,15 +2,6 @@ import * as Blockly from 'blockly/core';
 import {Colours} from '../core/colours.js';
 
 /**
- * Glow/unglow a block in the workspace.
- * @param {?string} id ID of block to find.
- * @param {boolean} isGlowingBlock Whether to glow the block.
- */
-export function glowBlock(id, isGlowingBlock) {
-  glowStack(id, isGlowingBlock);
-}
-
-/**
  * Glow/unglow a stack in the workspace.
  * @param {?string} id ID of block which starts the stack.
  * @param {boolean} isGlowingStack Whether to glow the stack.
@@ -32,7 +23,9 @@ export function glowStack(id, isGlowingStack) {
   }
 }
 
-export function buildGlowFilter(defs) {
+export function buildGlowFilter(workspace) {
+  const svg = workspace.getParentSvg();
+  const defs = Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.DEFS, {}, svg);
   // Using a dilate distorts the block shape.
   // Instead use a gaussian blur, and then set all alpha to 1 with a transfer.
   const stackGlowFilter = Blockly.utils.dom.createSvgElement('filter',

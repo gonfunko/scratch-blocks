@@ -29,7 +29,7 @@ import {
   ContinuousMetrics,
 } from '@blockly/continuous-toolbox';
 import {CheckableContinuousFlyout} from './checkable_continuous_flyout.js';
-import {buildGlowFilter, glowBlock, glowStack} from './glows.js';
+import {buildGlowFilter, glowStack} from './glows.js';
 import './scratch_continuous_category.js';
 
 export * from 'blockly';
@@ -42,7 +42,7 @@ export * from '../core/field_matrix.js';
 export * from '../core/field_note.js';
 export * from '../core/field_number.js';
 export * from '../msg/scratch_msgs.js';
-export {glowBlock, glowStack};
+export {glowStack};
 export {scratchBlocksUtils};
 export {CheckableContinuousFlyout};
 
@@ -62,8 +62,7 @@ export function inject(container, options) {
     flyout.getWorkspace().getRenderer().getConstants().selectedGlowFilterId = '';
   }
 
-  const defs = container.querySelector('svg > defs');
-  buildGlowFilter(defs);
+  buildGlowFilter(workspace);
 
   return workspace;
 }
