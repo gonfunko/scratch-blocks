@@ -218,4 +218,9 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
   getFlyoutScale() {
     return 0.675;
   }
+
+  blockIsRecyclable_(block) {
+    const recyclable = super.blockIsRecyclable_(block);
+    return recyclable && !block.outputConnection;
+  }
 }
