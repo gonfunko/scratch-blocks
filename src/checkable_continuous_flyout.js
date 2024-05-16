@@ -221,6 +221,9 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
 
   blockIsRecyclable_(block) {
     const recyclable = super.blockIsRecyclable_(block);
+    // Exclude blocks with output connections, because they are able to report their current
+    // value in a popover and recycling them interacts poorly with the VM's maintenance of its
+    // state.
     return recyclable && !block.outputConnection;
   }
 }
