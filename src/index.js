@@ -31,9 +31,10 @@ import {
   ContinuousMetrics,
 } from '@blockly/continuous-toolbox';
 import {CheckableContinuousFlyout} from './checkable_continuous_flyout.js';
-import {ScratchContinuousToolbox} from './scratch_continuous_toolbox.js';
 import {buildGlowFilter, glowStack} from './glows.js';
+import {ScratchContinuousToolbox} from './scratch_continuous_toolbox.js';
 import './scratch_continuous_category.js';
+import {buildShadowFilter} from './shadows.js';
 
 export * from 'blockly';
 export * from './block_reporting.js';
@@ -60,12 +61,27 @@ export function inject(container, options) {
   const workspace = Blockly.inject(container, options);
   workspace.getRenderer().getConstants().selectedGlowFilterId = '';
 
+  // Add a drop shadow to mid-drag blocks.
+  workspace.addChangeListener((event) => {
+    if (event.type === Blockly.Events.BLOCK_DRAG) {
+      if (event.isStart) {
+        event.blocks[0].getSvgRoot().setAttribute(
+          'filter',
+          'url(#blocklyDragShadowFilter)',
+        );
+      } else {
+        event.blocks[0].getSvgRoot().removeAttribute('filter');
+      }
+    }
+  });
+
   const flyout = workspace.getFlyout();
   if (flyout) {
     flyout.getWorkspace().getRenderer().getConstants().selectedGlowFilterId = '';
   }
 
   buildGlowFilter(workspace);
+  buildShadowFilter(workspace);
 
   Blockly.config.dragRadius = 3;
   Blockly.config.snapRadius = 48;
