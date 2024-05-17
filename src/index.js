@@ -61,20 +61,6 @@ export function inject(container, options) {
   const workspace = Blockly.inject(container, options);
   workspace.getRenderer().getConstants().selectedGlowFilterId = '';
 
-  // Add a drop shadow to mid-drag blocks.
-  workspace.addChangeListener((event) => {
-    if (event.type === Blockly.Events.BLOCK_DRAG) {
-      if (event.isStart) {
-        event.blocks[0].getSvgRoot().setAttribute(
-          'filter',
-          'url(#blocklyDragShadowFilter)',
-        );
-      } else {
-        event.blocks[0].getSvgRoot().removeAttribute('filter');
-      }
-    }
-  });
-
   const flyout = workspace.getFlyout();
   if (flyout) {
     flyout.getWorkspace().getRenderer().getConstants().selectedGlowFilterId = '';
