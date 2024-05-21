@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2024 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import * as Blockly from 'blockly/core';
 import {Colours} from '../core/colours.js';
 
