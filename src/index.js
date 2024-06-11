@@ -60,7 +60,6 @@ export function inject(container, options) {
   });
   const workspace = Blockly.inject(container, options);
   workspace.getRenderer().getConstants().selectedGlowFilterId = '';
-  Blockly.ContextMenuItems.registerCommentOptions();
 
   const flyout = workspace.getFlyout();
   if (flyout) {
@@ -84,3 +83,4 @@ Blockly.FlyoutButton.TEXT_MARGIN_X = 40;
 Blockly.FlyoutButton.TEXT_MARGIN_Y = 10;
 Blockly.ContextMenuRegistry.registry.unregister('blockDisable');
 Blockly.ContextMenuRegistry.registry.unregister('blockInline');
+Blockly.ContextMenuItems.registerCommentOptions();
