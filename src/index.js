@@ -60,6 +60,7 @@ export function inject(container, options) {
   });
   const workspace = Blockly.inject(container, options);
   workspace.getRenderer().getConstants().selectedGlowFilterId = '';
+  Blockly.ContextMenuItems.registerCommentOptions();
 
   const flyout = workspace.getFlyout();
   if (flyout) {
