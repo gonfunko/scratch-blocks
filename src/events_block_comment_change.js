@@ -13,6 +13,9 @@ class BlockCommentChange extends BlockCommentBase {
     this.type = 'block_comment_change';
     this.oldContents_ = oldContents;
     this.newContents_ = newContents;
+    // Disable undo because Blockly already tracks changes to comment text for
+    // undo purposes; this event exists solely to keep the Scratch VM apprised
+    // of the state of things.
     this.recordUndo = false;
   }
 

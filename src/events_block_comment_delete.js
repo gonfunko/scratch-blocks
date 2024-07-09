@@ -13,6 +13,9 @@ class BlockCommentDelete extends BlockCommentBase {
     this.type = 'block_comment_delete';
     this.blockId = sourceBlock.id;
     this.workspaceId = sourceBlock.workspace.id;
+    // Disable undo because Blockly already tracks comment deletion for
+    // undo purposes; this event exists solely to keep the Scratch VM apprised
+    // of the state of things.
     this.recordUndo = false;
   }
 }

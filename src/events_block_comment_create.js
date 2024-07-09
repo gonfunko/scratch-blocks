@@ -19,6 +19,9 @@ class BlockCommentCreate extends BlockCommentBase {
       width: size.width,
       height: size.height,
     }
+    // Disable undo because Blockly already tracks comment creation for
+    // undo purposes; this event exists solely to keep the Scratch VM apprised
+    // of the state of things.
     this.recordUndo = false;
   }
 
