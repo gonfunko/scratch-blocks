@@ -9,10 +9,7 @@ import * as Blockly from 'blockly/core';
 export class BlockCommentBase extends Blockly.Events.Abstract {
   constructor(opt_blockComment) {
     super();
-
     this.isBlank = !opt_blockComment;
-    this.group = Blockly.Events.getGroup();
-    this.recordUndo = Blockly.Events.getRecordUndo();
 
     if (!opt_blockComment) return;
 
