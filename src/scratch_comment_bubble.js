@@ -6,6 +6,11 @@
 
 import * as Blockly from 'blockly/core';
 
+/**
+ * A Scratch-style comment bubble for block comments.
+ * @implements {IBubble}
+ * @implements {ISelectable}
+ */
 export class ScratchCommentBubble extends Blockly.comments.CommentView {
   constructor(sourceBlock, anchor) {
     super(sourceBlock.workspace);

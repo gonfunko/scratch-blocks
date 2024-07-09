@@ -7,6 +7,11 @@
 import * as Blockly from 'blockly/core';
 import {ScratchCommentBubble} from './scratch_comment_bubble.js';
 
+/**
+ * Custom comment icon that draws no icon indicator, used for block comments.
+ * @implements {IHasBubble}
+ * @implements {ISerializable}
+ */
 class ScratchCommentIcon extends Blockly.icons.Icon {
   constructor(sourceBlock) {
     super(sourceBlock);
