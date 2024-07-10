@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly/core';
-import {ScratchCommentBubble} from './scratch_comment_bubble.js';
+import * as Blockly from "blockly/core";
+import { ScratchCommentBubble } from "./scratch_comment_bubble.js";
 
 /**
  * Custom comment icon that draws no icon indicator, used for block comments.
@@ -16,12 +16,13 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
   constructor(sourceBlock) {
     super(sourceBlock);
     this.sourceBlock = sourceBlock;
-    this.commentBubble = new ScratchCommentBubble(this.sourceBlock, this.getAnchorPoint());
+    this.commentBubble = new ScratchCommentBubble(
+      this.sourceBlock,
+      this.getAnchorPoint()
+    );
     Blockly.Events.setGroup(true);
     Blockly.Events.fire(
-      new (Blockly.Events.get('block_comment_create'))(
-        this.commentBubble
-      ),
+      new (Blockly.Events.get("block_comment_create"))(this.commentBubble)
     );
     this.onTextChangedListener = this.onTextChanged.bind(this);
     this.onSizeChangedListener = this.onSizeChanged.bind(this);
@@ -82,7 +83,11 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
       right = sourceBlockOrigin.x + this.sourceBlock.width;
     }
     const blockRect = new Blockly.utils.Rect(
-        sourceBlockOrigin.y, sourceBlockOrigin.y + this.sourceBlock.height, left, right);
+      sourceBlockOrigin.y,
+      sourceBlockOrigin.y + this.sourceBlock.height,
+      left,
+      right
+    );
     const y = blockRect.top + this.offsetInBlock.y;
     const x = this.sourceBlock.workspace.RTL ? blockRect.left : blockRect.right;
     return new Blockly.utils.Coordinate(x, y);
@@ -95,16 +100,22 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
 
     if (this.commentBubble) {
       const oldBubbleLocation = this.commentBubble.getRelativeToSurfaceXY();
-      const delta = Blockly.utils.Coordinate.difference(newLocation, initialLocation);
-      const newBubbleLocation = Blockly.utils.Coordinate.sum(oldBubbleLocation, delta);
+      const delta = Blockly.utils.Coordinate.difference(
+        newLocation,
+        initialLocation
+      );
+      const newBubbleLocation = Blockly.utils.Coordinate.sum(
+        oldBubbleLocation,
+        delta
+      );
       this.commentBubble.moveTo(newBubbleLocation);
       this.commentBubble.setAnchorLocation(this.getAnchorPoint());
       Blockly.Events.fire(
-        new (Blockly.Events.get('block_comment_move'))(
+        new (Blockly.Events.get("block_comment_move"))(
           this.commentBubble,
           oldBubbleLocation,
-          newBubbleLocation,
-        ),
+          newBubbleLocation
+        )
       );
     }
   }
@@ -114,44 +125,44 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
   }
 
   getText() {
-    return this.commentBubble?.getText() ?? '';
+    return this.commentBubble?.getText() ?? "";
   }
 
   onTextChanged(oldText, newText) {
     Blockly.Events.fire(
       new (Blockly.Events.get(Blockly.Events.BLOCK_CHANGE))(
         this.sourceBlock,
-        'comment',
+        "comment",
         null,
         oldText,
-        newText,
-      ),
+        newText
+      )
     );
     Blockly.Events.fire(
-      new (Blockly.Events.get('block_comment_change'))(
+      new (Blockly.Events.get("block_comment_change"))(
         this.commentBubble,
         oldText,
-        newText,
-      ),
+        newText
+      )
     );
   }
 
   onCollapsed(collapsed) {
     Blockly.Events.fire(
-      new (Blockly.Events.get('block_comment_collapse'))(
+      new (Blockly.Events.get("block_comment_collapse"))(
         this.commentBubble,
-        collapsed,
-      ),
+        collapsed
+      )
     );
   }
 
   onSizeChanged(oldSize, newSize) {
     Blockly.Events.fire(
-      new (Blockly.Events.get('block_comment_resize'))(
+      new (Blockly.Events.get("block_comment_resize"))(
         this.commentBubble,
         oldSize,
-        newSize,
-      ),
+        newSize
+      )
     );
   }
 
@@ -167,11 +178,11 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     const oldLocation = this.getBubbleLocation();
     this.commentBubble?.moveTo(newLocation);
     Blockly.Events.fire(
-      new (Blockly.Events.get('block_comment_move'))(
+      new (Blockly.Events.get("block_comment_move"))(
         this.commentBubble,
         oldLocation,
-        newLocation,
-      ),
+        newLocation
+      )
     );
   }
 
@@ -184,24 +195,30 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
 
     const size = this.getBubbleSize();
     const bubbleLocation = this.commentBubble.getRelativeToSurfaceXY();
-    const delta = Blockly.utils.Coordinate.difference(bubbleLocation, this.workspaceLocation);
+    const delta = Blockly.utils.Coordinate.difference(
+      bubbleLocation,
+      this.workspaceLocation
+    );
     return {
-      'text': this.getText(),
-      'height': size.height,
-      'width': size.width,
-      'x': delta.x,
-      'y': delta.y,
-      'collapsed': this.commentBubble.isCollapsed(),
+      text: this.getText(),
+      height: size.height,
+      width: size.width,
+      x: delta.x,
+      y: delta.y,
+      collapsed: this.commentBubble.isCollapsed(),
     };
   }
 
   loadState(state) {
-    this.setText(state['text']);
-    this.setBubbleSize(new Blockly.utils.Size(state['width'], state['height']));
-    const delta = new Blockly.utils.Coordinate(state['x'], state['y']);
-    const newBubbleLocation = Blockly.utils.Coordinate.sum(this.workspaceLocation, delta);
+    this.setText(state["text"]);
+    this.setBubbleSize(new Blockly.utils.Size(state["width"], state["height"]));
+    const delta = new Blockly.utils.Coordinate(state["x"], state["y"]);
+    const newBubbleLocation = Blockly.utils.Coordinate.sum(
+      this.workspaceLocation,
+      delta
+    );
     this.commentBubble.moveTo(newBubbleLocation);
-    this.commentBubble.setCollapsed(state['collapsed']);
+    this.commentBubble.setCollapsed(state["collapsed"]);
     this.repositionAfterRender = false;
   }
 
@@ -222,7 +239,8 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.ICON,
-    Blockly.icons.IconType.COMMENT.toString(),
-    ScratchCommentIcon,
-    true);
+  Blockly.registry.Type.ICON,
+  Blockly.icons.IconType.COMMENT.toString(),
+  ScratchCommentIcon,
+  true
+);
