@@ -215,9 +215,6 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
   }
 
   dispose() {
-    this.commentBubble?.removeTextChangeListener(this.onTextChangedListener);
-    this.commentBubble?.removeSizeChangeListener(this.onSizeChangedListener);
-    this.commentBubble?.removeOnCollapseListener(this.onCollapseListener);
     this.commentBubble?.dispose();
     this.commentBubble = null;
     this.sourceBlock = null;
