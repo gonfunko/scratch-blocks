@@ -43,22 +43,7 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
   }
 
   getAnchorPoint() {
-    const sourceBlockOrigin = this.sourceBlock.getRelativeToSurfaceXY();
-    let left;
-    let right;
-    if (this.sourceBlock.RTL) {
-      left = sourceBlockOrigin.x - this.sourceBlock.width;
-      right = sourceBlockOrigin.x;
-    } else {
-      left = sourceBlockOrigin.x;
-      right = sourceBlockOrigin.x + this.sourceBlock.width;
-    }
-    const blockRect = new Blockly.utils.Rect(
-      sourceBlockOrigin.y,
-      sourceBlockOrigin.y + this.sourceBlock.height,
-      left,
-      right
-    );
+    const blockRect = this.sourceBlock.getBoundingRectangleWithoutChildren();
     const y = blockRect.top + this.offsetInBlock.y;
     const x = this.sourceBlock.workspace.RTL ? blockRect.left : blockRect.right;
     return new Blockly.utils.Coordinate(x, y);
