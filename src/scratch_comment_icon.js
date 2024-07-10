@@ -16,10 +16,7 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
   constructor(sourceBlock) {
     super(sourceBlock);
     this.sourceBlock = sourceBlock;
-    this.commentBubble = new ScratchCommentBubble(
-      this.sourceBlock,
-      this.getAnchorPoint()
-    );
+    this.commentBubble = new ScratchCommentBubble(this.sourceBlock);
     Blockly.Events.fire(
       new (Blockly.Events.get("block_comment_create"))(this.commentBubble)
     );
@@ -29,7 +26,6 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     this.commentBubble.addTextChangeListener(this.onTextChangedListener);
     this.commentBubble.addSizeChangeListener(this.onSizeChangedListener);
     this.commentBubble.addOnCollapseListener(this.onCollapseListener);
-    this.repositionAfterRender = true;
   }
 
   getType() {
@@ -76,35 +72,10 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
       return;
     }
 
-    const initialLocation = this.workspaceLocation;
     super.onLocationChange(blockOrigin);
-    const newLocation = this.workspaceLocation;
-
     const oldBubbleLocation = this.commentBubble.getRelativeToSurfaceXY();
-    let newBubbleLocation;
-    // If repositionAfterRender is set, move the bubble to its default offset
-    // relative to the block; otherwise, preserve the bubble's existing relative
-    // offset to the block.
-    if (this.repositionAfterRender) {
-      const anchor = this.getAnchorPoint();
-      newBubbleLocation = new Blockly.utils.Coordinate(
-        anchor.x + 40,
-        anchor.y - 16
-      );
-      this.repositionAfterRender = false;
-    } else {
-      const delta = Blockly.utils.Coordinate.difference(
-        newLocation,
-        initialLocation
-      );
-      newBubbleLocation = Blockly.utils.Coordinate.sum(
-        oldBubbleLocation,
-        delta
-      );
-    }
-
-    this.commentBubble.moveTo(newBubbleLocation);
     this.commentBubble.setAnchorLocation(this.getAnchorPoint());
+    const newBubbleLocation = this.commentBubble.getRelativeToSurfaceXY();
     Blockly.Events.fire(
       new (Blockly.Events.get("block_comment_move"))(
         this.commentBubble,
@@ -213,7 +184,6 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     );
     this.commentBubble.moveTo(newBubbleLocation);
     this.commentBubble.setCollapsed(state["collapsed"]);
-    this.repositionAfterRender = false;
   }
 
   bubbleIsVisible() {

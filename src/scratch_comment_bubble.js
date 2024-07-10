@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly/core';
+import * as Blockly from "blockly/core";
 
 /**
  * A Scratch-style comment bubble for block comments.
@@ -12,43 +12,30 @@ import * as Blockly from 'blockly/core';
  * @implements {ISelectable}
  */
 export class ScratchCommentBubble extends Blockly.comments.CommentView {
-  constructor(sourceBlock, anchor) {
+  constructor(sourceBlock) {
     super(sourceBlock.workspace);
     this.sourceBlock = sourceBlock;
-    this.moveTo(anchor.x + 40, anchor.y - 16);
-    this.anchor = anchor;
     this.disposing = false;
     this.id = Blockly.utils.idGenerator.genUid();
-
-    const location = this.getRelativeToSurfaceXY();
-    this.anchorChain = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.LINE,
-        {
-          x1: anchor.x,
-          y1: anchor.y,
-          x2: this.getSize().width / 2,
-          y2: 16,
-          style: `stroke: ${sourceBlock.getColourTertiary()}; stroke-width: 1`
-        },
-        this.getSvgRoot());
-    this.getSvgRoot().insertBefore(this.anchorChain, this.getSvgRoot().firstChild);
     this.getSvgRoot().setAttribute(
-        'style', `--colour-commentBorder: ${sourceBlock.getColourTertiary()};`);
+      "style",
+      `--colour-commentBorder: ${sourceBlock.getColourTertiary()};`
+    );
 
     Blockly.browserEvents.conditionalBind(
       this.getSvgRoot(),
-      'pointerdown',
+      "pointerdown",
       this,
-      this.startGesture,
+      this.startGesture
     );
     // Don't zoom with mousewheel; let it scroll instead.
     Blockly.browserEvents.conditionalBind(
       this.getSvgRoot(),
-      'wheel',
+      "wheel",
       this,
       (e) => {
         e.stopPropagation();
-      },
+      }
     );
   }
 
@@ -67,8 +54,10 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
   }
 
   moveTo(xOrCoordinate, y) {
-    const destination = xOrCoordinate instanceof Blockly.utils.Coordinate ?
-        xOrCoordinate : new Blockly.utils.Coordinate(xOrCoordinate, y);
+    const destination =
+      xOrCoordinate instanceof Blockly.utils.Coordinate
+        ? xOrCoordinate
+        : new Blockly.utils.Coordinate(xOrCoordinate, y);
     super.moveTo(destination);
     this.redrawAnchorChain();
   }
@@ -85,7 +74,7 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
     this.dragStartLocation = this.getRelativeToSurfaceXY();
     this.workspace.setResizesEnabled(false);
     this.workspace.getLayerManager()?.moveToDragLayer(this);
-    Blockly.utils.dom.addClass(this.getSvgRoot(), 'blocklyDragging');
+    Blockly.utils.dom.addClass(this.getSvgRoot(), "blocklyDragging");
   }
 
   drag(newLocation, event) {
@@ -95,13 +84,13 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
   endDrag() {
     this.workspace.getLayerManager()?.moveOffDragLayer(this, 100);
     this.workspace.setResizesEnabled(false);
-    Blockly.utils.dom.removeClass(this.getSvgRoot(), 'blocklyDragging');
+    Blockly.utils.dom.removeClass(this.getSvgRoot(), "blocklyDragging");
     Blockly.Events.fire(
-      new (Blockly.Events.get('block_comment_move'))(
+      new (Blockly.Events.get("block_comment_move"))(
         this,
         this.dragStartLocation,
-        this.getRelativeToSurfaceXY(),
-      ),
+        this.getRelativeToSurfaceXY()
+      )
     );
   }
 
@@ -110,7 +99,37 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
   }
 
   setAnchorLocation(newAnchor) {
+    const oldAnchor = this.anchor;
+    const alreadyAnchored = !!this.anchor;
     this.anchor = newAnchor;
+    if (!alreadyAnchored) {
+      this.dropAnchor();
+    } else {
+      const oldLocation = this.getRelativeToSurfaceXY();
+      const delta = Blockly.utils.Coordinate.difference(this.anchor, oldAnchor);
+      const newLocation = Blockly.utils.Coordinate.sum(oldLocation, delta);
+      this.moveTo(newLocation);
+    }
+  }
+
+  dropAnchor() {
+    this.moveTo(this.anchor.x + 40, this.anchor.y - 16);
+    const location = this.getRelativeToSurfaceXY();
+    this.anchorChain = Blockly.utils.dom.createSvgElement(
+      Blockly.utils.Svg.LINE,
+      {
+        x1: this.anchor.x,
+        y1: this.anchor.y,
+        x2: this.getSize().width / 2,
+        y2: 16,
+        style: `stroke: ${this.sourceBlock.getColourTertiary()}; stroke-width: 1`,
+      },
+      this.getSvgRoot()
+    );
+    this.getSvgRoot().insertBefore(
+      this.anchorChain,
+      this.getSvgRoot().firstChild
+    );
     this.redrawAnchorChain();
   }
 
@@ -118,8 +137,8 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
     if (!this.anchorChain) return;
 
     const location = this.getRelativeToSurfaceXY();
-    this.anchorChain.setAttribute('x1', this.anchor.x - location.x);
-    this.anchorChain.setAttribute('y1', this.anchor.y - location.y);
+    this.anchorChain.setAttribute("x1", this.anchor.x - location.x);
+    this.anchorChain.setAttribute("y1", this.anchor.y - location.y);
   }
 
   getId() {
@@ -135,10 +154,7 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
     Blockly.utils.dom.removeNode(this.anchorChain);
     if (this.sourceBlock) {
       Blockly.Events.fire(
-        new (Blockly.Events.get('block_comment_delete'))(
-          this,
-          this.sourceBlock,
-        ),
+        new (Blockly.Events.get("block_comment_delete"))(this, this.sourceBlock)
       );
       const block = this.sourceBlock;
       this.sourceBlock = null;
