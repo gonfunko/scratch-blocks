@@ -180,20 +180,19 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
   }
 
   saveState() {
-    if (this.commentBubble) {
-      const size = this.getBubbleSize();
-      const bubbleLocation = this.commentBubble.getRelativeToSurfaceXY();
-      const delta = Blockly.utils.Coordinate.difference(bubbleLocation, this.workspaceLocation);
-      return {
-        'text': this.getText(),
-        'height': size.height,
-        'width': size.width,
-        'x': delta.x,
-        'y': delta.y,
-        'collapsed': this.commentBubble.isCollapsed(),
-      }
-    }
-    return null;
+    if (!this.commentBubble) return null;
+
+    const size = this.getBubbleSize();
+    const bubbleLocation = this.commentBubble.getRelativeToSurfaceXY();
+    const delta = Blockly.utils.Coordinate.difference(bubbleLocation, this.workspaceLocation);
+    return {
+      'text': this.getText(),
+      'height': size.height,
+      'width': size.width,
+      'x': delta.x,
+      'y': delta.y,
+      'collapsed': this.commentBubble.isCollapsed(),
+    };
   }
 
   loadState(state) {
