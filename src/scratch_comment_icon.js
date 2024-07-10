@@ -20,7 +20,6 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
       this.sourceBlock,
       this.getAnchorPoint()
     );
-    Blockly.Events.setGroup(true);
     Blockly.Events.fire(
       new (Blockly.Events.get("block_comment_create"))(this.commentBubble)
     );
@@ -31,30 +30,6 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     this.commentBubble.addSizeChangeListener(this.onSizeChangedListener);
     this.commentBubble.addOnCollapseListener(this.onCollapseListener);
     this.repositionAfterRender = true;
-
-    // We need to force a render of our parent block and wait for it to complete, because at this
-    // point, we don't know our own position (needed to calculate the anchor point and position
-    // the comment bubble properly relative to the block) and our parent block doesn't know if it's
-    // an insertion marker or not (needed to suppress showing the comment bubble attached to an
-    // insertion marker block).
-    this.sourceBlock.queueRender();
-    Blockly.renderManagement.finishQueuedRenders().then(() => {
-      if (!this.sourceBlock || !this.commentBubble) return;
-
-      if (this.sourceBlock.isInsertionMarker()) {
-        this.commentBubble.dispose();
-        return;
-      }
-
-      // loadFromState may have already positioned the bubble appropriately when e.g. populating a
-      // comment from the undo stack. Only position the bubble at the default location if
-      // loadFromState hasn't prohibited repositioning post-render.
-      if (this.repositionAfterRender) {
-        const anchor = this.getAnchorPoint();
-        this.commentBubble.moveTo(anchor.x + 40, anchor.y - 16);
-      }
-      Blockly.Events.setGroup(false);
-    });
   }
 
   getType() {
@@ -94,30 +69,49 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
   }
 
   onLocationChange(blockOrigin) {
+    if (!this.sourceBlock || !this.commentBubble) return;
+
+    if (this.sourceBlock.isInsertionMarker()) {
+      this.commentBubble.dispose();
+      return;
+    }
+
     const initialLocation = this.workspaceLocation;
     super.onLocationChange(blockOrigin);
     const newLocation = this.workspaceLocation;
 
-    if (this.commentBubble) {
-      const oldBubbleLocation = this.commentBubble.getRelativeToSurfaceXY();
+    const oldBubbleLocation = this.commentBubble.getRelativeToSurfaceXY();
+    let newBubbleLocation;
+    // If repositionAfterRender is set, move the bubble to its default offset
+    // relative to the block; otherwise, preserve the bubble's existing relative
+    // offset to the block.
+    if (this.repositionAfterRender) {
+      const anchor = this.getAnchorPoint();
+      newBubbleLocation = new Blockly.utils.Coordinate(
+        anchor.x + 40,
+        anchor.y - 16
+      );
+      this.repositionAfterRender = false;
+    } else {
       const delta = Blockly.utils.Coordinate.difference(
         newLocation,
         initialLocation
       );
-      const newBubbleLocation = Blockly.utils.Coordinate.sum(
+      newBubbleLocation = Blockly.utils.Coordinate.sum(
         oldBubbleLocation,
         delta
       );
-      this.commentBubble.moveTo(newBubbleLocation);
-      this.commentBubble.setAnchorLocation(this.getAnchorPoint());
-      Blockly.Events.fire(
-        new (Blockly.Events.get("block_comment_move"))(
-          this.commentBubble,
-          oldBubbleLocation,
-          newBubbleLocation
-        )
-      );
     }
+
+    this.commentBubble.moveTo(newBubbleLocation);
+    this.commentBubble.setAnchorLocation(this.getAnchorPoint());
+    Blockly.Events.fire(
+      new (Blockly.Events.get("block_comment_move"))(
+        this.commentBubble,
+        oldBubbleLocation,
+        newBubbleLocation
+      )
+    );
   }
 
   setText(text) {
