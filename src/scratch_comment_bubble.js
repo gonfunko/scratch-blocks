@@ -82,7 +82,9 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
   }
 
   endDrag() {
-    this.workspace.getLayerManager()?.moveOffDragLayer(this, 100);
+    this.workspace
+      .getLayerManager()
+      ?.moveOffDragLayer(this, Blockly.layers.BUBBLE);
     this.workspace.setResizesEnabled(false);
     Blockly.utils.dom.removeClass(this.getSvgRoot(), "blocklyDragging");
     Blockly.Events.fire(
