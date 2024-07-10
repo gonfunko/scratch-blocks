@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly/core';
+import * as Blockly from "blockly/core";
 
 export class BlockCommentBase extends Blockly.Events.Abstract {
   constructor(opt_blockComment) {
@@ -22,14 +22,14 @@ export class BlockCommentBase extends Blockly.Events.Abstract {
     return {
       ...super.toJson(),
       commentId: this.commentId,
-      blockId: this.blockId
+      blockId: this.blockId,
     };
   }
 
   static fromJson(json, workspace, event) {
     const newEvent = super.fromJson(json, workspace, event);
-    newEvent.commentId = json['commentId'];
-    newEvent.blockId = json['blockId'];
+    newEvent.commentId = json["commentId"];
+    newEvent.blockId = json["blockId"];
     return newEvent;
   }
 }

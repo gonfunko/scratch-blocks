@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly/core';
-import {BlockCommentBase} from './events_block_comment_base.js';
+import * as Blockly from "blockly/core";
+import { BlockCommentBase } from "./events_block_comment_base.js";
 
 class BlockCommentResize extends BlockCommentBase {
   constructor(opt_blockComment, oldSize, newSize) {
     super(opt_blockComment);
-    this.type = 'block_comment_resize';
+    this.type = "block_comment_resize";
     this.oldSize = oldSize;
     this.newSize = newSize;
   }
@@ -25,20 +25,26 @@ class BlockCommentResize extends BlockCommentBase {
       oldSize: {
         width: this.oldSize.width,
         height: this.oldSize.height,
-      }
+      },
     };
   }
 
   static fromJson(json, workspace, event) {
     const newEvent = super.fromJson(json, workspace, event);
-    newEvent.newSize = new Blockly.utils.Size(json['newSize']['width'], json['newSize']['height']);
-    newEvent.oldSize = new Blockly.utils.Size(json['oldSize']['width'], json['oldSize']['height']);
+    newEvent.newSize = new Blockly.utils.Size(
+      json["newSize"]["width"],
+      json["newSize"]["height"]
+    );
+    newEvent.oldSize = new Blockly.utils.Size(
+      json["oldSize"]["width"],
+      json["oldSize"]["height"]
+    );
 
     return newEvent;
   }
 
   run(forward) {
-    const workspace = this.getEventWorkspace_()
+    const workspace = this.getEventWorkspace_();
     const block = workspace?.getBlockById(this.blockId);
     const comment = block?.getIcon(Blockly.icons.IconType.COMMENT);
     comment?.setBubbleSize(forward ? this.newSize : this.oldSize);
@@ -47,6 +53,6 @@ class BlockCommentResize extends BlockCommentBase {
 
 Blockly.registry.register(
   Blockly.registry.Type.EVENT,
-  'block_comment_resize',
-  BlockCommentResize,
+  "block_comment_resize",
+  BlockCommentResize
 );
