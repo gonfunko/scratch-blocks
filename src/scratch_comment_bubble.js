@@ -120,8 +120,8 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
     this.anchorChain = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.LINE,
       {
-        x1: this.anchor.x,
-        y1: this.anchor.y,
+        x1: this.anchor.x - location.x,
+        y1: this.anchor.y - location.y,
         x2: this.getSize().width / 2,
         y2: 16,
         style: `stroke: ${this.sourceBlock.getColourTertiary()}; stroke-width: 1`,
@@ -132,7 +132,6 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
       this.anchorChain,
       this.getSvgRoot().firstChild
     );
-    this.redrawAnchorChain();
   }
 
   redrawAnchorChain() {
