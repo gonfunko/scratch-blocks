@@ -18,14 +18,8 @@ class BlockCommentResize extends BlockCommentBase {
   toJson() {
     return {
       ...super.toJson(),
-      newSize: {
-        width: this.newSize.width,
-        height: this.newSize.height,
-      },
-      oldSize: {
-        width: this.oldSize.width,
-        height: this.oldSize.height,
-      },
+      newSize: this.newSize,
+      oldSize: this.oldSize,
     };
   }
 

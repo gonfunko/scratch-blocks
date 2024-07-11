@@ -18,14 +18,8 @@ class BlockCommentMove extends BlockCommentBase {
   toJson() {
     return {
       ...super.toJson(),
-      newCoordinate: {
-        x: this.newCoordinate_.x,
-        y: this.newCoordinate_.y,
-      },
-      oldCoordinate: {
-        x: this.oldCoordinate_.x,
-        y: this.oldCoordinate_.y,
-      },
+      newCoordinate: this.newCoordinate_,
+      oldCoordinate: this.oldCoordinate_,
     };
   }
 
