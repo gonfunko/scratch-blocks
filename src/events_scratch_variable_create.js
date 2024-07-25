@@ -31,6 +31,7 @@ class ScratchVariableCreate extends Blockly.Events.VarCreate {
 
   run(forward) {
     const workspace = this.getEventWorkspace_();
+    const variableMap = workspace.getVariableMap();
     if (forward) {
       const VariableModel = Blockly.registry.getObject(
         Blockly.registry.Type.VARIABLE_MODEL,
@@ -45,14 +46,14 @@ class ScratchVariableCreate extends Blockly.Events.VarCreate {
         this.isLocal,
         this.isCloud
       );
-      workspace.getVariableMap().addVariable(variable);
+      variableMap.addVariable(variable);
       Blockly.Events.fire(
         new (Blockly.Events.get(Blockly.Events.VAR_CREATE))(variable)
       );
     } else {
-      const variable = workspace.getVariableMap().getVariableById(this.varId);
+      const variable = variableMap.getVariableById(this.varId);
       if (variable) {
-        workspace.getVariableMap().deleteVariable(variable);
+        variableMap.deleteVariable(variable);
       }
     }
   }
