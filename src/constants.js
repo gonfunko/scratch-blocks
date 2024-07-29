@@ -1,4 +1,13 @@
 /**
+ * String representing the variable type of scalar variables.
+ * This string, for use in differentiating between types of variables,
+ * indicates that the current variable is a scalar variable.
+ * @const {string}
+ */
+const SCALAR_VARIABLE_TYPE = "";
+export { SCALAR_VARIABLE_TYPE };
+
+/**
  * String representing the variable type of broadcast message blocks.
  * This string, for use in differentiating between types of variables,
  * indicates that the current variable is a broadcast message.
