@@ -22,20 +22,19 @@
  * @fileoverview Utility functions for handling variables.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
+"use strict";
 
 /**
  * @name Blockly.Variables
  * @namespace
  **/
-goog.provide('Blockly.Variables');
+goog.provide("Blockly.Variables");
 
-goog.require('Blockly.Blocks');
-goog.require('Blockly.constants');
-goog.require('Blockly.VariableModel');
-goog.require('Blockly.Workspace');
-goog.require('goog.string');
-
+goog.require("Blockly.Blocks");
+goog.require("Blockly.constants");
+goog.require("Blockly.VariableModel");
+goog.require("Blockly.Workspace");
+goog.require("goog.string");
 
 /**
  * Constant to separate variable names from procedures and generated functions
@@ -51,7 +50,7 @@ Blockly.Variables.NAME_TYPE = Blockly.VARIABLE_CATEGORY_NAME;
  * @type {string}
  * @package
  */
-Blockly.Variables.CLOUD_PREFIX = '☁ ';
+Blockly.Variables.CLOUD_PREFIX = "☁ ";
 
 /**
  * Find all user-created variables that are in use in the workspace.
@@ -59,17 +58,19 @@ Blockly.Variables.CLOUD_PREFIX = '☁ ';
  * @param {!Blockly.Block|!Blockly.Workspace} root Root block or workspace.
  * @return {!Array.<string>} Array of variable names.
  */
-Blockly.Variables.allUsedVariables = function(root) {
+Blockly.Variables.allUsedVariables = function (root) {
   var blocks;
   if (root instanceof Blockly.Block) {
     // Root is Block.
     blocks = root.getDescendants(false);
-  } else if (root instanceof Blockly.Workspace ||
-      root instanceof Blockly.WorkspaceSvg) {
+  } else if (
+    root instanceof Blockly.Workspace ||
+    root instanceof Blockly.WorkspaceSvg
+  ) {
     // Root is Workspace.
     blocks = root.getAllBlocks();
   } else {
-    throw 'Not Block or Workspace: ' + root;
+    throw "Not Block or Workspace: " + root;
   }
 
   var ignorableName = Blockly.Variables.noVariableText();
@@ -102,12 +103,14 @@ Blockly.Variables.allUsedVariables = function(root) {
  * @param {!Blockly.Workspace} root The workspace to inspect.
  * @return {!Array.<Blockly.VariableModel>} Array of variable models.
  */
-Blockly.Variables.allVariables = function(root) {
+Blockly.Variables.allVariables = function (root) {
   if (root instanceof Blockly.Block) {
     // Root is Block.
-    console.warn('Deprecated call to Blockly.Variables.allVariables ' +
-                 'with a block instead of a workspace.  You may want ' +
-                 'Blockly.Variables.allUsedVariables');
+    console.warn(
+      "Deprecated call to Blockly.Variables.allVariables " +
+        "with a block instead of a workspace.  You may want " +
+        "Blockly.Variables.allUsedVariables"
+    );
     return {};
   }
   return root.getAllVariables();
@@ -124,7 +127,7 @@ Blockly.Variables.allVariables = function(root) {
  * @return {!Array.<string>} A list of non-duplicated variable names.
  * @package
  */
-Blockly.Variables.allDeveloperVariables = function(workspace) {
+Blockly.Variables.allDeveloperVariables = function (workspace) {
   var blocks = workspace.getAllBlocks();
   var hash = {};
   for (var i = 0; i < blocks.length; i++) {
@@ -146,29 +149,29 @@ Blockly.Variables.allDeveloperVariables = function(workspace) {
 };
 
 /**
-* Return the text that should be used in a field_variable or
-* field_variable_getter when no variable exists.
-* TODO: #572
-* @return {string} The text to display.
+ * Return the text that should be used in a field_variable or
+ * field_variable_getter when no variable exists.
+ * TODO: #572
+ * @return {string} The text to display.
  */
-Blockly.Variables.noVariableText = function() {
+Blockly.Variables.noVariableText = function () {
   return "No variable selected";
 };
 
 /**
-* Return a new variable name that is not yet being used. This will try to
-* generate single letter variable names in the range 'i' to 'z' to start with.
-* If no unique name is located it will try 'i' to 'z', 'a' to 'h',
-* then 'i2' to 'z2' etc.  Skip 'l'.
+ * Return a new variable name that is not yet being used. This will try to
+ * generate single letter variable names in the range 'i' to 'z' to start with.
+ * If no unique name is located it will try 'i' to 'z', 'a' to 'h',
+ * then 'i2' to 'z2' etc.  Skip 'l'.
  * @param {!Blockly.Workspace} workspace The workspace to be unique in.
-* @return {string} New variable name.
-*/
-Blockly.Variables.generateUniqueName = function(workspace) {
+ * @return {string} New variable name.
+ */
+Blockly.Variables.generateUniqueName = function (workspace) {
   var variableList = workspace.getAllVariables();
-  var newName = '';
+  var newName = "";
   if (variableList.length) {
     var nameSuffix = 1;
-    var letters = 'ijkmnopqrstuvwxyzabcdefgh';  // No 'l'.
+    var letters = "ijkmnopqrstuvwxyzabcdefgh"; // No 'l'.
     var letterIndex = 0;
     var potName = letters.charAt(letterIndex);
     while (!newName) {
@@ -199,7 +202,7 @@ Blockly.Variables.generateUniqueName = function(workspace) {
       }
     }
   } else {
-    newName = 'i';
+    newName = "i";
   }
   return newName;
 };
@@ -229,13 +232,19 @@ Blockly.Variables.generateUniqueName = function(workspace) {
  *     existed as a potential variable. Null, if no matching variable, real or
  *     potential, was found.
  */
-Blockly.Variables.realizePotentialVar = function(varName, varType, potentialVarWs,
-    checkReal) {
+Blockly.Variables.realizePotentialVar = function (
+  varName,
+  varType,
+  potentialVarWs,
+  checkReal
+) {
   var potentialVarMap = potentialVarWs.getPotentialVariableMap();
   var realWs = potentialVarWs.targetWorkspace;
   if (!potentialVarMap) {
-    console.warn('Called Blockly.Variables.realizePotentialVar with incorrect ' +
-        'workspace. The provided workspace does not have a potential variable map.');
+    console.warn(
+      "Called Blockly.Variables.realizePotentialVar with incorrect " +
+        "workspace. The provided workspace does not have a potential variable map."
+    );
     return;
   }
   // First check if a variable with the same name and type already exists as a
@@ -274,7 +283,11 @@ Blockly.Variables.realizePotentialVar = function(varName, varType, potentialVarW
  * @param {string} opt_type Optional type of the variable to be created,
  *     like 'string' or 'list'.
  */
-Blockly.Variables.createVariable = function(workspace, opt_callback, opt_type) {
+Blockly.Variables.createVariable = function (
+  workspace,
+  opt_callback,
+  opt_type
+) {
   // Decide on a modal message based on the opt_type. If opt_type was not
   // provided, default to the original message for scalar variables.
   var newMsg, modalTitle;
@@ -290,58 +303,79 @@ Blockly.Variables.createVariable = function(workspace, opt_callback, opt_type) {
     // opt_type -- turns a falsey opt_type into ''
     // TODO (#1251) Warn developers that they didn't provide an opt_type/provided
     // a falsey opt_type
-    opt_type = opt_type ? opt_type : '';
+    opt_type = opt_type ? opt_type : "";
     newMsg = Blockly.Msg.NEW_VARIABLE_TITLE;
     modalTitle = Blockly.Msg.VARIABLE_MODAL_TITLE;
   }
   var validate = Blockly.Variables.nameValidator_.bind(null, opt_type);
 
   // Prompt the user to enter a name for the variable
-  Blockly.prompt(newMsg, '',
-      function(text, additionalVars, variableOptions) {
-        variableOptions = variableOptions || {};
-        var scope = variableOptions.scope;
-        var isLocal = (scope === 'local') || false;
-        var isCloud = variableOptions.isCloud || false;
-        // Default to [] if additionalVars is not provided
-        additionalVars = additionalVars || [];
-        // Only use additionalVars for global variable creation.
-        var additionalVarNames = isLocal ? [] : additionalVars;
+  Blockly.prompt(
+    newMsg,
+    "",
+    function (text, additionalVars, variableOptions) {
+      variableOptions = variableOptions || {};
+      var scope = variableOptions.scope;
+      var isLocal = scope === "local" || false;
+      var isCloud = variableOptions.isCloud || false;
+      // Default to [] if additionalVars is not provided
+      additionalVars = additionalVars || [];
+      // Only use additionalVars for global variable creation.
+      var additionalVarNames = isLocal ? [] : additionalVars;
 
-        var validatedText = validate(text, workspace, additionalVarNames, isCloud, opt_callback);
-        if (validatedText) {
-          // The name is valid according to the type, create the variable
-          var potentialVarMap = workspace.getPotentialVariableMap();
-          var variable;
-          // This check ensures that if a new variable is being created from a
-          // workspace that already has a variable of the same name and type as
-          // a potential variable, that potential variable gets turned into a
-          // real variable and thus there aren't duplicate options in the field_variable
-          // dropdown.
-          if (potentialVarMap && opt_type) {
-            variable = Blockly.Variables.realizePotentialVar(validatedText,
-                opt_type, workspace, false);
-          }
-          if (!variable) {
-            variable = workspace.createVariable(validatedText, opt_type, null, isLocal, isCloud);
-          }
-
-          var flyout = workspace.isFlyout ? workspace : workspace.getFlyout();
-          var variableBlockId = variable.getId();
-          if (flyout.setCheckboxState) {
-            flyout.setCheckboxState(variableBlockId, true);
-          }
-
-          if (opt_callback) {
-            opt_callback(variableBlockId);
-          }
-        } else {
-          // User canceled prompt without a value.
-          if (opt_callback) {
-            opt_callback(null);
-          }
+      var validatedText = validate(
+        text,
+        workspace,
+        additionalVarNames,
+        isCloud,
+        opt_callback
+      );
+      if (validatedText) {
+        // The name is valid according to the type, create the variable
+        var potentialVarMap = workspace.getPotentialVariableMap();
+        var variable;
+        // This check ensures that if a new variable is being created from a
+        // workspace that already has a variable of the same name and type as
+        // a potential variable, that potential variable gets turned into a
+        // real variable and thus there aren't duplicate options in the field_variable
+        // dropdown.
+        if (potentialVarMap && opt_type) {
+          variable = Blockly.Variables.realizePotentialVar(
+            validatedText,
+            opt_type,
+            workspace,
+            false
+          );
         }
-      }, modalTitle, opt_type);
+        if (!variable) {
+          variable = workspace.createVariable(
+            validatedText,
+            opt_type,
+            null,
+            isLocal,
+            isCloud
+          );
+        }
+
+        var flyout = workspace.isFlyout ? workspace : workspace.getFlyout();
+        var variableBlockId = variable.getId();
+        if (flyout.setCheckboxState) {
+          flyout.setCheckboxState(variableBlockId, true);
+        }
+
+        if (opt_callback) {
+          opt_callback(variableBlockId);
+        }
+      } else {
+        // User canceled prompt without a value.
+        if (opt_callback) {
+          opt_callback(null);
+        }
+      }
+    },
+    modalTitle,
+    opt_type
+  );
 };
 
 /**
@@ -368,8 +402,14 @@ Blockly.Variables.createVariable = function(workspace, opt_callback, opt_type) {
  *     proceed with creating or renaming the variable.
  * @private
  */
-Blockly.Variables.nameValidator_ = function(type, text, workspace, additionalVars,
-    isCloud, opt_callback) {
+Blockly.Variables.nameValidator_ = function (
+  type,
+  text,
+  workspace,
+  additionalVars,
+  isCloud,
+  opt_callback
+) {
   // The validators for the different variable types require slightly different arguments.
   // For broadcast messages, if a broadcast message of the provided name already exists,
   // the validator needs to call a function that updates the selected
@@ -379,13 +419,29 @@ Blockly.Variables.nameValidator_ = function(type, text, workspace, additionalVar
   // that is displayed when a variable of the given name and type already exists.
 
   if (type == Blockly.BROADCAST_MESSAGE_VARIABLE_TYPE) {
-    return Blockly.Variables.validateBroadcastMessageName_(text, workspace, opt_callback);
+    return Blockly.Variables.validateBroadcastMessageName_(
+      text,
+      workspace,
+      opt_callback
+    );
   } else if (type == Blockly.LIST_VARIABLE_TYPE) {
-    return Blockly.Variables.validateScalarVarOrListName_(text, workspace, additionalVars, false, type,
-        Blockly.Msg.LIST_ALREADY_EXISTS);
+    return Blockly.Variables.validateScalarVarOrListName_(
+      text,
+      workspace,
+      additionalVars,
+      false,
+      type,
+      Blockly.Msg.LIST_ALREADY_EXISTS
+    );
   } else {
-    return Blockly.Variables.validateScalarVarOrListName_(text, workspace, additionalVars, isCloud, type,
-        Blockly.Msg.VARIABLE_ALREADY_EXISTS);
+    return Blockly.Variables.validateScalarVarOrListName_(
+      text,
+      workspace,
+      additionalVars,
+      isCloud,
+      type,
+      Blockly.Msg.VARIABLE_ALREADY_EXISTS
+    );
   }
 };
 
@@ -400,11 +456,19 @@ Blockly.Variables.nameValidator_ = function(type, text, workspace, additionalVar
  * @return {string} The validated name, or null if invalid.
  * @private
  */
-Blockly.Variables.validateBroadcastMessageName_ = function(name, workspace, opt_callback) {
-  if (!name) { // no name was provided or the user cancelled the prompt
+Blockly.Variables.validateBroadcastMessageName_ = function (
+  name,
+  workspace,
+  opt_callback
+) {
+  if (!name) {
+    // no name was provided or the user cancelled the prompt
     return null;
   }
-  var variable = workspace.getVariable(name, Blockly.BROADCAST_MESSAGE_VARIABLE_TYPE);
+  var variable = workspace.getVariable(
+    name,
+    Blockly.BROADCAST_MESSAGE_VARIABLE_TYPE
+  );
   if (variable) {
     // If the user provided a name for a broadcast message that already exists,
     // use the provided callback function to update the selected option in
@@ -439,8 +503,14 @@ Blockly.Variables.validateBroadcastMessageName_ = function(name, workspace, opt_
  * @return {string} The validated name, or null if invalid.
  * @private
  */
-Blockly.Variables.validateScalarVarOrListName_ = function(name, workspace, additionalVars,
-    isCloud, type, errorMsg) {
+Blockly.Variables.validateScalarVarOrListName_ = function (
+  name,
+  workspace,
+  additionalVars,
+  isCloud,
+  type,
+  errorMsg
+) {
   // For scalar variables, we don't want leading or trailing white space
   name = Blockly.Variables.trimName_(name);
   if (!name) {
@@ -451,9 +521,10 @@ Blockly.Variables.validateScalarVarOrListName_ = function(name, workspace, addit
   }
   if (workspace.getVariable(name, type) || additionalVars.indexOf(name) >= 0) {
     // error
-    Blockly.alert(errorMsg.replace('%1', name));
+    Blockly.alert(errorMsg.replace("%1", name));
     return null;
-  } else { // trimmed name is valid
+  } else {
+    // trimmed name is valid
     return name;
   }
 };
@@ -467,14 +538,22 @@ Blockly.Variables.validateScalarVarOrListName_ = function(name, workspace, addit
  *     be passed an acceptable new variable name, or null if change is to be
  *     aborted (cancel button), or undefined if an existing variable was chosen.
  */
-Blockly.Variables.renameVariable = function(workspace, variable,
-    opt_callback) {
+Blockly.Variables.renameVariable = function (
+  workspace,
+  variable,
+  opt_callback
+) {
   // Validation and modal message/title depends on the variable type
   var promptMsg, modalTitle;
   var varType = variable.type;
   if (varType == Blockly.BROADCAST_MESSAGE_VARIABLE_TYPE) {
-    console.warn('Unexpected attempt to rename a broadcast message with ' +
-        'id: ' + variable.getId() + ' and name: ' + variable.name);
+    console.warn(
+      "Unexpected attempt to rename a broadcast message with " +
+        "id: " +
+        variable.getId() +
+        " and name: " +
+        variable.name
+    );
     return;
   }
   if (varType == Blockly.LIST_VARIABLE_TYPE) {
@@ -487,34 +566,52 @@ Blockly.Variables.renameVariable = function(workspace, variable,
   }
   var validate = Blockly.Variables.nameValidator_.bind(null, varType);
 
-  var promptText = promptMsg.replace('%1', variable.name);
+  var promptText = promptMsg.replace("%1", variable.name);
   var promptDefaultText = variable.name;
-  if (variable.isCloud && variable.name.indexOf(Blockly.Variables.CLOUD_PREFIX) == 0) {
-    promptDefaultText = promptDefaultText.substring(Blockly.Variables.CLOUD_PREFIX.length);
+  if (
+    variable.isCloud &&
+    variable.name.indexOf(Blockly.Variables.CLOUD_PREFIX) == 0
+  ) {
+    promptDefaultText = promptDefaultText.substring(
+      Blockly.Variables.CLOUD_PREFIX.length
+    );
   }
 
-  Blockly.prompt(promptText, promptDefaultText,
-      function(newName, additionalVars) {
-        if (variable.isCloud &&
-            newName.length > 0 && newName.indexOf(Blockly.Variables.CLOUD_PREFIX) == 0) {
-          newName = newName.substring(Blockly.Variables.CLOUD_PREFIX.length);
-          // The name validator will add the prefix back
+  Blockly.prompt(
+    promptText,
+    promptDefaultText,
+    function (newName, additionalVars) {
+      if (
+        variable.isCloud &&
+        newName.length > 0 &&
+        newName.indexOf(Blockly.Variables.CLOUD_PREFIX) == 0
+      ) {
+        newName = newName.substring(Blockly.Variables.CLOUD_PREFIX.length);
+        // The name validator will add the prefix back
+      }
+      additionalVars = additionalVars || [];
+      var additionalVarNames = variable.isLocal ? [] : additionalVars;
+      var validatedText = validate(
+        newName,
+        workspace,
+        additionalVarNames,
+        variable.isCloud
+      );
+      if (validatedText) {
+        workspace.renameVariableById(variable.getId(), validatedText);
+        if (opt_callback) {
+          opt_callback(newName);
         }
-        additionalVars = additionalVars || [];
-        var additionalVarNames = variable.isLocal ? [] : additionalVars;
-        var validatedText = validate(newName, workspace, additionalVarNames, variable.isCloud);
-        if (validatedText) {
-          workspace.renameVariableById(variable.getId(), validatedText);
-          if (opt_callback) {
-            opt_callback(newName);
-          }
-        } else {
-          // User canceled prompt without a value.
-          if (opt_callback) {
-            opt_callback(null);
-          }
+      } else {
+        // User canceled prompt without a value.
+        if (opt_callback) {
+          opt_callback(null);
         }
-      }, modalTitle, varType);
+      }
+    },
+    modalTitle,
+    varType
+  );
 };
 
 /**
@@ -523,7 +620,7 @@ Blockly.Variables.renameVariable = function(workspace, variable,
  * @param {string} name The user-provided name of the variable.
  * @return {string} The trimmed name, or whatever falsey value was originally provided.
  */
-Blockly.Variables.trimName_ = function(name) {
+Blockly.Variables.trimName_ = function (name) {
   if (name) {
     return goog.string.trim(name);
   } else {
@@ -541,17 +638,27 @@ Blockly.Variables.trimName_ = function(name) {
  * @return {string} The generated XML.
  * @private
  */
-Blockly.Variables.generateVariableFieldXml_ = function(variableModel, opt_name) {
+Blockly.Variables.generateVariableFieldXml_ = function (
+  variableModel,
+  opt_name
+) {
   // The variable name may be user input, so it may contain characters that need
   // to be escaped to create valid XML.
   var typeString = variableModel.type;
-  if (typeString == '') {
-    typeString = '\'\'';
+  if (typeString == "") {
+    typeString = "''";
   }
-  var fieldName = opt_name || 'VARIABLE';
-  var text = '<field name="' + fieldName + '" id="' + variableModel.getId() +
-    '" variabletype="' + goog.string.htmlEscape(typeString) +
-    '">' + goog.string.htmlEscape(variableModel.name) + '</field>';
+  var fieldName = opt_name || "VARIABLE";
+  var text =
+    '<field name="' +
+    fieldName +
+    '" id="' +
+    variableModel.getId() +
+    '" variabletype="' +
+    goog.string.htmlEscape(typeString) +
+    '">' +
+    goog.string.htmlEscape(variableModel.name) +
+    "</field>";
   return text;
 };
 
@@ -568,13 +675,25 @@ Blockly.Variables.generateVariableFieldXml_ = function(variableModel, opt_name) 
  *     or name + type combination.
  * @package
  */
-Blockly.Variables.getOrCreateVariablePackage = function(workspace, id, opt_name,
-    opt_type) {
-  var variable = Blockly.Variables.getVariable(workspace, id, opt_name,
-      opt_type);
+Blockly.Variables.getOrCreateVariablePackage = function (
+  workspace,
+  id,
+  opt_name,
+  opt_type
+) {
+  var variable = Blockly.Variables.getVariable(
+    workspace,
+    id,
+    opt_name,
+    opt_type
+  );
   if (!variable) {
-    variable = Blockly.Variables.createVariable_(workspace, id, opt_name,
-        opt_type);
+    variable = Blockly.Variables.createVariable_(
+      workspace,
+      id,
+      opt_name,
+      opt_type
+    );
   }
   return variable;
 };
@@ -594,7 +713,7 @@ Blockly.Variables.getOrCreateVariablePackage = function(workspace, id, opt_name,
  *     or name + type combination, or null if not found.
  * @package
  */
-Blockly.Variables.getVariable = function(workspace, id, opt_name, opt_type) {
+Blockly.Variables.getVariable = function (workspace, id, opt_name, opt_type) {
   var potentialVariableMap = workspace.getPotentialVariableMap();
   // Try to just get the variable, by ID if possible.
   if (id) {
@@ -605,7 +724,7 @@ Blockly.Variables.getVariable = function(workspace, id, opt_name, opt_type) {
     }
   } else if (opt_name) {
     if (opt_type == undefined) {
-      throw new Error('Tried to look up a variable by name without a type');
+      throw new Error("Tried to look up a variable by name without a type");
     }
     // Otherwise look up by name and type.
     var variable = workspace.getVariable(opt_name, opt_type);
@@ -627,8 +746,12 @@ Blockly.Variables.getVariable = function(workspace, id, opt_name, opt_type) {
  *     or name + type combination.
  * @private
  */
-Blockly.Variables.createVariable_ = function(workspace, id, opt_name,
-    opt_type) {
+Blockly.Variables.createVariable_ = function (
+  workspace,
+  id,
+  opt_name,
+  opt_type
+) {
   var potentialVariableMap = workspace.getPotentialVariableMap();
   // Variables without names get uniquely named for this workspace.
   if (!opt_name) {
@@ -639,7 +762,8 @@ Blockly.Variables.createVariable_ = function(workspace, id, opt_name,
   // Create a potential variable if in the flyout.
   if (potentialVariableMap) {
     var variable = potentialVariableMap.createVariable(opt_name, opt_type, id);
-  } else {  // In the main workspace, create a real variable.
+  } else {
+    // In the main workspace, create a real variable.
     var variable = workspace.createVariable(opt_name, opt_type, id);
   }
   return variable;
@@ -657,7 +781,7 @@ Blockly.Variables.createVariable_ = function(workspace, id, opt_name,
  *     new variables were added to the workspace.
  * @package
  */
-Blockly.Variables.getAddedVariables = function(workspace, originalVariables) {
+Blockly.Variables.getAddedVariables = function (workspace, originalVariables) {
   var allCurrentVariables = workspace.getAllVariables();
   var addedVariables = [];
   if (originalVariables.length != allCurrentVariables.length) {
