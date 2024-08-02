@@ -35,9 +35,8 @@ Blockly.Blocks["data_variable"] = {
       args0: [
         {
           type: "field_variable_getter",
-          text: "",
           name: "VARIABLE",
-          variableType: "",
+          allowedVariableType: Constants.SCALAR_VARIABLE_TYPE,
         },
       ],
       category: Categories.data,
@@ -154,9 +153,8 @@ Blockly.Blocks["data_listcontents"] = {
       args0: [
         {
           type: "field_variable_getter",
-          text: "",
           name: "LIST",
-          variableType: Constants.LIST_VARIABLE_TYPE,
+          allowedVariableType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       category: Categories.dataLists,
@@ -243,6 +241,7 @@ Blockly.Blocks["data_addtolist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       category: Categories.dataLists,
@@ -268,6 +267,7 @@ Blockly.Blocks["data_deleteoflist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       category: Categories.dataLists,
@@ -289,6 +289,7 @@ Blockly.Blocks["data_deletealloflist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       category: Categories.dataLists,
@@ -318,6 +319,7 @@ Blockly.Blocks["data_insertatlist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       category: Categories.dataLists,
@@ -343,6 +345,7 @@ Blockly.Blocks["data_replaceitemoflist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
         {
           type: "input_value",
@@ -372,6 +375,7 @@ Blockly.Blocks["data_itemoflist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       output: null,
@@ -399,6 +403,7 @@ Blockly.Blocks["data_itemnumoflist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       output: null,
@@ -422,6 +427,7 @@ Blockly.Blocks["data_lengthoflist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       category: Categories.dataLists,
@@ -443,6 +449,7 @@ Blockly.Blocks["data_listcontainsitem"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
         {
           type: "input_value",
@@ -468,6 +475,7 @@ Blockly.Blocks["data_showlist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       category: Categories.dataLists,
@@ -489,6 +497,7 @@ Blockly.Blocks["data_hidelist"] = {
           type: "field_variable",
           name: "LIST",
           variableTypes: [Constants.LIST_VARIABLE_TYPE],
+          defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
       category: Categories.dataLists,
@@ -516,14 +525,16 @@ const CUSTOM_CONTEXT_MENU_GET_VARIABLE_MIXIN = {
     if (this.isCollapsed()) {
       return;
     }
-    var currentVarName = this.getField(fieldName).text_;
+    var currentVarName = this.getField(fieldName).getVariable().getName();
     if (!this.isInFlyout) {
-      var variablesList = this.workspace.getVariablesOfType("");
+      var variablesList = this.workspace.getVariablesOfType(
+        Constants.SCALAR_VARIABLE_TYPE
+      );
       variablesList.sort(function (a, b) {
-        return scratchBlocksUtils.compareStrings(a.name, b.name);
+        return scratchBlocksUtils.compareStrings(a.getName(), b.getName());
       });
       for (var i = 0; i < variablesList.length; i++) {
-        var varName = variablesList[i].name;
+        var varName = variablesList[i].getName();
         if (varName == currentVarName) continue;
 
         var option = { enabled: true };
@@ -579,12 +590,14 @@ const CUSTOM_CONTEXT_MENU_GET_LIST_MIXIN = {
     }
     var currentVarName = this.getField(fieldName).text_;
     if (!this.isInFlyout) {
-      var variablesList = this.workspace.getVariablesOfType("list");
+      var variablesList = this.workspace.getVariablesOfType(
+        Constants.LIST_VARIABLE_TYPE
+      );
       variablesList.sort(function (a, b) {
-        return scratchBlocksUtils.compareStrings(a.name, b.name);
+        return scratchBlocksUtils.compareStrings(a.getName(), b.getName());
       });
       for (var i = 0; i < variablesList.length; i++) {
-        var varName = variablesList[i].name;
+        var varName = variablesList[i].getName();
         if (varName == currentVarName) continue;
 
         var option = { enabled: true };
