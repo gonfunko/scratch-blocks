@@ -128,20 +128,10 @@ function getProcCode() {
  * @this Blockly.Block
  */
 function updateDisplay_() {
-  var wasRendered = this.rendered;
-  this.rendered = false;
-
   var connectionMap = this.disconnectOldBlocks_();
   this.removeAllInputs_();
-
   this.createAllInputs_(connectionMap);
   this.deleteShadows_(connectionMap);
-
-  this.rendered = wasRendered;
-  if (wasRendered && !this.isInsertionMarker()) {
-    this.initSvg();
-    this.render();
-  }
 }
 
 /**
