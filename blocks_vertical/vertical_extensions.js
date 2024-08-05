@@ -157,48 +157,44 @@ VerticalExtensions.OUTPUT_BOOLEAN = function () {
  * @package
  * @readonly
  */
-VerticalExtensions.PROCEDURE_DEF_CONTEXTMENU = {
+VerticalExtensions.PROCEDURE_DEF_CONTEXTMENU = function () {
   /**
    * Add the "edit" option and removes the "duplicate" option from the context
    * menu.
    * @param {!Array.<!Object>} menuOptions List of menu options to edit.
    * @this Blockly.Block
    */
-  customContextMenu: function (menuOptions) {
-    // Add the edit option at the end.
-    menuOptions.push(ScratchProcedures.makeEditOption(this));
+  this.mixin(
+    {
+      customContextMenu: function (menuOptions) {
+        // Add the edit option at the end.
+        menuOptions.push(ScratchProcedures.makeEditOption(this));
 
-    // Find the delete option and update its callback to be specific to
-    // functions.
-    for (var i = 0, option; (option = menuOptions[i]); i++) {
-      if (option.text == Blockly.Msg.DELETE_BLOCK) {
+        // Find and remove the duplicate option
+        for (var i = 0, option; (option = menuOptions[i]); i++) {
+          if (option.text == Blockly.Msg.DUPLICATE) {
+            menuOptions.splice(i, 1);
+            break;
+          }
+        }
+      },
+      checkAndDelete: function () {
         var input = this.getInput("custom_block");
         // this is the root block, not the shadow block.
         if (input && input.connection && input.connection.targetBlock()) {
           var procCode = input.connection.targetBlock().getProcCode();
-        } else {
-          return;
-        }
-        var rootBlock = this;
-        option.callback = function () {
           var didDelete = ScratchProcedures.deleteProcedureDefCallback(
             procCode,
-            rootBlock
+            this
           );
           if (!didDelete) {
             alert(Blockly.Msg.PROCEDURE_USED);
           }
-        };
-      }
-    }
-    // Find and remove the duplicate option
-    for (var i = 0, option; (option = menuOptions[i]); i++) {
-      if (option.text == Blockly.Msg.DUPLICATE) {
-        menuOptions.splice(i, 1);
-        break;
-      }
-    }
-  },
+        }
+      },
+    },
+    true
+  );
 };
 
 /**
@@ -280,7 +276,7 @@ VerticalExtensions.registerAll = function () {
   );
 
   // Custom procedures have interesting context menus.
-  Blockly.Extensions.registerMixin(
+  Blockly.Extensions.register(
     "procedure_def_contextmenu",
     VerticalExtensions.PROCEDURE_DEF_CONTEXTMENU
   );

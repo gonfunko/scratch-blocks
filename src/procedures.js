@@ -391,7 +391,7 @@ function makeEditOption(block) {
  * @package
  */
 function deleteProcedureDefCallback(procCode, definitionRoot) {
-  var callers = getCallers(
+  const callers = getCallers(
     procCode,
     definitionRoot.workspace,
     definitionRoot,
@@ -401,17 +401,8 @@ function deleteProcedureDefCallback(procCode, definitionRoot) {
     return false;
   }
 
-  var workspace = definitionRoot.workspace;
-
-  // Delete the whole stack.
-  Blockly.Events.setGroup(true);
-  definitionRoot.dispose();
-  Blockly.Events.setGroup(false);
-
-  // TODO (#1354) Update this function when '_' is removed
-  // Refresh toolbox, so caller doesn't appear there anymore
-  workspace.refreshToolboxSelection_();
-
+  const workspace = definitionRoot.workspace;
+  Blockly.BlockSvg.prototype.checkAndDelete.call(definitionRoot);
   return true;
 }
 
