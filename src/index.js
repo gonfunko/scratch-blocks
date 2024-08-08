@@ -66,9 +66,9 @@ export { CheckableContinuousFlyout };
 export { ScratchVariables };
 
 export function inject(container, options) {
-  options["renderer"] = "scratch";
-
   Object.assign(options, {
+    renderer: "scratch",
+    theme: "zelos",
     plugins: {
       toolbox: ScratchContinuousToolbox,
       flyoutsVerticalToolbox: CheckableContinuousFlyout,
