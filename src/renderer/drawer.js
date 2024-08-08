@@ -23,6 +23,8 @@ export class Drawer extends Blockly.zelos.Drawer {
       this.info_.isBowlerHatBlock() &&
       Blockly.blockRendering.Types.isSpacer(row)
     ) {
+      // Multi-row bowler hat blocks are not supported, this may need
+      // adjustment to do so.
       Blockly.blockRendering.Drawer.prototype.drawRightSideRow_.call(this, row);
     } else {
       super.drawRightSideRow_(row);
