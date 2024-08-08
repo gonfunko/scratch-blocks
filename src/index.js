@@ -26,6 +26,7 @@ import * as scratchBlocksUtils from "../core/scratch_blocks_utils.js";
 import * as ScratchVariables from "./variables.js";
 import "../core/css.js";
 import "../core/field_vertical_separator.js";
+import "./renderer/renderer.js";
 import {
   ContinuousToolbox,
   ContinuousFlyout,
@@ -65,6 +66,8 @@ export { CheckableContinuousFlyout };
 export { ScratchVariables };
 
 export function inject(container, options) {
+  options["renderer"] = "scratch";
+
   Object.assign(options, {
     plugins: {
       toolbox: ScratchContinuousToolbox,
