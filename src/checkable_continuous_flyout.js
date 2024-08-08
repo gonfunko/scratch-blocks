@@ -59,9 +59,9 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
 
   constructor(workspaceOptions) {
     super(workspaceOptions);
-    this.tabWidth_ = 0;
-    this.MARGIN = 10;
-    this.GAP_Y = 8;
+    this.tabWidth_ = -2;
+    this.MARGIN = 12;
+    this.GAP_Y = 12;
     CheckableContinuousFlyout.CHECKBOX_MARGIN = this.MARGIN;
 
     /**
@@ -72,6 +72,13 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
      * @private
      */
     this.checkboxes_ = new Map();
+  }
+
+  initFlyoutButton_(button, x, y) {
+    if (button.isLabel()) {
+      button.height = 40;
+    }
+    super.initFlyoutButton_(button, x, y);
   }
 
   show(flyoutDef) {
