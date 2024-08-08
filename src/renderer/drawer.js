@@ -36,6 +36,8 @@ export class Drawer extends Blockly.zelos.Drawer {
     // pasting the entire implementation here. We know that there will only be
     // one hat on a block, and its path is a known constant, so we just find and
     // replace it with the desired bowler hat path here.
+    // If https://github.com/google/blockly/issues/7292 is resolved, this should
+    // be revisited.
     if (this.info_.isBowlerHatBlock()) {
       const capHatPath = this.constants_.START_HAT.path;
       const bowlerHatPath = `a20,20 0 0,1 20,-20 l ${
