@@ -10,7 +10,7 @@ export class BowlerHat extends Blockly.blockRendering.Hat {
   constructor(constants) {
     super(constants);
     // Calculated dynamically by computeBounds_().
-    this.width = undefined;
+    this.width = 0;
     this.height = 20;
     this.ascenderHeight = this.height;
   }
