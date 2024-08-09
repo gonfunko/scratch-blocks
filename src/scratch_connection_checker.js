@@ -14,8 +14,6 @@ class ScratchConnectionChecker extends Blockly.ConnectionChecker {
       b.getSourceBlock().type === "procedures_definition" &&
       b.getParentInput()?.name === "custom_block"
     ) {
-      console.log("disallow");
-      console.log(b.type);
       return false;
     }
 
