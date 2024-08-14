@@ -65,3 +65,10 @@ export { NEW_BROADCAST_MESSAGE_ID };
  * variable...' and if selected, should trigger the prompt to rename a variable.
  */
 export const RENAME_VARIABLE_ID = "RENAME_VARIABLE_ID";
+
+/**
+ * String for use in the dropdown created in field_variable.
+ * This string indicates that this option in the dropdown is 'Delete the "%1"
+ * variable' and if selected, should trigger the prompt to delete a variable.
+ */
+export const DELETE_VARIABLE_ID = "DELETE_VARIABLE_ID";

@@ -131,6 +131,12 @@ class FieldVariable extends Blockly.FieldVariable {
       } else if (selectedItem === Constants.RENAME_VARIABLE_ID) {
         renameVariable(sourceBlock.workspace, this.variable);
         return;
+      } else if (selectedItem === Constants.DELETE_VARIABLE_ID) {
+        Blockly.Variables.deleteVariable(
+          this.variable.getWorkspace(),
+          this.variable
+        );
+        return;
       }
     }
     super.onItemSelected_(menu, menuItem);
