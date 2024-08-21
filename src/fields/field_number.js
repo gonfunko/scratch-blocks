@@ -22,8 +22,8 @@
  * @fileoverview Field for numbers. Includes validator and numpad on touch.
  * @author tmickel@mit.edu (Tim Mickel)
  */
-import * as Blockly from 'blockly/core';
-import {Colours} from './colours.js';
+import * as Blockly from "blockly/core";
+import { Colours } from "./colours.js";
 
 /**
  * Class for an editable number field.
@@ -61,33 +61,50 @@ class FieldNumberPicker extends Blockly.FieldNumber {
    * @const
    */
   // Calculator order
-  static NUMPAD_BUTTONS =
-      ['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', '-', ' '];
+  static NUMPAD_BUTTONS = [
+    "7",
+    "8",
+    "9",
+    "4",
+    "5",
+    "6",
+    "1",
+    "2",
+    "3",
+    ".",
+    "0",
+    "-",
+    " ",
+  ];
 
   /**
    * Src for the delete icon to be shown on the num-pad.
    * @type {string}
    * @const
    */
-  static NUMPAD_DELETE_ICON = 'data:image/svg+xml;utf8,' +
-    '<svg ' +
+  static NUMPAD_DELETE_ICON =
+    "data:image/svg+xml;utf8," +
+    "<svg " +
     'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">' +
     '<path d="M28.89,11.45H16.79a2.86,2.86,0,0,0-2,.84L9.09,1' +
-    '8a2.85,2.85,0,0,0,0,4l5.69,5.69a2.86,2.86,0,0,0,2,.84h12' +
-    '.1a2.86,2.86,0,0,0,2.86-2.86V14.31A2.86,2.86,0,0,0,28.89' +
-    ',11.45ZM27.15,22.73a1,1,0,0,1,0,1.41,1,1,0,0,1-.71.3,1,1' +
-    ',0,0,1-.71-0.3L23,21.41l-2.73,2.73a1,1,0,0,1-1.41,0,1,1,' +
-    '0,0,1,0-1.41L21.59,20l-2.73-2.73a1,1,0,0,1,0-1.41,1,1,0,' +
+    "8a2.85,2.85,0,0,0,0,4l5.69,5.69a2.86,2.86,0,0,0,2,.84h12" +
+    ".1a2.86,2.86,0,0,0,2.86-2.86V14.31A2.86,2.86,0,0,0,28.89" +
+    ",11.45ZM27.15,22.73a1,1,0,0,1,0,1.41,1,1,0,0,1-.71.3,1,1" +
+    ",0,0,1-.71-0.3L23,21.41l-2.73,2.73a1,1,0,0,1-1.41,0,1,1," +
+    "0,0,1,0-1.41L21.59,20l-2.73-2.73a1,1,0,0,1,0-1.41,1,1,0," +
     '0,1,1.41,0L23,18.59l2.73-2.73a1,1,0,1,1,1.42,1.41L24.42,20Z" fill="' +
-    Colours.numPadText + '"/></svg>';
+    Colours.numPadText +
+    '"/></svg>';
 
   configure_(config) {
     super.configure_(config);
-    this.decimalAllowed_ = (typeof config.precision == 'undefined') ||
-        isNaN(config.precision) || (config.precision == 0) ||
-        (Math.floor(config.precision) != config.precision);
-    this.negativeAllowed_ = (typeof config.min == 'undefined') || isNaN(config.min) ||
-        config.min < 0;
+    this.decimalAllowed_ =
+      typeof config.precision == "undefined" ||
+      isNaN(config.precision) ||
+      config.precision == 0 ||
+      Math.floor(config.precision) != config.precision;
+    this.negativeAllowed_ =
+      typeof config.min == "undefined" || isNaN(config.min) || config.min < 0;
     this.exponentialAllowed_ = this.decimalAllowed_;
   }
 
@@ -115,9 +132,9 @@ class FieldNumberPicker extends Blockly.FieldNumber {
    * appropriate.
    * @private
    */
-  showEditor_(e, ) {
+  showEditor_(e) {
     // Do not focus on mobile devices so we can show the num-pad
-    var showNumPad = e && e.pointerType === 'touch';
+    var showNumPad = e && e.pointerType === "touch";
     super.showEditor_(e, showNumPad);
 
     // Show a numeric keypad in the drop-down on touch
@@ -147,15 +164,17 @@ class FieldNumberPicker extends Blockly.FieldNumber {
     var contentDiv = Blockly.DropDownDiv.getContentDiv();
 
     // Accessibility properties
-    contentDiv.setAttribute('role', 'menu');
-    contentDiv.setAttribute('aria-haspopup', 'true');
+    contentDiv.setAttribute("role", "menu");
+    contentDiv.setAttribute("aria-haspopup", "true");
 
     this.addButtons_(contentDiv);
 
     // Set colour and size of drop-down
-    Blockly.DropDownDiv.setColour(this.sourceBlock_.parentBlock_.getColour(),
-        this.sourceBlock_.getColourTertiary());
-    contentDiv.style.width = FieldNumberPicker.DROPDOWN_WIDTH + 'px';
+    Blockly.DropDownDiv.setColour(
+      this.sourceBlock_.parentBlock_.getColour(),
+      this.sourceBlock_.getColourTertiary()
+    );
+    contentDiv.style.width = FieldNumberPicker.DROPDOWN_WIDTH + "px";
 
     this.position_();
   }
@@ -180,9 +199,17 @@ class FieldNumberPicker extends Blockly.FieldNumber {
     var secondaryY = position.y;
 
     Blockly.DropDownDiv.setBoundsElement(
-        this.sourceBlock_.workspace.getParentSvg().parentNode);
-    Blockly.DropDownDiv.show(this, this.getSourceBlock().RTL, primaryX, primaryY, secondaryX, secondaryY,
-        this.onHide_.bind(this));
+      this.sourceBlock_.workspace.getParentSvg().parentNode
+    );
+    Blockly.DropDownDiv.show(
+      this,
+      this.getSourceBlock().RTL,
+      primaryX,
+      primaryY,
+      secondaryX,
+      secondaryY,
+      this.onHide_.bind(this)
+    );
   }
 
   /**
@@ -197,44 +224,64 @@ class FieldNumberPicker extends Blockly.FieldNumber {
 
     // Add numeric keypad buttons
     var buttons = FieldNumberPicker.NUMPAD_BUTTONS;
-    for (var i = 0, buttonText; buttonText = buttons[i]; i++) {
-      var button = document.createElement('button');
-      button.setAttribute('role', 'menuitem');
-      button.setAttribute('class', 'blocklyNumPadButton');
-      button.setAttribute('style',
-          'background:' + buttonColour + ';' +
-          'border: 1px solid ' + buttonBorderColour + ';');
+    for (var i = 0, buttonText; (buttonText = buttons[i]); i++) {
+      var button = document.createElement("button");
+      button.setAttribute("role", "menuitem");
+      button.setAttribute("class", "blocklyNumPadButton");
+      button.setAttribute(
+        "style",
+        "background:" +
+          buttonColour +
+          ";" +
+          "border: 1px solid " +
+          buttonBorderColour +
+          ";"
+      );
       button.title = buttonText;
       button.innerHTML = buttonText;
-      Blockly.browserEvents.bind(button, 'mousedown', button,
-          this.numPadButtonTouch.bind(this));
-      if (buttonText == '.' && !this.decimalAllowed_) {
+      Blockly.browserEvents.bind(
+        button,
+        "mousedown",
+        button,
+        this.numPadButtonTouch.bind(this)
+      );
+      if (buttonText == "." && !this.decimalAllowed_) {
         // Don't show the decimal point for inputs that must be round numbers
-        button.setAttribute('style', 'visibility: hidden');
-      } else if (buttonText == '-' && !this.negativeAllowed_) {
+        button.setAttribute("style", "visibility: hidden");
+      } else if (buttonText == "-" && !this.negativeAllowed_) {
         continue;
-      } else if (buttonText == ' ' && !this.negativeAllowed_) {
+      } else if (buttonText == " " && !this.negativeAllowed_) {
         continue;
-      } else if (buttonText == ' ' && this.negativeAllowed_) {
-        button.setAttribute('style', 'visibility: hidden');
+      } else if (buttonText == " " && this.negativeAllowed_) {
+        button.setAttribute("style", "visibility: hidden");
       }
       contentDiv.appendChild(button);
     }
     // Add erase button to the end
-    var eraseButton = document.createElement('button');
-    eraseButton.setAttribute('role', 'menuitem');
-    eraseButton.setAttribute('class', 'blocklyNumPadButton');
-    eraseButton.setAttribute('style',
-        'background:' + buttonColour + ';' +
-        'border: 1px solid ' + buttonBorderColour + ';');
-    eraseButton.title = 'Delete';
+    var eraseButton = document.createElement("button");
+    eraseButton.setAttribute("role", "menuitem");
+    eraseButton.setAttribute("class", "blocklyNumPadButton");
+    eraseButton.setAttribute(
+      "style",
+      "background:" +
+        buttonColour +
+        ";" +
+        "border: 1px solid " +
+        buttonBorderColour +
+        ";"
+    );
+    eraseButton.title = "Delete";
 
-    var eraseImage = document.createElement('img');
+    var eraseImage = document.createElement("img");
     eraseImage.src = FieldNumberPicker.NUMPAD_DELETE_ICON;
     eraseButton.appendChild(eraseImage);
 
-    Blockly.browserEvents.bind(eraseButton, 'mousedown', null,
-        this.numPadEraseButtonTouch.bind(this));
+    Blockly.browserEvents.bind(
+      eraseButton,
+      "mousedown",
+      null,
+      this.numPadEraseButtonTouch.bind(this)
+    );
     contentDiv.appendChild(eraseButton);
   }
 
@@ -253,8 +300,10 @@ class FieldNumberPicker extends Blockly.FieldNumber {
     var selectionEnd = this.htmlInput_.selectionEnd;
 
     // Splice in the new value
-    var newValue = oldValue.slice(0, selectionStart) + spliceValue +
-        oldValue.slice(selectionEnd);
+    var newValue =
+      oldValue.slice(0, selectionStart) +
+      spliceValue +
+      oldValue.slice(selectionEnd);
 
     // Set new value and advance the cursor
     this.updateDisplay_(newValue, selectionStart + spliceValue.length);
@@ -284,8 +333,8 @@ class FieldNumberPicker extends Blockly.FieldNumber {
     }
 
     // Cut out selected range
-    var newValue = oldValue.slice(0, selectionStart) +
-        oldValue.slice(selectionEnd);
+    var newValue =
+      oldValue.slice(0, selectionStart) + oldValue.slice(selectionEnd);
 
     this.updateDisplay_(newValue, selectionStart);
 
@@ -305,7 +354,7 @@ class FieldNumberPicker extends Blockly.FieldNumber {
   updateDisplay_(newValue, newSelection) {
     this.setEditorValue_(newValue);
     // Resize and scroll the text field appropriately
-    const htmlInput = this.htmlInput_
+    const htmlInput = this.htmlInput_;
     htmlInput.setSelectionRange(newSelection, newSelection);
     htmlInput.scrollLeft = htmlInput.scrollWidth;
   }
@@ -315,12 +364,12 @@ class FieldNumberPicker extends Blockly.FieldNumber {
    */
   onHide_() {
     // Clear accessibility properties
-    Blockly.DropDownDiv.getContentDiv().removeAttribute('role');
-    Blockly.DropDownDiv.getContentDiv().removeAttribute('aria-haspopup');
+    Blockly.DropDownDiv.getContentDiv().removeAttribute("role");
+    Blockly.DropDownDiv.getContentDiv().removeAttribute("aria-haspopup");
   }
 }
 
-FieldNumberPicker.prototype.DEFAULT_VALUE = '';
+FieldNumberPicker.prototype.DEFAULT_VALUE = "";
 
-Blockly.fieldRegistry.unregister('field_number');
-Blockly.fieldRegistry.register('field_number', FieldNumberPicker);
+Blockly.fieldRegistry.unregister("field_number");
+Blockly.fieldRegistry.register("field_number", FieldNumberPicker);
