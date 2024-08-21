@@ -23,9 +23,9 @@
  * @author fraser@google.com (Neil Fraser)
  */
 import * as Blockly from "blockly/core";
-import * as Constants from "./constants.js";
-import { ScratchMsgs } from "../msg/scratch_msgs.js";
-import { createVariable, renameVariable } from "./variables.js";
+import * as Constants from "../constants.js";
+import { ScratchMsgs } from "../../msg/scratch_msgs.js";
+import { createVariable, renameVariable } from "../variables.js";
 
 class FieldVariable extends Blockly.FieldVariable {
   constructor(varName, validator, variableTypes, defaultType, config) {
