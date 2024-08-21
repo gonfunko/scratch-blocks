@@ -24,6 +24,7 @@
  */
 import * as Blockly from "blockly/core";
 import { Colours } from "../core/colours.js";
+import * as Constants from "../src/constants.js";
 
 Blockly.Blocks["math_number"] = {
   /**
@@ -41,7 +42,7 @@ Blockly.Blocks["math_number"] = {
         },
       ],
       output: "Number",
-      // "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
       colour: Colours.textField,
       colourSecondary: Colours.textField,
       colourTertiary: Colours.textField,
@@ -66,7 +67,7 @@ Blockly.Blocks["math_integer"] = {
         },
       ],
       output: "Number",
-      // "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
       colour: Colours.textField,
       colourSecondary: Colours.textField,
       colourTertiary: Colours.textField,
@@ -92,7 +93,7 @@ Blockly.Blocks["math_whole_number"] = {
         },
       ],
       output: "Number",
-      // "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
       colour: Colours.textField,
       colourSecondary: Colours.textField,
       colourTertiary: Colours.textField,
@@ -117,7 +118,7 @@ Blockly.Blocks["math_positive_number"] = {
         },
       ],
       output: "Number",
-      // "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
       colour: Colours.textField,
       colourSecondary: Colours.textField,
       colourTertiary: Colours.textField,
@@ -142,7 +143,7 @@ Blockly.Blocks["math_angle"] = {
         },
       ],
       output: "Number",
-      // "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
       colour: Colours.textField,
       colourSecondary: Colours.textField,
       colourTertiary: Colours.textField,
