@@ -20,6 +20,7 @@
 
 import * as Blockly from "blockly/core";
 import { Categories } from "../src/categories.js";
+import * as Constants from "../src/constants.js";
 
 Blockly.Blocks["sensing_touchingobject"] = {
   /**
@@ -447,7 +448,7 @@ Blockly.Blocks["sensing_of"] = {
       ],
       output: true,
       category: Categories.sensing,
-      outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
       extensions: ["colours_sensing"],
     });
   },
