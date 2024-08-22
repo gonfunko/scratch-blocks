@@ -23,7 +23,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Colours } from "../core/colours.js";
+import { Colours } from "../src/colours.js";
 import { FieldTextInputRemovable } from "../core/field_textinput_removable.js";
 
 class DuplicateOnDragDraggable {

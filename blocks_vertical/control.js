@@ -20,7 +20,7 @@
 
 import * as Blockly from "blockly/core";
 import { Categories } from "../src/categories.js";
-import { Colours } from "../core/colours.js";
+import { Colours } from "../src/colours.js";
 
 Blockly.Blocks["control_forever"] = {
   /**

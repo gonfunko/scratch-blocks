@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Colours } from "../core/colours.js";
+import { Colours } from "./colours.js";
 
 export function buildShadowFilter(workspace) {
   const svg = workspace.getParentSvg();

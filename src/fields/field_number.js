@@ -23,7 +23,7 @@
  * @author tmickel@mit.edu (Tim Mickel)
  */
 import * as Blockly from "blockly/core";
-import { Colours } from "../../core/colours.js";
+import { Colours } from "../colours.js";
 
 /**
  * Class for an editable number field.

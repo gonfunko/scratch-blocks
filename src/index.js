@@ -57,7 +57,7 @@ export * from "blockly";
 export * from "./block_reporting.js";
 export * from "./categories.js";
 export * from "./procedures.js";
-export * from "../core/colours.js";
+export * from "./colours.js";
 export * from "./fields/field_colour_slider.js";
 export * from "./fields/field_matrix.js";
 export * from "./fields/field_note.js";

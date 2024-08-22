@@ -26,7 +26,7 @@
  * @author fenichel@google.com (Rachel Fenichel)
  */
 import * as Blockly from "blockly/core";
-import { Colours } from "../core/colours.js";
+import { Colours } from "../src/colours.js";
 import { ScratchProcedures } from "../src/procedures.js";
 import * as Constants from "../src/constants.js";
 

@@ -23,7 +23,7 @@
  * @author fraser@google.com (Neil Fraser)
  */
 import * as Blockly from "blockly";
-import { Colours } from "../core/colours.js";
+import { Colours } from "../src/colours.js";
 
 Blockly.Blocks["text"] = {
   /**
