@@ -24,7 +24,7 @@ import "../blocks_vertical/sensing.js";
 import "../blocks_vertical/sound.js";
 import * as scratchBlocksUtils from "../core/scratch_blocks_utils.js";
 import * as ScratchVariables from "./variables.js";
-import "../core/css.js";
+import "./css.js";
 import "./fields/field_vertical_separator.js";
 import "./renderer/renderer.js";
 import * as contextMenuItems from "./context_menu_items.js";
