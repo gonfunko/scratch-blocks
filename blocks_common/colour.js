@@ -22,8 +22,8 @@
  * @fileoverview Colour blocks for Blockly.
  * @author fraser@google.com (Neil Fraser)
  */
-import * as Blockly from 'blockly';
-import * as Constants from '../src/constants.js';
+import * as Blockly from "blockly/core";
+import * as Constants from "../src/constants.js";
 
 /**
  * Pick a random colour.
@@ -31,26 +31,26 @@ import * as Constants from '../src/constants.js';
  */
 function randomColour() {
   var num = Math.floor(Math.random() * Math.pow(2, 24));
-  return '#' + ('00000' + num.toString(16)).substr(-6);
+  return "#" + ("00000" + num.toString(16)).substr(-6);
 }
 
-Blockly.Blocks['colour_picker'] = {
+Blockly.Blocks["colour_picker"] = {
   /**
    * Block for colour picker.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": "%1",
-      "args0": [
+      message0: "%1",
+      args0: [
         {
-          "type": "field_colour_slider",
-          "name": "COLOUR",
-          "colour": randomColour()
-        }
+          type: "field_colour_slider",
+          name: "COLOUR",
+          colour: randomColour(),
+        },
       ],
-      "outputShape": Constants.OUTPUT_SHAPE_ROUND,
-      "output": "Colour"
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
+      output: "Colour",
     });
-  }
+  },
 };

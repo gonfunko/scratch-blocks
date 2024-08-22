@@ -22,7 +22,7 @@
  * @fileoverview Text blocks for Blockly.
  * @author fraser@google.com (Neil Fraser)
  */
-import * as Blockly from "blockly";
+import * as Blockly from "blockly/core";
 import { Colours } from "../src/colours.js";
 
 Blockly.Blocks["text"] = {

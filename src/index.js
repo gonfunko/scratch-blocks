@@ -53,7 +53,7 @@ import "./fields/field_variable.js";
 import "./fields/field_variable_getter.js";
 import { buildShadowFilter } from "./shadows.js";
 
-export * from "blockly";
+export * from "blockly/core";
 export * from "./block_reporting.js";
 export * from "./categories.js";
 export * from "./procedures.js";
