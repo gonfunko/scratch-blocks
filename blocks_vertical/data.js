@@ -21,7 +21,7 @@
 import * as Blockly from "blockly/core";
 import { Categories } from "../src/categories.js";
 import * as Constants from "../src/constants.js";
-import * as scratchBlocksUtils from "../core/scratch_blocks_utils.js";
+import * as scratchBlocksUtils from "../src/scratch_blocks_utils.js";
 
 Blockly.Blocks["data_variable"] = {
   /**
