@@ -22,7 +22,7 @@
  * @fileoverview Text input field with floating "remove" button.
  * @author pkaplan@media.mit.edu (Paul Kaplan)
  */
-import * as Blockly from 'blockly/core';
+import * as Blockly from "blockly/core";
 
 /**
  * Class for an editable text field displaying a deletion icon when selected.
@@ -46,13 +46,19 @@ export class FieldTextInputRemovable extends Blockly.FieldTextInput {
     super.showEditor_();
 
     const div = Blockly.WidgetDiv.getDiv();
-    div.className += ' removableTextInput';
-    const removeButton = document.createElement('img');
-    removeButton.className = 'blocklyTextRemoveIcon';
-    removeButton.setAttribute('src',
-        this.sourceBlock_.workspace.options.pathToMedia + 'icons/remove.svg');
-    this.removeButtonMouseWrapper_ = Blockly.browserEvents.bind(removeButton,
-        'mousedown', this, this.removeCallback_);
+    div.className += " removableTextInput";
+    const removeButton = document.createElement("img");
+    removeButton.className = "blocklyTextRemoveIcon";
+    removeButton.setAttribute(
+      "src",
+      this.sourceBlock_.workspace.options.pathToMedia + "icons/remove.svg"
+    );
+    this.removeButtonMouseWrapper_ = Blockly.browserEvents.bind(
+      removeButton,
+      "mousedown",
+      this,
+      this.removeCallback_
+    );
     div.appendChild(removeButton);
   }
 
@@ -65,7 +71,7 @@ export class FieldTextInputRemovable extends Blockly.FieldTextInput {
     if (this.sourceBlock_ && this.sourceBlock_.removeFieldCallback) {
       this.sourceBlock_.removeFieldCallback(this);
     } else {
-      console.warn('Expected a source block with removeFieldCallback');
+      console.warn("Expected a source block with removeFieldCallback");
     }
   }
 
@@ -78,13 +84,16 @@ export class FieldTextInputRemovable extends Blockly.FieldTextInput {
    * @public
    */
   fromJson(options) {
-    const text = Blockly.utils.replaceMessageReferences(options['text']);
+    const text = Blockly.utils.replaceMessageReferences(options["text"]);
     const field = new FieldTextInputRemovable(text, null, options);
-    if (typeof options['spellcheck'] == 'boolean') {
-      field.setSpellcheck(options['spellcheck']);
+    if (typeof options["spellcheck"] == "boolean") {
+      field.setSpellcheck(options["spellcheck"]);
     }
     return field;
   }
 }
 
-Blockly.fieldRegistry.register('field_input_removable', FieldTextInputRemovable);
+Blockly.fieldRegistry.register(
+  "field_input_removable",
+  FieldTextInputRemovable
+);

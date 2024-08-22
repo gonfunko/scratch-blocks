@@ -22,7 +22,7 @@
  * @fileoverview Vertical separator field. Draws a vertical line.
  * @author ericr@media.mit.edu (Eric Rosenbaum)
  */
-import * as Blockly from 'blockly/core';
+import * as Blockly from "blockly/core";
 
 /**
  * Class for a vertical separator line.
@@ -46,11 +46,12 @@ class FieldVerticalSeparator extends Blockly.Field {
    * @package
    * @nocollapse
    */
-  static fromJson = function(
-      /* eslint-disable no-unused-vars */ _element
-      /* eslint-enable no-unused-vars */) {
+  static fromJson = function (
+    /* eslint-disable no-unused-vars */ _element
+    /* eslint-enable no-unused-vars */
+  ) {
     return new FieldVerticalSeparator();
-  }
+  };
 
   /**
    * Install this field on a block.
@@ -60,15 +61,18 @@ class FieldVerticalSeparator extends Blockly.Field {
     this.size_ = new Blockly.utils.Size(1, height);
 
     /** @type {SVGElement} */
-    this.lineElement_ = Blockly.utils.dom.createSvgElement('line',
-        {
-          'stroke': this.sourceBlock_.getColourSecondary(),
-          'stroke-linecap': 'round',
-          'x1': 0,
-          'y1': 0,
-          'x2': 0,
-          'y2': height
-        }, this.fieldGroup_);
+    this.lineElement_ = Blockly.utils.dom.createSvgElement(
+      "line",
+      {
+        stroke: this.sourceBlock_.getColourSecondary(),
+        "stroke-linecap": "round",
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: height,
+      },
+      this.fieldGroup_
+    );
   }
 
   /**
@@ -79,8 +83,8 @@ class FieldVerticalSeparator extends Blockly.Field {
    * @package
    */
   setLineHeight(newHeight) {
-    this.lineElement_.setAttribute('y2', newHeight);
-  };
+    this.lineElement_.setAttribute("y2", newHeight);
+  }
 
   /**
    * Get the value of this field. A no-op in this case.
@@ -92,7 +96,7 @@ class FieldVerticalSeparator extends Blockly.Field {
   }
 
   getText() {
-    return '';
+    return "";
   }
 
   /**
@@ -101,8 +105,9 @@ class FieldVerticalSeparator extends Blockly.Field {
    * @override
    */
   setValue(
-      /* eslint-disable no-unused-vars */ src
-      /* eslint-enable no-unused-vars */) {
+    /* eslint-disable no-unused-vars */ src
+    /* eslint-enable no-unused-vars */
+  ) {
     return;
   }
 
@@ -123,4 +128,7 @@ class FieldVerticalSeparator extends Blockly.Field {
   }
 }
 
-Blockly.fieldRegistry.register('field_vertical_separator', FieldVerticalSeparator);
+Blockly.fieldRegistry.register(
+  "field_vertical_separator",
+  FieldVerticalSeparator
+);
