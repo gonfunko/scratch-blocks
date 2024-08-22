@@ -22,26 +22,26 @@
  * @fileoverview Matrix blocks for Blockly.
  * @author khanning@gmail.com (Kreg Hanning)
  */
-import * as Blockly from 'blockly/core';
-import * as Constants from '../src/constants.js';
+import * as Blockly from "blockly/core";
+import * as Constants from "../constants.js";
 
-Blockly.Blocks['matrix'] = {
+Blockly.Blocks["matrix"] = {
   /**
    * Block for matrix value.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": "%1",
-      "args0": [
+      message0: "%1",
+      args0: [
         {
-          "type": "field_matrix",
-          "name": "MATRIX"
-        }
+          type: "field_matrix",
+          name: "MATRIX",
+        },
       ],
-      "outputShape": Constants.OUTPUT_SHAPE_ROUND,
-      "output": "Number",
-      "extensions": ["colours_pen"]
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
+      output: "Number",
+      extensions: ["colours_pen"],
     });
-  }
+  },
 };

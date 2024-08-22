@@ -19,7 +19,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../src/categories.js";
+import { Categories } from "../categories.js";
 
 Blockly.Blocks["operator_add"] = {
   /**

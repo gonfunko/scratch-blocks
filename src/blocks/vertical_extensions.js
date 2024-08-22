@@ -26,9 +26,9 @@
  * @author fenichel@google.com (Rachel Fenichel)
  */
 import * as Blockly from "blockly/core";
-import { Colours } from "../src/colours.js";
-import { ScratchProcedures } from "../src/procedures.js";
-import * as Constants from "../src/constants.js";
+import { Colours } from "../colours.js";
+import { ScratchProcedures } from "../procedures.js";
+import * as Constants from "../constants.js";
 
 const VerticalExtensions = {};
 /**

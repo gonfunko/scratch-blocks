@@ -19,8 +19,8 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../src/categories.js";
-import * as Constants from "../src/constants.js";
+import { Categories } from "../categories.js";
+import * as Constants from "../constants.js";
 
 Blockly.Blocks["sensing_touchingobject"] = {
   /**

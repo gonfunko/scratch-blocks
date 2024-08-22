@@ -23,7 +23,7 @@
  * @author fraser@google.com (Neil Fraser)
  */
 import * as Blockly from "blockly/core";
-import * as Constants from "../src/constants.js";
+import * as Constants from "../constants.js";
 
 /**
  * Pick a random colour.

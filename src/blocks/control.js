@@ -19,8 +19,8 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../src/categories.js";
-import { Colours } from "../src/colours.js";
+import { Categories } from "../categories.js";
+import { Colours } from "../colours.js";
 
 Blockly.Blocks["control_forever"] = {
   /**
