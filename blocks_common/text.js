@@ -22,28 +22,28 @@
  * @fileoverview Text blocks for Blockly.
  * @author fraser@google.com (Neil Fraser)
  */
-import * as Blockly from 'blockly';
-import {Colours} from '../core/colours.js';
+import * as Blockly from "blockly";
+import { Colours } from "../core/colours.js";
 
-Blockly.Blocks['text'] = {
+Blockly.Blocks["text"] = {
   /**
    * Block for text value.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": "%1",
-      "args0": [
+      message0: "%1",
+      args0: [
         {
-          "type": "field_input",
-          "name": "TEXT"
-        }
+          type: "field_input",
+          name: "TEXT",
+        },
       ],
-      "output": "String",
-      "colour": Colours.textField,
-      "colourSecondary": Colours.textField,
-      "colourTertiary": Colours.textField,
-      "colourQuaternary": Colours.textField
+      output: "String",
+      colour: Colours.textField,
+      colourSecondary: Colours.textField,
+      colourTertiary: Colours.textField,
+      colourQuaternary: Colours.textField,
     });
-  }
+  },
 };

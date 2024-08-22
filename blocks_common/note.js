@@ -22,31 +22,31 @@
  * @fileoverview Note block.
  * @author ericr@media.mit.edu (Eric Rosenbaum)
  */
-import * as Blockly from 'blockly/core';
-import {Colours} from '../core/colours.js';
-import * as Constants from '../src/constants.js';
+import * as Blockly from "blockly/core";
+import { Colours } from "../core/colours.js";
+import * as Constants from "../src/constants.js";
 
-Blockly.Blocks['note'] = {
+Blockly.Blocks["note"] = {
   /**
    * Block for musical note value.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": "%1",
-      "args0": [
+      message0: "%1",
+      args0: [
         {
-          "type": "field_note",
-          "name": "NOTE",
-          "value": 60
-        }
+          type: "field_note",
+          name: "NOTE",
+          value: 60,
+        },
       ],
-      "outputShape": Constants.OUTPUT_SHAPE_ROUND,
-      "output": "Number",
-      "colour": Colours.textField,
-      "colourSecondary": Colours.textField,
-      "colourTertiary": Colours.textField,
-      "colourQuaternary": Colours.textField
+      outputShape: Constants.OUTPUT_SHAPE_ROUND,
+      output: "Number",
+      colour: Colours.textField,
+      colourSecondary: Colours.textField,
+      colourTertiary: Colours.textField,
+      colourQuaternary: Colours.textField,
     });
-  }
+  },
 };

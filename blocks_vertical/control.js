@@ -18,470 +18,471 @@
  * limitations under the License.
  */
 
-import * as Blockly from 'blockly/core';
-import {Categories} from '../src/categories.js';
-import {Colours} from '../core/colours.js';
+import * as Blockly from "blockly/core";
+import { Categories } from "../src/categories.js";
+import { Colours } from "../core/colours.js";
 
-Blockly.Blocks['control_forever'] = {
+Blockly.Blocks["control_forever"] = {
   /**
    * Block for repeat n times (external number).
    * https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#5eke39
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
-      "id": "control_forever",
-      "message0": Blockly.Msg.CONTROL_FOREVER,
-      "message1": "%1", // Statement
-      "message2": "%1", // Icon
-      "lastDummyAlign2": "RIGHT",
-      "args1": [
+      id: "control_forever",
+      message0: Blockly.Msg.CONTROL_FOREVER,
+      message1: "%1", // Statement
+      message2: "%1", // Icon
+      lastDummyAlign2: "RIGHT",
+      args1: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
       ],
-      "args2": [
+      args2: [
         {
-          "type": "field_image",
-          "src": ws.options.pathToMedia + "repeat.svg",
-          "width": 24,
-          "height": 24,
-          "alt": "*",
-          "flip_rtl": true
-        }
+          type: "field_image",
+          src: ws.options.pathToMedia + "repeat.svg",
+          width: 24,
+          height: 24,
+          alt: "*",
+          flip_rtl: true,
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_end"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_end"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_repeat'] = {
+Blockly.Blocks["control_repeat"] = {
   /**
    * Block for repeat n times (external number).
    * https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#so57n9
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
-      "id": "control_repeat",
-      "message0": Blockly.Msg.CONTROL_REPEAT,
-      "message1": "%1", // Statement
-      "message2": "%1", // Icon
-      "lastDummyAlign2": "RIGHT",
-      "args0": [
+      id: "control_repeat",
+      message0: Blockly.Msg.CONTROL_REPEAT,
+      message1: "%1", // Statement
+      message2: "%1", // Icon
+      lastDummyAlign2: "RIGHT",
+      args0: [
         {
-          "type": "input_value",
-          "name": "TIMES"
-        }
+          type: "input_value",
+          name: "TIMES",
+        },
       ],
-      "args1": [
+      args1: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
       ],
-      "args2": [
+      args2: [
         {
-          "type": "field_image",
-          "src": ws.options.pathToMedia + "repeat.svg",
-          "width": 24,
-          "height": 24,
-          "alt": "*",
-          "flip_rtl": true
-        }
+          type: "field_image",
+          src: ws.options.pathToMedia + "repeat.svg",
+          width: 24,
+          height: 24,
+          alt: "*",
+          flip_rtl: true,
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_if'] = {
+Blockly.Blocks["control_if"] = {
   /**
    * Block for if-then.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "type": "control_if",
-      "message0": Blockly.Msg.CONTROL_IF,
-      "message1": "%1", // Statement
-      "args0": [
+      type: "control_if",
+      message0: Blockly.Msg.CONTROL_IF,
+      message1: "%1", // Statement
+      args0: [
         {
-          "type": "input_value",
-          "name": "CONDITION",
-          "check": "Boolean"
-        }
+          type: "input_value",
+          name: "CONDITION",
+          check: "Boolean",
+        },
       ],
-      "args1": [
+      args1: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_if_else'] = {
+Blockly.Blocks["control_if_else"] = {
   /**
    * Block for if-else.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "type": "control_if_else",
-      "message0": Blockly.Msg.CONTROL_IF,
-      "message1": "%1",
-      "message2": Blockly.Msg.CONTROL_ELSE,
-      "message3": "%1",
-      "args0": [
+      type: "control_if_else",
+      message0: Blockly.Msg.CONTROL_IF,
+      message1: "%1",
+      message2: Blockly.Msg.CONTROL_ELSE,
+      message3: "%1",
+      args0: [
         {
-          "type": "input_value",
-          "name": "CONDITION",
-          "check": "Boolean"
-        }
+          type: "input_value",
+          name: "CONDITION",
+          check: "Boolean",
+        },
       ],
-      "args1": [
+      args1: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
       ],
-      "args3": [
+      args3: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK2"
-        }
+          type: "input_statement",
+          name: "SUBSTACK2",
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_stop'] = {
+Blockly.Blocks["control_stop"] = {
   /**
    * Block for stop all scripts.
    * @this Blockly.Block
    */
-  init: function() {
-    var ALL_SCRIPTS = 'all';
-    var THIS_SCRIPT = 'this script';
-    var OTHER_SCRIPTS = 'other scripts in sprite';
-    var stopDropdown = new Blockly.FieldDropdown(function() {
-      if (this.sourceBlock_ &&
+  init: function () {
+    var ALL_SCRIPTS = "all";
+    var THIS_SCRIPT = "this script";
+    var OTHER_SCRIPTS = "other scripts in sprite";
+    var stopDropdown = new Blockly.FieldDropdown(
+      function () {
+        if (
+          this.sourceBlock_ &&
           this.sourceBlock_.nextConnection &&
-          this.sourceBlock_.nextConnection.isConnected()) {
+          this.sourceBlock_.nextConnection.isConnected()
+        ) {
+          return [[Blockly.Msg.CONTROL_STOP_OTHER, OTHER_SCRIPTS]];
+        }
         return [
-          [Blockly.Msg.CONTROL_STOP_OTHER, OTHER_SCRIPTS]
+          [Blockly.Msg.CONTROL_STOP_ALL, ALL_SCRIPTS],
+          [Blockly.Msg.CONTROL_STOP_THIS, THIS_SCRIPT],
+          [Blockly.Msg.CONTROL_STOP_OTHER, OTHER_SCRIPTS],
         ];
+      },
+      function (option) {
+        this.getSourceBlock().setNextStatement(option === OTHER_SCRIPTS);
+        return option;
       }
-      return [[Blockly.Msg.CONTROL_STOP_ALL, ALL_SCRIPTS],
-        [Blockly.Msg.CONTROL_STOP_THIS, THIS_SCRIPT],
-        [Blockly.Msg.CONTROL_STOP_OTHER, OTHER_SCRIPTS]
-      ];
-    }, function(option) {
-      this.getSourceBlock().setNextStatement(option === OTHER_SCRIPTS);
-      return option;
-    });
+    );
     this.appendDummyInput()
-        .appendField(Blockly.Msg.CONTROL_STOP)
-        .appendField(stopDropdown, 'STOP_OPTION');
-    this.setColour(Colours.control.primary,
-        Colours.control.secondary,
-        Colours.control.tertiary,
-        Colours.control.quaternary
+      .appendField(Blockly.Msg.CONTROL_STOP)
+      .appendField(stopDropdown, "STOP_OPTION");
+    this.setColour(
+      Colours.control.primary,
+      Colours.control.secondary,
+      Colours.control.tertiary,
+      Colours.control.quaternary
     );
     this.setPreviousStatement(true);
-  }
+  },
 };
 
-Blockly.Blocks['control_wait'] = {
+Blockly.Blocks["control_wait"] = {
   /**
    * Block to wait (pause) stack.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "id": "control_wait",
-      "message0": Blockly.Msg.CONTROL_WAIT,
-      "args0": [
+      id: "control_wait",
+      message0: Blockly.Msg.CONTROL_WAIT,
+      args0: [
         {
-          "type": "input_value",
-          "name": "DURATION"
-        }
+          type: "input_value",
+          name: "DURATION",
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_wait_until'] = {
+Blockly.Blocks["control_wait_until"] = {
   /**
    * Block to wait until a condition becomes true.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": Blockly.Msg.CONTROL_WAITUNTIL,
-      "args0": [
+      message0: Blockly.Msg.CONTROL_WAITUNTIL,
+      args0: [
         {
-          "type": "input_value",
-          "name": "CONDITION",
-          "check": "Boolean"
-        }
+          type: "input_value",
+          name: "CONDITION",
+          check: "Boolean",
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_repeat_until'] = {
+Blockly.Blocks["control_repeat_until"] = {
   /**
    * Block to repeat until a condition becomes true.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
-      "message0": Blockly.Msg.CONTROL_REPEATUNTIL,
-      "message1": "%1",
-      "message2": "%1",
-      "lastDummyAlign2": "RIGHT",
-      "args0": [
+      message0: Blockly.Msg.CONTROL_REPEATUNTIL,
+      message1: "%1",
+      message2: "%1",
+      lastDummyAlign2: "RIGHT",
+      args0: [
         {
-          "type": "input_value",
-          "name": "CONDITION",
-          "check": "Boolean"
-        }
+          type: "input_value",
+          name: "CONDITION",
+          check: "Boolean",
+        },
       ],
-      "args1": [
+      args1: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
       ],
-      "args2": [
+      args2: [
         {
-          "type": "field_image",
-          "src": ws.options.pathToMedia + "repeat.svg",
-          "width": 24,
-          "height": 24,
-          "alt": "*",
-          "flip_rtl": true
-        }
+          type: "field_image",
+          src: ws.options.pathToMedia + "repeat.svg",
+          width: 24,
+          height: 24,
+          alt: "*",
+          flip_rtl: true,
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_while'] = {
+Blockly.Blocks["control_while"] = {
   /**
    * Block to repeat until a condition becomes false.
    * (This is an obsolete "hacked" block, for compatibility with 2.0.)
    */
-  init: function() {
+  init: function () {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
-      "message0": Blockly.Msg.CONTROL_WHILE,
-      "message1": "%1",
-      "message2": "%1",
-      "lastDummyAlign2": "RIGHT",
-      "args0": [
+      message0: Blockly.Msg.CONTROL_WHILE,
+      message1: "%1",
+      message2: "%1",
+      lastDummyAlign2: "RIGHT",
+      args0: [
         {
-          "type": "input_value",
-          "name": "CONDITION",
-          "check": "Boolean"
-        }
+          type: "input_value",
+          name: "CONDITION",
+          check: "Boolean",
+        },
       ],
-      "args1": [
+      args1: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
       ],
-      "args2": [
+      args2: [
         {
-          "type": "field_image",
-          "src": ws.options.pathToMedia + "repeat.svg",
-          "width": 24,
-          "height": 24,
-          "alt": "*",
-          "flip_rtl": true
-        }
+          type: "field_image",
+          src: ws.options.pathToMedia + "repeat.svg",
+          width: 24,
+          height: 24,
+          alt: "*",
+          flip_rtl: true,
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_for_each'] = {
+Blockly.Blocks["control_for_each"] = {
   /**
    * Block for for-each. This is an obsolete block that is implemented for
    * compatibility with Scratch 2.0 projects.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "type": "control_for_each",
-      "message0": Blockly.Msg.CONTROL_FOREACH,
-      "message1": "%1",
-      "args0": [
+      type: "control_for_each",
+      message0: Blockly.Msg.CONTROL_FOREACH,
+      message1: "%1",
+      args0: [
         {
-          "type": "field_variable",
-          "name": "VARIABLE"
+          type: "field_variable",
+          name: "VARIABLE",
         },
         {
-          "type": "input_value",
-          "name": "VALUE"
-        }
+          type: "input_value",
+          name: "VALUE",
+        },
       ],
-      "args1": [
+      args1: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_start_as_clone'] = {
+Blockly.Blocks["control_start_as_clone"] = {
   /**
    * Block for "when I start as a clone" hat.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "id": "control_start_as_clone",
-      "message0": Blockly.Msg.CONTROL_STARTASCLONE,
-      "args0": [
-      ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_hat"]
+      id: "control_start_as_clone",
+      message0: Blockly.Msg.CONTROL_STARTASCLONE,
+      args0: [],
+      category: Categories.control,
+      extensions: ["colours_control", "shape_hat"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_create_clone_of_menu'] = {
+Blockly.Blocks["control_create_clone_of_menu"] = {
   /**
    * Create-clone drop-down menu.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": "%1",
-      "args0": [
+      message0: "%1",
+      args0: [
         {
-          "type": "field_dropdown",
-          "name": "CLONE_OPTION",
-          "options": [
-            [Blockly.Msg.CONTROL_CREATECLONEOF_MYSELF, '_myself_']
-          ]
-        }
+          type: "field_dropdown",
+          name: "CLONE_OPTION",
+          options: [[Blockly.Msg.CONTROL_CREATECLONEOF_MYSELF, "_myself_"]],
+        },
       ],
-      "extensions": ["colours_control", "output_string"]
+      extensions: ["colours_control", "output_string"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_create_clone_of'] = {
+Blockly.Blocks["control_create_clone_of"] = {
   /**
    * Block for "create clone of..."
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "id": "control_start_as_clone",
-      "message0": Blockly.Msg.CONTROL_CREATECLONEOF,
-      "args0": [
+      id: "control_start_as_clone",
+      message0: Blockly.Msg.CONTROL_CREATECLONEOF,
+      args0: [
         {
-          "type": "input_value",
-          "name": "CLONE_OPTION"
-        }
+          type: "input_value",
+          name: "CLONE_OPTION",
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_delete_this_clone'] = {
+Blockly.Blocks["control_delete_this_clone"] = {
   /**
    * Block for "delete this clone."
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": Blockly.Msg.CONTROL_DELETETHISCLONE,
-      "args0": [
-      ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_end"]
+      message0: Blockly.Msg.CONTROL_DELETETHISCLONE,
+      args0: [],
+      category: Categories.control,
+      extensions: ["colours_control", "shape_end"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_get_counter'] = {
+Blockly.Blocks["control_get_counter"] = {
   /**
    * Block to get the counter value. This is an obsolete block that is
    * implemented for compatibility with Scratch 2.0 projects.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": Blockly.Msg.CONTROL_COUNTER,
-      "category": Categories.control,
-      "extensions": ["colours_control", "output_number"]
+      message0: Blockly.Msg.CONTROL_COUNTER,
+      category: Categories.control,
+      extensions: ["colours_control", "output_number"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_incr_counter'] = {
+Blockly.Blocks["control_incr_counter"] = {
   /**
    * Block to add one to the counter value. This is an obsolete block that is
    * implemented for compatibility with Scratch 2.0 projects.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": Blockly.Msg.CONTROL_INCRCOUNTER,
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      message0: Blockly.Msg.CONTROL_INCRCOUNTER,
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_clear_counter'] = {
+Blockly.Blocks["control_clear_counter"] = {
   /**
    * Block to clear the counter value. This is an obsolete block that is
    * implemented for compatibility with Scratch 2.0 projects.
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": Blockly.Msg.CONTROL_CLEARCOUNTER,
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      message0: Blockly.Msg.CONTROL_CLEARCOUNTER,
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
 
-Blockly.Blocks['control_all_at_once'] = {
+Blockly.Blocks["control_all_at_once"] = {
   /**
    * Block to run the contained script. This is an obsolete block that is
    * implemented for compatibility with Scratch 2.0 projects. Note that
@@ -495,18 +496,18 @@ Blockly.Blocks['control_all_at_once'] = {
    * "all at once".
    * @this Blockly.Block
    */
-  init: function() {
+  init: function () {
     this.jsonInit({
-      "message0": Blockly.Msg.CONTROL_ALLATONCE,
-      "message1": "%1", // Statement
-      "args1": [
+      message0: Blockly.Msg.CONTROL_ALLATONCE,
+      message1: "%1", // Statement
+      args1: [
         {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
+          type: "input_statement",
+          name: "SUBSTACK",
+        },
       ],
-      "category": Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
+      category: Categories.control,
+      extensions: ["colours_control", "shape_statement"],
     });
-  }
+  },
 };
