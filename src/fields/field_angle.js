@@ -319,7 +319,8 @@ class FieldAngle extends Blockly.FieldNumber {
     if (this.ROUND) {
       angle = Math.round(angle / this.ROUND) * this.ROUND;
     }
-    this.setEditorValue_(angle);
+    this.setValue(angle);
+    this.setEditorValue_(this.getValue());
     this.resizeEditor_();
   }
 
