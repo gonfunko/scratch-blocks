@@ -383,22 +383,9 @@ Blockly.Blocks["control_start_as_clone"] = {
 
 Blockly.Blocks["control_create_clone_of_menu"] = {
   /**
-   * Create-clone drop-down menu.
+   * Create-clone drop-down menu. Populated dynamically by scratch-gui.
    * @this Blockly.Block
    */
-  init: function () {
-    this.jsonInit({
-      message0: "%1",
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "CLONE_OPTION",
-          options: [[Blockly.Msg.CONTROL_CREATECLONEOF_MYSELF, "_myself_"]],
-        },
-      ],
-      extensions: ["colours_control", "output_string"],
-    });
-  },
 };
 
 Blockly.Blocks["control_create_clone_of"] = {

@@ -145,22 +145,9 @@ Blockly.Blocks["event_whenbroadcastreceived"] = {
 Blockly.Blocks["event_whenbackdropswitchesto"] = {
   /**
    * Block for when the current backdrop switched to a selected backdrop.
+   * Populated dynamically by scratch-gui.
    * @this Blockly.Block
    */
-  init: function () {
-    this.jsonInit({
-      message0: Blockly.Msg.EVENT_WHENBACKDROPSWITCHESTO,
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "BACKDROP",
-          options: [["backdrop1", "BACKDROP1"]],
-        },
-      ],
-      category: Categories.event,
-      extensions: ["colours_event", "shape_hat"],
-    });
-  },
 };
 
 Blockly.Blocks["event_whengreaterthan"] = {

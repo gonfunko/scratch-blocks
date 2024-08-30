@@ -341,25 +341,9 @@ Blockly.Blocks["looks_setstretchto"] = {
 
 Blockly.Blocks["looks_costume"] = {
   /**
-   * Costumes drop-down menu.
+   * Costumes drop-down menu. Populated dynamically by scratch-gui.
    * @this Blockly.Block
    */
-  init: function () {
-    this.jsonInit({
-      message0: "%1",
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "COSTUME",
-          options: [
-            ["costume1", "COSTUME1"],
-            ["costume2", "COSTUME2"],
-          ],
-        },
-      ],
-      extensions: ["colours_looks", "output_string"],
-    });
-  },
 };
 
 Blockly.Blocks["looks_switchcostumeto"] = {
@@ -418,23 +402,9 @@ Blockly.Blocks["looks_switchbackdropto"] = {
 
 Blockly.Blocks["looks_backdrops"] = {
   /**
-   * Backdrop list
+   * Backdrop list. Populated dynamically by scratch-gui.
    * @this Blockly.Block
    */
-  init: function () {
-    this.jsonInit({
-      id: "looks_backdrops",
-      message0: "%1",
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "BACKDROP",
-          options: [["backdrop1", "BACKDROP1"]],
-        },
-      ],
-      extensions: ["colours_looks", "output_string"],
-    });
-  },
 };
 
 Blockly.Blocks["looks_gotofrontback"] = {

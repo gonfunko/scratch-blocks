@@ -117,25 +117,9 @@ Blockly.Blocks["motion_pointindirection"] = {
 
 Blockly.Blocks["motion_pointtowards_menu"] = {
   /**
-   * Point towards drop-down menu.
+   * Point towards drop-down menu. Populated dynamically by scratch-gui.
    * @this Blockly.Block
    */
-  init: function () {
-    this.jsonInit({
-      message0: "%1",
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "TOWARDS",
-          options: [
-            [Blockly.Msg.MOTION_POINTTOWARDS_POINTER, "_mouse_"],
-            [Blockly.Msg.MOTION_POINTTOWARDS_RANDOM, "_random_"],
-          ],
-        },
-      ],
-      extensions: ["colours_motion", "output_string"],
-    });
-  },
 };
 
 Blockly.Blocks["motion_pointtowards"] = {
@@ -160,25 +144,9 @@ Blockly.Blocks["motion_pointtowards"] = {
 
 Blockly.Blocks["motion_goto_menu"] = {
   /**
-   * Go to drop-down menu.
+   * Go to drop-down menu. Populated dynamically by scratch-gui.
    * @this Blockly.Block
    */
-  init: function () {
-    this.jsonInit({
-      message0: "%1",
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "TO",
-          options: [
-            [Blockly.Msg.MOTION_GOTO_POINTER, "_mouse_"],
-            [Blockly.Msg.MOTION_GOTO_RANDOM, "_random_"],
-          ],
-        },
-      ],
-      extensions: ["colours_motion", "output_string"],
-    });
-  },
 };
 
 Blockly.Blocks["motion_gotoxy"] = {
@@ -255,25 +223,9 @@ Blockly.Blocks["motion_glidesecstoxy"] = {
 
 Blockly.Blocks["motion_glideto_menu"] = {
   /**
-   * Glide to drop-down menu
+   * Glide to drop-down menu. Populated dynamically by scratch-gui.
    * @this Blockly.Block
    */
-  init: function () {
-    this.jsonInit({
-      message0: "%1",
-      args0: [
-        {
-          type: "field_dropdown",
-          name: "TO",
-          options: [
-            [Blockly.Msg.MOTION_GLIDETO_POINTER, "_mouse_"],
-            [Blockly.Msg.MOTION_GLIDETO_RANDOM, "_random_"],
-          ],
-        },
-      ],
-      extensions: ["colours_motion", "output_string"],
-    });
-  },
 };
 
 Blockly.Blocks["motion_glideto"] = {
