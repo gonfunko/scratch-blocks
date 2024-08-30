@@ -1159,6 +1159,12 @@ const styles = `
     height: 20px;
     width: 20px;
   }
+
+  .scratch-renderer.zelos-theme .blocklyDraggable:not(.blocklyDisabled) .blocklyEditableField:not(.blocklyEditing):hover>rect,
+  .scratch-renderer.zelos-theme .blocklyDraggable:not(.blocklyDisabled) .blocklyEditableField:not(.blocklyEditing):hover>.blocklyPath {
+    stroke: revert-layer;
+    stroke-width: 1;
+  }
 `;
 
 Blockly.Css.register(styles);
