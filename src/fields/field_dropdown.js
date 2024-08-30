@@ -11,7 +11,10 @@ class FieldDropdown extends Blockly.FieldDropdown {
     super.showEditor_(event);
     const sourceBlock = this.getSourceBlock();
     if (sourceBlock.isShadow()) {
-      sourceBlock.setColour(sourceBlock.style.colourQuaternary);
+      this.originalStyle = sourceBlock.getStyleName();
+      sourceBlock.setColour(
+        sourceBlock.style.colourQuaternary ?? sourceBlock.style.colourTertiary
+      );
     }
   }
 
@@ -19,7 +22,7 @@ class FieldDropdown extends Blockly.FieldDropdown {
     super.dropdownDispose_();
     const sourceBlock = this.getSourceBlock();
     if (sourceBlock.isShadow()) {
-      sourceBlock.setStyle(`colours_${sourceBlock.type.split("_")[0]}`);
+      sourceBlock.setStyle(this.originalStyle);
     }
   }
 }
