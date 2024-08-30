@@ -34,6 +34,7 @@ import {
 import { CheckableContinuousFlyout } from "./checkable_continuous_flyout.js";
 import { buildGlowFilter, glowStack } from "./glows.js";
 import { ScratchContinuousToolbox } from "./scratch_continuous_toolbox.js";
+import { Colours } from "./colours.js";
 import "./scratch_continuous_category.js";
 import "./scratch_comment_icon.js";
 import "./scratch_dragger.js";
@@ -55,7 +56,6 @@ export * from "blockly/core";
 export * from "./block_reporting.js";
 export * from "./categories.js";
 export * from "./procedures.js";
-export * from "./colours.js";
 export * from "./fields/field_angle.js";
 export * from "./fields/field_colour_slider.js";
 export * from "./fields/field_matrix.js";
@@ -80,6 +80,9 @@ export function inject(container, options) {
     },
   });
   const workspace = Blockly.inject(container, options);
+
+  Colours.registerBlockStyles();
+
   workspace.getRenderer().getConstants().selectedGlowFilterId = "";
 
   const flyout = workspace.getFlyout();

@@ -20,7 +20,7 @@
 import * as Blockly from "blockly/core";
 
 const cssColours = {
-  // SVG colours: these must be specificed in #RRGGBB style
+  // SVG colours: these must be specified in #RRGGBB style
   // To add an opacity, this must be specified as a separate property (for SVG fill-opacity)
   motion: {
     primary: "#4C97FF",
@@ -154,6 +154,22 @@ const Colours = {
         }
       }
     }
+  },
+  registerBlockStyles: function () {
+    const workspace = Blockly.getMainWorkspace();
+    const theme = workspace.getTheme();
+    for (const key of Object.keys(cssColours)) {
+      if (cssColours[key].hasOwnProperty("primary")) {
+        const colours = cssColours[key];
+        theme.setBlockStyle(`colours_${key}`, {
+          colourPrimary: colours.primary,
+          colourSecondary: colours.secondary,
+          colourTertiary: colours.tertiary,
+          colourQuaternary: colours.quaternary,
+        });
+      }
+    }
+    workspace.setTheme(theme);
   },
 };
 
