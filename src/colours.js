@@ -40,12 +40,6 @@ const cssColours = {
     tertiary: "#BD42BD",
     quaternary: "#BD42BD",
   },
-  sound: {
-    primary: "#CF63CF",
-    secondary: "#C94FC9",
-    tertiary: "#BD42BD",
-    quaternary: "#BD42BD",
-  },
   control: {
     primary: "#FFAB19",
     secondary: "#EC9C13",
