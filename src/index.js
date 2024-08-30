@@ -48,6 +48,7 @@ import "./events/events_block_comment_delete.js";
 import "./events/events_block_comment_move.js";
 import "./events/events_block_comment_resize.js";
 import "./events/events_scratch_variable_create.js";
+import "./fields/field_dropdown.js";
 import "./fields/field_variable.js";
 import "./fields/field_variable_getter.js";
 import { buildShadowFilter } from "./shadows.js";
