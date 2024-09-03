@@ -142,13 +142,11 @@ Blockly.Blocks["event_whenbroadcastreceived"] = {
   },
 };
 
-Blockly.Blocks["event_whenbackdropswitchesto"] = {
-  /**
-   * Block for when the current backdrop switched to a selected backdrop.
-   * Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * Block for when the current backdrop switched to a selected backdrop.
+ * Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["event_whenbackdropswitchesto"] = {};
 
 Blockly.Blocks["event_whengreaterthan"] = {
   /**

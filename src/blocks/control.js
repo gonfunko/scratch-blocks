@@ -375,12 +375,10 @@ Blockly.Blocks["control_start_as_clone"] = {
   },
 };
 
-Blockly.Blocks["control_create_clone_of_menu"] = {
-  /**
-   * Create-clone drop-down menu. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * Create-clone drop-down menu. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["control_create_clone_of_menu"] = {};
 
 Blockly.Blocks["control_create_clone_of"] = {
   /**

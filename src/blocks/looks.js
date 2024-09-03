@@ -339,12 +339,10 @@ Blockly.Blocks["looks_setstretchto"] = {
   },
 };
 
-Blockly.Blocks["looks_costume"] = {
-  /**
-   * Costumes drop-down menu. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * Costumes drop-down menu. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["looks_costume"] = {};
 
 Blockly.Blocks["looks_switchcostumeto"] = {
   /**
@@ -400,12 +398,10 @@ Blockly.Blocks["looks_switchbackdropto"] = {
   },
 };
 
-Blockly.Blocks["looks_backdrops"] = {
-  /**
-   * Backdrop list. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * Backdrop list. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["looks_backdrops"] = {};
 
 Blockly.Blocks["looks_gotofrontback"] = {
   /**

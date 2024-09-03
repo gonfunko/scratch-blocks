@@ -115,12 +115,10 @@ Blockly.Blocks["motion_pointindirection"] = {
   },
 };
 
-Blockly.Blocks["motion_pointtowards_menu"] = {
-  /**
-   * Point towards drop-down menu. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * Point towards drop-down menu. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["motion_pointtowards_menu"] = {};
 
 Blockly.Blocks["motion_pointtowards"] = {
   /**
@@ -142,12 +140,10 @@ Blockly.Blocks["motion_pointtowards"] = {
   },
 };
 
-Blockly.Blocks["motion_goto_menu"] = {
-  /**
-   * Go to drop-down menu. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * Go to drop-down menu. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["motion_goto_menu"] = {};
 
 Blockly.Blocks["motion_gotoxy"] = {
   /**
@@ -221,12 +217,10 @@ Blockly.Blocks["motion_glidesecstoxy"] = {
   },
 };
 
-Blockly.Blocks["motion_glideto_menu"] = {
-  /**
-   * Glide to drop-down menu. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * Glide to drop-down menu. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["motion_glideto_menu"] = {};
 
 Blockly.Blocks["motion_glideto"] = {
   /**

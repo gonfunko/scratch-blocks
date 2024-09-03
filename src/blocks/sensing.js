@@ -42,12 +42,10 @@ Blockly.Blocks["sensing_touchingobject"] = {
   },
 };
 
-Blockly.Blocks["sensing_touchingobjectmenu"] = {
-  /**
-   * "Touching [Object]" Block Menu. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * "Touching [Object]" Block Menu. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["sensing_touchingobjectmenu"] = {};
 
 Blockly.Blocks["sensing_touchingcolor"] = {
   /**
@@ -113,12 +111,10 @@ Blockly.Blocks["sensing_distanceto"] = {
   },
 };
 
-Blockly.Blocks["sensing_distancetomenu"] = {
-  /**
-   * "Distance to [Object]" Block Menu. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * "Distance to [Object]" Block Menu. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["sensing_distancetomenu"] = {};
 
 Blockly.Blocks["sensing_askandwait"] = {
   /**
@@ -364,20 +360,15 @@ Blockly.Blocks["sensing_resettimer"] = {
   },
 };
 
-Blockly.Blocks["sensing_of_object_menu"] = {
-  /**
-   * "* of _" object menu. Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * "* of _" object menu. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["sensing_of_object_menu"] = {};
 
-Blockly.Blocks["sensing_of"] = {
-  /**
-   * Block to report properties of sprites.
-   * Populated dynamically by scratch-gui.
-   * @this Blockly.Block
-   */
-};
+/**
+ * Block to report properties of sprites. Populated dynamically by scratch-gui.
+ */
+Blockly.Blocks["sensing_of"] = {};
 
 Blockly.Blocks["sensing_current"] = {
   /**
