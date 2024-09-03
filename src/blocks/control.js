@@ -20,7 +20,6 @@
 
 import * as Blockly from "blockly/core";
 import { Categories } from "../categories.js";
-import { Colours } from "../colours.js";
 
 Blockly.Blocks["control_forever"] = {
   /**
@@ -198,12 +197,7 @@ Blockly.Blocks["control_stop"] = {
     this.appendDummyInput()
       .appendField(Blockly.Msg.CONTROL_STOP)
       .appendField(stopDropdown, "STOP_OPTION");
-    this.setColour(
-      Colours.control.primary,
-      Colours.control.secondary,
-      Colours.control.tertiary,
-      Colours.control.quaternary
-    );
+    this.setStyle("colours_control");
     this.setPreviousStatement(true);
   },
 };
