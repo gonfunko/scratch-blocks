@@ -10,6 +10,15 @@ import { cssVarify } from "../colours.js";
 export class ConstantProvider extends Blockly.zelos.ConstantProvider {
   REPLACEMENT_GLOW_COLOUR = "#ffffff";
 
+  /**
+   * Sets the visual theme used to render the workspace.
+   * This method also synthesizes a "selected" theme, used to color blocks with
+   * dropdown menus when the menu is active. Additionally, if the theme's block
+   * styles contain any raw color values, corresponding CSS variables will be
+   * created/overridden so that those colors can be dynamically referenced in
+   * stylesheets.
+   * @param {!Blockly.Theme} The new theme to apply.
+   */
   setTheme(theme) {
     const root = document.querySelector(":root");
     for (const [key, colour] of Object.entries(theme.blockStyles)) {
