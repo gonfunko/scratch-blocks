@@ -93,7 +93,9 @@ export class FieldTextInputRemovable extends Blockly.FieldTextInput {
   }
 }
 
-Blockly.fieldRegistry.register(
-  "field_input_removable",
-  FieldTextInputRemovable
-);
+export function registerFieldTextInputRemovable() {
+  Blockly.fieldRegistry.register(
+    "field_input_removable",
+    FieldTextInputRemovable
+  );
+}

@@ -423,4 +423,6 @@ class FieldAngle extends Blockly.FieldNumber {
   }
 }
 
-Blockly.fieldRegistry.register("field_angle", FieldAngle);
+export function registerFieldAngle() {
+  Blockly.fieldRegistry.register("field_angle", FieldAngle);
+}

@@ -929,4 +929,6 @@ export class FieldNote extends Blockly.FieldTextInput {
   }
 }
 
-Blockly.fieldRegistry.register("field_note", FieldNote);
+export function registerFieldNote() {
+  Blockly.fieldRegistry.register("field_note", FieldNote);
+}

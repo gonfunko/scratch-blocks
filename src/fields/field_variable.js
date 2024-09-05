@@ -153,5 +153,7 @@ class FieldVariable extends Blockly.FieldVariable {
   }
 }
 
-Blockly.fieldRegistry.unregister("field_variable");
-Blockly.fieldRegistry.register("field_variable", FieldVariable);
+export function registerFieldVariable() {
+  Blockly.fieldRegistry.unregister("field_variable");
+  Blockly.fieldRegistry.register("field_variable", FieldVariable);
+}

@@ -27,5 +27,7 @@ class FieldDropdown extends Blockly.FieldDropdown {
   }
 }
 
-Blockly.fieldRegistry.unregister("field_dropdown");
-Blockly.fieldRegistry.register("field_dropdown", FieldDropdown);
+export function registerFieldDropdown() {
+  Blockly.fieldRegistry.unregister("field_dropdown");
+  Blockly.fieldRegistry.register("field_dropdown", FieldDropdown);
+}
