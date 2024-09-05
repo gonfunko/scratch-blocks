@@ -7,6 +7,8 @@
 import * as Blockly from "blockly/core";
 
 class FieldDropdown extends Blockly.FieldDropdown {
+  originalStyle;
+
   showEditor_(event) {
     super.showEditor_(event);
     const sourceBlock = this.getSourceBlock();

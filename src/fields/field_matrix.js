@@ -32,6 +32,8 @@ import * as Blockly from "blockly/core";
  * @constructor
  */
 export class FieldMatrix extends Blockly.Field {
+  originalStyle;
+
   constructor(matrix) {
     super(matrix);
     /**

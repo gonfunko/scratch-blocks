@@ -28,6 +28,8 @@ import { ScratchMsgs } from "../../msg/scratch_msgs.js";
 import { createVariable, renameVariable } from "../variables.js";
 
 class FieldVariable extends Blockly.FieldVariable {
+  originalStyle;
+
   constructor(varName, validator, variableTypes, defaultType, config) {
     super(varName, validator, variableTypes, defaultType, config);
     this.menuGenerator_ = FieldVariable.dropdownCreate;
