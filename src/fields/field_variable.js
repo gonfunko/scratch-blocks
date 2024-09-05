@@ -139,8 +139,15 @@ class FieldVariable extends Blockly.FieldVariable {
   showEditor_(event) {
     super.showEditor_(event);
     const sourceBlock = this.getSourceBlock();
+    const style = sourceBlock.style;
     if (sourceBlock.isShadow()) {
-      sourceBlock.setColour(sourceBlock.style.colourQuaternary);
+      this.originalStyle = sourceBlock.getStyleName();
+      sourceBlock.setStyle(`${this.originalStyle}_selected`);
+    } else if (this.borderRect_) {
+      this.borderRect_.setAttribute(
+        "fill",
+        style.colourQuaternary ?? style.colourTertiary
+      );
     }
   }
 
@@ -148,7 +155,7 @@ class FieldVariable extends Blockly.FieldVariable {
     super.dropdownDispose_();
     const sourceBlock = this.getSourceBlock();
     if (sourceBlock.isShadow()) {
-      sourceBlock.setStyle(`colours_${sourceBlock.type.split("_")[0]}`);
+      sourceBlock.setStyle(this.originalStyle);
     }
   }
 }

@@ -10,10 +10,14 @@ class FieldDropdown extends Blockly.FieldDropdown {
   showEditor_(event) {
     super.showEditor_(event);
     const sourceBlock = this.getSourceBlock();
+    const style = sourceBlock.style;
     if (sourceBlock.isShadow()) {
       this.originalStyle = sourceBlock.getStyleName();
-      sourceBlock.setColour(
-        sourceBlock.style.colourQuaternary ?? sourceBlock.style.colourTertiary
+      sourceBlock.setStyle(`${this.originalStyle}_selected`);
+    } else if (this.borderRect_) {
+      this.borderRect_.setAttribute(
+        "fill",
+        style.colourQuaternary ?? style.colourTertiary
       );
     }
   }
