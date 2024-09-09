@@ -33,7 +33,6 @@ import {
 import { CheckableContinuousFlyout } from "./checkable_continuous_flyout.js";
 import { buildGlowFilter, glowStack } from "./glows.js";
 import { ScratchContinuousToolbox } from "./scratch_continuous_toolbox.js";
-import { ScratchTheme } from "./scratch_theme.js";
 import "./scratch_continuous_category.js";
 import "./scratch_comment_icon.js";
 import "./scratch_dragger.js";
@@ -89,7 +88,6 @@ export function inject(container, options) {
 
   Object.assign(options, {
     renderer: "scratch",
-    theme: ScratchTheme,
     plugins: {
       toolbox: ScratchContinuousToolbox,
       flyoutsVerticalToolbox: CheckableContinuousFlyout,
@@ -97,14 +95,6 @@ export function inject(container, options) {
     },
   });
   const workspace = Blockly.inject(container, options);
-
-  workspace.getRenderer().getConstants().selectedGlowFilterId = "";
-
-  const flyout = workspace.getFlyout();
-  if (flyout) {
-    flyout.getWorkspace().getRenderer().getConstants().selectedGlowFilterId =
-      "";
-  }
 
   buildGlowFilter(workspace);
   buildShadowFilter(workspace);
