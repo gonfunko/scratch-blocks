@@ -128,6 +128,9 @@ class FieldVerticalSeparator extends Blockly.Field {
   }
 }
 
+/**
+ * Register the field and any dependencies.
+ */
 export function registerFieldVerticalSeparator() {
   Blockly.fieldRegistry.register(
     "field_vertical_separator",

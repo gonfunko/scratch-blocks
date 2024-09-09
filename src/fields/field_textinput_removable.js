@@ -93,6 +93,9 @@ export class FieldTextInputRemovable extends Blockly.FieldTextInput {
   }
 }
 
+/**
+ * Register the field and any dependencies.
+ */
 export function registerFieldTextInputRemovable() {
   Blockly.fieldRegistry.register(
     "field_input_removable",

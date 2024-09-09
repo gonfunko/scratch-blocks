@@ -601,6 +601,9 @@ class FieldMatrix extends Blockly.Field {
   }
 }
 
+/**
+ * Register the field and any dependencies.
+ */
 export function registerFieldMatrix() {
   Blockly.fieldRegistry.register("field_matrix", FieldMatrix);
 }

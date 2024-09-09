@@ -101,6 +101,9 @@ class FieldVariableGetter extends Blockly.FieldLabel {
   }
 }
 
+/**
+ * Register the field and any dependencies.
+ */
 export function registerFieldVariableGetter() {
   Blockly.fieldRegistry.register("field_variable_getter", FieldVariableGetter);
 }

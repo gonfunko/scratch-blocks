@@ -371,6 +371,9 @@ class FieldNumberPicker extends Blockly.FieldNumber {
 
 FieldNumberPicker.prototype.DEFAULT_VALUE = "";
 
+/**
+ * Register the field and any dependencies.
+ */
 export function registerFieldNumber() {
   Blockly.fieldRegistry.unregister("field_number");
   Blockly.fieldRegistry.register("field_number", FieldNumberPicker);

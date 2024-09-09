@@ -380,6 +380,9 @@ export class FieldColourSlider extends FieldColour {
   }
 }
 
+/**
+ * Register the field and any dependencies.
+ */
 export function registerFieldColourSlider() {
   Blockly.fieldRegistry.register("field_colour_slider", FieldColourSlider);
 }
