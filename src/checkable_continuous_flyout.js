@@ -109,13 +109,18 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
     // counted as part of the category for purposes of scrolling to show the
     // category, so we reset/adjust the label gaps used for the scroll position
     // calculation here.
-    this.labelGaps.fill(4);
+    this.labelGaps.fill(
+      this.getWorkspace().getRenderer().getConstants().GRID_UNIT
+    );
   }
 
   calculateBottomPadding(contentMetrics, viewMetrics) {
     // Since we're messing with the alignment by munging the label gaps, we also
     // need to adjust the bottom padding.
-    return super.calculateBottomPadding(contentMetrics, viewMetrics) - 16;
+    return (
+      super.calculateBottomPadding(contentMetrics, viewMetrics) -
+      this.getWorkspace().getRenderer().getConstants().GRID_UNIT * 4
+    );
   }
 
   addBlockListeners_(root, block, rect) {
