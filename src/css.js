@@ -1018,7 +1018,7 @@ const styles = `
     stroke: #c8c8c8;
   }
 
-  .checked > .blocklyFlyoutCheckbox {
+  .checked .blocklyFlyoutCheckbox {
     fill: var(--colour-toolboxHover);
     stroke: rgba(0,0,0,0.2);
   }

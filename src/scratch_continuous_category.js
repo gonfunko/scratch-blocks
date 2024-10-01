@@ -1,7 +1,20 @@
+/**
+ * @license
+ * Copyright 2024 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import * as Blockly from "blockly/core";
 import { ContinuousCategory } from "@blockly/continuous-toolbox";
 
-class ScratchContinuousCategory extends ContinuousCategory {
+export class ScratchContinuousCategory extends ContinuousCategory {
+  showStatusButton = false;
+
+  constructor(toolboxItemDef, parentToolbox, opt_parent) {
+    super(toolboxItemDef, parentToolbox, opt_parent);
+    this.showStatusButton = toolboxItemDef["showStatusButton"] === "true";
+  }
+
   createIconDom_() {
     if (this.toolboxItemDef_.iconURI) {
       const icon = document.createElement("img");
@@ -20,11 +33,20 @@ class ScratchContinuousCategory extends ContinuousCategory {
     // Prevent hardcoding the background color to grey.
     this.rowDiv_.style.backgroundColor = "";
   }
+
+  shouldShowStatusButton() {
+    return this.showStatusButton;
+  }
 }
 
-Blockly.registry.register(
-  Blockly.registry.Type.TOOLBOX_ITEM,
-  Blockly.ToolboxCategory.registrationName,
-  ScratchContinuousCategory,
-  true
-);
+export function registerScratchContinuousCategory() {
+  Blockly.registry.unregister(
+    Blockly.registry.Type.TOOLBOX_ITEM,
+    ScratchContinuousCategory.registrationName
+  );
+  Blockly.registry.register(
+    Blockly.registry.Type.TOOLBOX_ITEM,
+    ScratchContinuousCategory.registrationName,
+    ScratchContinuousCategory
+  );
+}

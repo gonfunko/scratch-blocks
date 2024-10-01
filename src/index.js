@@ -33,12 +33,12 @@ import {
 import { CheckableContinuousFlyout } from "./checkable_continuous_flyout.js";
 import { buildGlowFilter, glowStack } from "./glows.js";
 import { ScratchContinuousToolbox } from "./scratch_continuous_toolbox.js";
-import "./scratch_continuous_category.js";
 import "./scratch_comment_icon.js";
 import "./scratch_dragger.js";
 import "./scratch_variable_map.js";
 import "./scratch_variable_model.js";
 import "./scratch_connection_checker.js";
+import "./checkbox_icon.js";
 import "./events/events_block_comment_change.js";
 import "./events/events_block_comment_collapse.js";
 import "./events/events_block_comment_create.js";
@@ -60,6 +60,9 @@ import { registerFieldTextInputRemovable } from "./fields/field_textinput_remova
 import { registerFieldVariableGetter } from "./fields/field_variable_getter.js";
 import { registerFieldVariable } from "./fields/field_variable.js";
 import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator.js";
+import { registerRecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater.js";
+import { registerStatusLabelFlyoutInflater } from "./status_label_flyout_inflater.js";
+import { registerScratchContinuousCategory } from "./scratch_continuous_category.js";
 
 export * from "blockly/core";
 export * from "./block_reporting.js";
@@ -73,6 +76,11 @@ export { CheckableContinuousFlyout };
 export { ScratchVariables };
 export { contextMenuItems };
 export { FieldColourSlider, FieldNote };
+export { CheckboxBubble } from "./checkbox_bubble.js";
+export {
+  FlyoutExtensionCategoryHeader,
+  StatusButtonState,
+} from "./flyout_extension_category_header.js";
 
 export function inject(container, options) {
   registerFieldAngle();
@@ -85,6 +93,9 @@ export function inject(container, options) {
   registerFieldVariableGetter();
   registerFieldVariable();
   registerFieldVerticalSeparator();
+  registerRecyclableBlockFlyoutInflater();
+  registerStatusLabelFlyoutInflater();
+  registerScratchContinuousCategory();
 
   Object.assign(options, {
     renderer: "scratch",

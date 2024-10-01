@@ -23,11 +23,8 @@
  * extensions which can display a textual label and a status button.
  * @author ericr@media.mit.edu (Eric Rosenbaum)
  */
-'use strict';
 
-goog.provide('Blockly.FlyoutExtensionCategoryHeader');
-
-goog.require('Blockly.FlyoutButton');
+import * as Blockly from "blockly/core";
 
 /**
  * Class for a category header in the flyout for Scratch extensions which can
@@ -39,121 +36,119 @@ goog.require('Blockly.FlyoutButton');
  * @extends {Blockly.FlyoutButton}
  * @constructor
  */
-Blockly.FlyoutExtensionCategoryHeader = function(workspace, targetWorkspace, xml) {
+export class FlyoutExtensionCategoryHeader extends Blockly.FlyoutButton {
+  extensionId;
+  imageElement;
+  mouseUpwrapper;
+  static statusButtonCallback;
 
-  this.init(workspace, targetWorkspace, xml, false);
+  constructor(workspace, targetWorkspace, json, isFlyoutLabel) {
+    super(workspace, targetWorkspace, json, isFlyoutLabel);
+    /**
+     * @type {string}
+     */
+    this.extensionId = json["id"];
 
-  /**
-   * @type {number}
-   * @private
-   */
-  this.flyoutWidth_ = this.targetWorkspace_.getFlyout().getWidth();
+    const statusButtonWidth = 30;
+    const marginX = 20;
+    const marginY = 5;
+    const touchPadding = 16;
+    const flyoutWidth = targetWorkspace.getFlyout().getWidth();
 
-  /**
-   * @type {string}
-   */
-  this.extensionId = xml.getAttribute('id');
+    const statusButtonX = workspace.RTL
+      ? marginX - flyoutWidth + statusButtonWidth
+      : (flyoutWidth - statusButtonWidth - marginX) / workspace.scale;
 
-  /**
-   * Whether this is a label at the top of a category.
-   * @type {boolean}
-   * @private
-   */
-  this.isCategoryLabel_ = true;
-};
-goog.inherits(Blockly.FlyoutExtensionCategoryHeader, Blockly.FlyoutButton);
-
-/**
- * Create the label and button elements.
- * @return {!Element} The SVG group.
- */
-Blockly.FlyoutExtensionCategoryHeader.prototype.createDom = function() {
-  var cssClass = 'blocklyFlyoutLabel';
-
-  this.svgGroup_ = Blockly.utils.createSvgElement('g', {'class': cssClass},
-      this.workspace_.getCanvas());
-
-  this.addTextSvg(true);
-
-  this.refreshStatus();
-
-  var statusButtonWidth = 30;
-  var marginX = 20;
-  var marginY = 5;
-  var touchPadding = 16;
-
-  var statusButtonX = this.workspace_.RTL ? (marginX - this.flyoutWidth_ + statusButtonWidth) :
-      (this.flyoutWidth_ - statusButtonWidth - marginX) / this.workspace_.scale;
-
-  if (this.imageSrc_) {
     /** @type {SVGElement} */
-    this.imageElement_ = Blockly.utils.createSvgElement(
-        'image',
-        {
-          'class': 'blocklyFlyoutButton',
-          'height': statusButtonWidth + 'px',
-          'width': statusButtonWidth + 'px',
-          'x': statusButtonX + 'px',
-          'y': marginY + 'px'
-        },
-        this.svgGroup_);
-    this.imageElementBackground_ = Blockly.utils.createSvgElement(
-        'rect',
-        {
-          'class': 'blocklyTouchTargetBackground',
-          'height': statusButtonWidth + 2 * touchPadding + 'px',
-          'width': statusButtonWidth + 2 * touchPadding + 'px',
-          'x': (statusButtonX - touchPadding) + 'px',
-          'y': (marginY - touchPadding) + 'px'
-        },
-        this.svgGroup_);
-    this.setImageSrc(this.imageSrc_);
+    this.imageElement = Blockly.utils.dom.createSvgElement(
+      "image",
+      {
+        class: "blocklyFlyoutButton",
+        height: statusButtonWidth + "px",
+        width: statusButtonWidth + "px",
+        x: statusButtonX + "px",
+        y: marginY + "px",
+      },
+      this.getSvgRoot()
+    );
+    const imageElementBackground = Blockly.utils.dom.createSvgElement(
+      "rect",
+      {
+        class: "blocklyTouchTargetBackground",
+        height: statusButtonWidth + 2 * touchPadding + "px",
+        width: statusButtonWidth + 2 * touchPadding + "px",
+        x: statusButtonX - touchPadding + "px",
+        y: marginY - touchPadding + "px",
+      },
+      this.getSvgRoot()
+    );
+
+    this.refreshStatus();
+
+    this.mouseUpWrapper = Blockly.browserEvents.bind(
+      imageElementBackground,
+      "mouseup",
+      null,
+      () => {
+        FlyoutExtensionCategoryHeader.statusButtonCallback?.call(
+          this,
+          this.extensionId
+        );
+      }
+    );
   }
 
-  this.callback_ = Blockly.statusButtonCallback.bind(this, this.extensionId);
-
-  this.mouseUpWrapper_ = Blockly.bindEventWithChecks_(this.imageElementBackground_, 'mouseup',
-      this, this.onMouseUp_);
-  return this.svgGroup_;
-};
-
-/**
- * Set the image on the status button using a status string.
- */
-Blockly.FlyoutExtensionCategoryHeader.prototype.refreshStatus = function() {
-  var status = Blockly.FlyoutExtensionCategoryHeader.getExtensionState(this.extensionId);
-  var basePath = Blockly.mainWorkspace.options.pathToMedia;
-  if (status == Blockly.StatusButtonState.READY) {
-    this.setImageSrc(basePath + 'status-ready.svg');
+  /**
+   * Set the image on the status button using a status string.
+   */
+  refreshStatus() {
+    var status = this.getExtensionState(this.extensionId);
+    var basePath = Blockly.getMainWorkspace().options.pathToMedia;
+    if (status == StatusButtonState.READY) {
+      this.setImageSrc(basePath + "status-ready.svg");
+    }
+    if (status == StatusButtonState.NOT_READY) {
+      this.setImageSrc(basePath + "status-not-ready.svg");
+    }
   }
-  if (status == Blockly.StatusButtonState.NOT_READY) {
-    this.setImageSrc(basePath + 'status-not-ready.svg');
-  }
-};
 
-/**
- * Set the source URL of the image for the button.
- * @param {?string} src New source.
- * @package
- */
-Blockly.FlyoutExtensionCategoryHeader.prototype.setImageSrc = function(src) {
-  if (src === null) {
-    // No change if null.
-    return;
+  /**
+   * Set the source URL of the image for the button.
+   * @param {?string} src New source.
+   * @package
+   */
+  setImageSrc(src) {
+    if (src === null) {
+      // No change if null.
+      return;
+    }
+    this.imageSrc = src;
+    if (this.imageElement) {
+      this.imageElement.setAttributeNS(
+        "http://www.w3.org/1999/xlink",
+        "xlink:href",
+        this.imageSrc || ""
+      );
+    }
   }
-  this.imageSrc_ = src;
-  if (this.imageElement_) {
-    this.imageElement_.setAttributeNS('http://www.w3.org/1999/xlink',
-        'xlink:href', this.imageSrc_ || '');
-  }
-};
 
-/**
- * Gets the extension state. Overridden externally.
- * @param {string} extensionId The ID of the extension in question.
- * @return {Blockly.StatusButtonState} The state of the extension.
- * @public
- */
-Blockly.FlyoutExtensionCategoryHeader.getExtensionState = function(/* extensionId */) {
-  return Blockly.StatusButtonState.NOT_READY;
+  /**
+   * Gets the extension state. Overridden externally.
+   * @param {string} extensionId The ID of the extension in question.
+   * @return {Blockly.StatusButtonState} The state of the extension.
+   * @public
+   */
+  getExtensionState(extensionId) {
+    return StatusButtonState.NOT_READY;
+  }
+
+  dispose() {
+    Blockly.browserEvents.unbind(this.mouseUpWrapper);
+    super.dispose();
+  }
+}
+
+export const StatusButtonState = {
+  READY: "ready",
+  NOT_READY: "not ready",
 };
