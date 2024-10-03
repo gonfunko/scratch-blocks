@@ -66,11 +66,37 @@ export class CheckboxBubble {
   static CHECKBOX_SPACE_X =
     CheckboxBubble.CHECKBOX_SIZE + 2 * CheckboxBubble.CHECKBOX_MARGIN;
 
+  /**
+   * Root SVG element for this bubble.
+   * @type {!SVGGElement}
+   */
   svgRoot;
+
+  /**
+   * Identifier for click handler, to allow unregistering during disposal.
+   * @type {!Blockly.browserEvents.Data}
+   */
   clickListener;
+
+  /**
+   * Whether or not this bubble is displayed as checked. Note that the source of
+   * truth is the Scratch VM.
+   * @type {boolean}
+   */
   checked = false;
+
+  /**
+   * The location of this bubble in workspace coordinates.
+   * @type {!Blockly.utils.Coordinate}
+   */
   location = new Blockly.utils.Coordinate(0, 0);
 
+  /**
+   * Creates a new flyout checkbox bubble.
+   *
+   * @param {!Blockly.BlockSvg} sourceBlock The block this bubble should be
+   *     associated with.
+   */
   constructor(sourceBlock) {
     this.sourceBlock = sourceBlock;
     this.svgRoot = Blockly.utils.dom.createSvgElement(
@@ -134,7 +160,14 @@ export class CheckboxBubble {
     this.updateLocation();
   }
 
+  /**
+   * Sets whether or not this bubble should be displayed in the checked state.
+   *
+   * @param {boolean} checked True if this bubble should be checked.
+   */
   setChecked(checked) {
+    if (checked === this.checked) return;
+
     this.checked = checked;
     if (this.checked) {
       Blockly.utils.dom.addClass(this.svgRoot, "checked");
@@ -153,18 +186,32 @@ export class CheckboxBubble {
     );
   }
 
-  // Patched by scratch-gui to query the VM state.
+  /**
+   * Returns whether or not the specified block has its checkbox checked.
+   *
+   * This method is patched by scratch-gui to query the VM state.
+   *
+   * @param {string} blockId The ID of the block in question.
+   * @returns {boolean} True if the block's checkbox should be checked.
+   */
   isChecked(blockId) {
     return false;
   }
 
   /**
-   * Always returns false, checkbox bubbles are not movable by the user.
+   * Returns whether this bubble is movable by the user.
+   *
+   * @returns {boolean} Always returns false.
    */
   isMovable() {
     return false;
   }
 
+  /**
+   * Returns the root SVG element for this bubble.
+   *
+   * @returns {!SVGGElement} The root SVG element.
+   */
   getSvgRoot() {
     return this.svgRoot;
   }
@@ -185,6 +232,12 @@ export class CheckboxBubble {
     this.moveTo(x, y);
   }
 
+  /**
+   * Moves this bubble to the specified location.
+   *
+   * @param {number} x The location on the X axis to move to.
+   * @param {number} y The location on the Y axis to move to.
+   */
   moveTo(x, y) {
     this.location.x = x;
     this.location.y = y;
@@ -193,6 +246,8 @@ export class CheckboxBubble {
 
   /**
    * Returns this bubble's location in workspace coordinates.
+   *
+   * @returns {!Blockly.utils.Coordinate} The bubble's location.
    */
   getRelativeToSurfaceXY() {
     return this.location;
