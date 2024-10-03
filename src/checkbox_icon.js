@@ -12,7 +12,7 @@ import { CheckboxBubble } from "./checkbox_bubble.js";
  * @implements {Blockly.IIcon}
  * @implements {Blockly.IHasBubble}
  */
-export class CheckboxIcon {
+export class FlyoutCheckboxIcon {
   sourceBlock;
   checkboxBubble;
   type = new Blockly.icons.IconType("checkbox");
@@ -83,6 +83,6 @@ export class CheckboxIcon {
 Blockly.registry.register(
   Blockly.registry.Type.ICON,
   "checkbox",
-  CheckboxIcon,
+  FlyoutCheckboxIcon,
   true
 );

@@ -28,7 +28,7 @@
 import * as Blockly from "blockly/core";
 import { ScratchProcedures } from "../procedures.js";
 import * as Constants from "../constants.js";
-import { CheckboxIcon } from "../checkbox_icon.js";
+import { FlyoutCheckboxIcon } from "../checkbox_icon.js";
 
 const VerticalExtensions = {};
 /**
@@ -150,7 +150,7 @@ VerticalExtensions.OUTPUT_BOOLEAN = function () {
  * flyout to toggle display of their current value in a chip on the stage.
  */
 VerticalExtensions.MONITOR_BLOCK = function () {
-  this.addIcon(new CheckboxIcon(this));
+  this.addIcon(new FlyoutCheckboxIcon(this));
   this.checkboxInFlyout = true;
 };
 
