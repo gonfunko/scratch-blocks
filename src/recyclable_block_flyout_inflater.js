@@ -10,7 +10,16 @@ import * as Blockly from "blockly/core";
  * A block inflater that caches and reuses blocks to improve performance.
  */
 export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
+  /**
+   * Whether or not block recycling is enabled.
+   * @type {boolean}
+   */
   recyclingEnabled = true;
+
+  /**
+   * Map from block type to block instance.
+   * @type {Map<string, !Blockly.BlockSvg>}
+   */
   recycledBlocks = new Map();
 
   /**
@@ -25,7 +34,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
   /**
    * Creates a new block from the given block definition.
    *
-   * @param {Object} blockDefinition The definition to create a block from.
+   * @param {!Object} blockDefinition The definition to create a block from.
    * @returns {!Blockly.BlockSvg} The newly created block.
    */
   createBlock(blockDefinition) {
@@ -39,7 +48,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
   /**
    * Returns the type of a block from an XML or JSON block definition.
    *
-   * @param blockDefinition {Object} The block definition to parse.
+   * @param blockDefinition {!Object} The block definition to parse.
    * @returns {string} The block type.
    */
   getTypeFromDefinition(blockDefinition) {
@@ -59,7 +68,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
    * top of the workspace. Used during large workspace swaps to limit the number
    * of new DOM elements we need to create.
    *
-   * @param block The block to recycle.
+   * @param {!Blockly.BlockSvg} block The block to recycle.
    */
   recycleBlock(block) {
     const xy = block.getRelativeToSurfaceXY();
@@ -71,8 +80,8 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
    * Returns a block from the cache of recycled blocks with the given type, or
    * undefined if one cannot be found.
    *
-   * @param blockType The type of the block to try to recycle.
-   * @returns The recycled block, or undefined if
+   * @param {string} blockType The type of the block to try to recycle.
+   * @returns {?Blockly.BlockSvg} The recycled block, or undefined if
    *     one could not be recycled.
    */
   getRecycledBlock(blockType) {
@@ -84,8 +93,8 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
   /**
    * Returns whether the given block can be recycled or not.
    *
-   * @param block The block to check for recyclability.
-   * @returns True if the block can be recycled. False otherwise.
+   * @param {!Blockly.BlockSvg} block The block to check for recyclability.
+   * @returns {boolean} True if the block can be recycled. False otherwise.
    */
   blockIsRecyclable(block) {
     if (!this.recyclingEnabled) {
@@ -152,7 +161,8 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
 }
 
 /**
- * Registers the recyclable block flyout inflater.
+ * Registers the recyclable block flyout inflater, replacing the standard
+ * block flyout inflater.
  */
 export function registerRecyclableBlockFlyoutInflater() {
   Blockly.registry.unregister(Blockly.registry.Type.FLYOUT_INFLATER, "block");
