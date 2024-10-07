@@ -92,6 +92,7 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
    * @package
    */
   recordScrollPositions() {
+    // TODO(#211) Remove this once the continuous toolbox has been updated.
     this.scrollPositions = [];
     const categoryLabels = this.getContents()
       .filter(
@@ -117,6 +118,7 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
    * @param {!Blockly.FlyoutItem[]} The flyout items to position.
    */
   layout_(contents) {
+    // TODO(#211) Remove this once the continuous toolbox has been updated.
     // Bypass the continuous flyout's layout method until the plugin is
     // updated for the new flyout API.
     Blockly.VerticalFlyout.prototype.layout_.call(this, contents);
