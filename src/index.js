@@ -62,6 +62,7 @@ import { registerFieldVariableGetter } from "./fields/field_variable_getter.js";
 import { registerFieldVariable } from "./fields/field_variable.js";
 import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator.js";
 import { registerRecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater.js";
+import { registerScratchBlockPaster } from "./scratch_block_paster.js";
 
 export * from "blockly/core";
 export * from "./block_reporting.js";
@@ -89,6 +90,7 @@ export function inject(container, options) {
   registerFieldVariable();
   registerFieldVerticalSeparator();
   registerRecyclableBlockFlyoutInflater();
+  registerScratchBlockPaster();
 
   Object.assign(options, {
     renderer: "scratch",
