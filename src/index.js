@@ -33,7 +33,6 @@ import {
 import { CheckableContinuousFlyout } from "./checkable_continuous_flyout.js";
 import { buildGlowFilter, glowStack } from "./glows.js";
 import { ScratchContinuousToolbox } from "./scratch_continuous_toolbox.js";
-import "./scratch_continuous_category.js";
 import "./scratch_comment_icon.js";
 import "./scratch_dragger.js";
 import "./scratch_variable_map.js";
@@ -63,6 +62,8 @@ import { registerFieldVariable } from "./fields/field_variable.js";
 import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator.js";
 import { registerRecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater.js";
 import { registerScratchBlockPaster } from "./scratch_block_paster.js";
+import { registerStatusIndicatorLabelFlyoutInflater } from "./status_indicator_label_flyout_inflater.js";
+import { registerScratchContinuousCategory } from "./scratch_continuous_category.js";
 
 export * from "blockly/core";
 export * from "./block_reporting.js";
@@ -77,6 +78,10 @@ export { ScratchVariables };
 export { contextMenuItems };
 export { FieldColourSlider, FieldNote };
 export { CheckboxBubble } from "./checkbox_bubble.js";
+export {
+  StatusIndicatorLabel,
+  StatusButtonState,
+} from "./status_indicator_label.js";
 
 export function inject(container, options) {
   registerFieldAngle();
@@ -91,6 +96,8 @@ export function inject(container, options) {
   registerFieldVerticalSeparator();
   registerRecyclableBlockFlyoutInflater();
   registerScratchBlockPaster();
+  registerStatusIndicatorLabelFlyoutInflater();
+  registerScratchContinuousCategory();
 
   Object.assign(options, {
     renderer: "scratch",
