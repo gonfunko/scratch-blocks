@@ -82,7 +82,7 @@ export {
   StatusButtonState,
 } from "./status_indicator_label.js";
 
-export function inject(container, options) {
+export function inject(container: Element, options: Blockly.BlocklyOptions) {
   registerFieldAngle();
   registerFieldColourSlider();
   registerFieldDropdown();

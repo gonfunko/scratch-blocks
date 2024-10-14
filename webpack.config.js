@@ -2,7 +2,7 @@ const path = require("path");
 
 // Base config that applies to either development or production mode.
 const config = {
-  entry: "./src/index.js",
+  entry: "./src/index.ts",
   output: {
     library: "ScratchBlocks",
     libraryTarget: "commonjs2",
