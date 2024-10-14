@@ -29,19 +29,41 @@ import * as Blockly from "blockly/core";
 /**
  * Class for a category header in the flyout for Scratch extensions which can
  * display a textual label and a status button.
- * @param {!Blockly.WorkspaceSvg} workspace The workspace in which to place this
- *     header.
- * @param {!Blockly.WorkspaceSvg} targetWorkspace The flyout's target workspace.
- * @param {!Element} xml The XML specifying the header.
- * @extends {Blockly.FlyoutButton}
- * @constructor
  */
 export class StatusIndicatorLabel extends Blockly.FlyoutButton {
+  /**
+   * The ID of the Scratch extension whose status is indicated by this label.
+   * @type {string}
+   */
   extensionId;
+
+  /**
+   * DOM element that displays the status indicator dot.
+   * @type {!SVGImageElement}
+   */
   imageElement;
+
+  /**
+   * Opaque data for mouse up listener used to unbind it in dispose().
+   * @type {!Blockly.browserEvents.Data}
+   */
   mouseUpwrapper;
+
+  /**
+   * Function to be invoked when the status indicator is clicked.
+   * @type {?Function}
+   */
   static statusButtonCallback;
 
+  /**
+   * Creates a new StatusIndicatorLabel.
+   *
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace in which to place
+   *     this header.
+   * @param {!Blockly.WorkspaceSvg} targetWorkspace The flyout's target
+   *     workspace.
+   * @param {!Element} xml The XML specifying the header.
+   */
   constructor(workspace, targetWorkspace, json, isFlyoutLabel) {
     super(workspace, targetWorkspace, json, isFlyoutLabel);
     /**
