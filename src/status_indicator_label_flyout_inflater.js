@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { StatusIndicatorLabel } from "./status_indicator_label.js";
+import { StatusIndicatorLabel } from "./status_indicator_label";
 
 /**
  * Flyout inflater responsible for creating status indicator labels.
@@ -22,8 +22,7 @@ class StatusIndicatorLabelFlyoutInflater extends Blockly.LabelFlyoutInflater {
     const label = new StatusIndicatorLabel(
       flyoutWorkspace,
       flyoutWorkspace.targetWorkspace,
-      state,
-      true
+      state
     );
     label.show();
     return label;

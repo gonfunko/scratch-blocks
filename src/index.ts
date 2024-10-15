@@ -81,7 +81,7 @@ export { CheckboxBubble } from "./checkbox_bubble";
 export {
   StatusIndicatorLabel,
   StatusButtonState,
-} from "./status_indicator_label.js";
+} from "./status_indicator_label";
 
 export function inject(container: Element, options: Blockly.BlocklyOptions) {
   registerFieldAngle();
