@@ -61,6 +61,7 @@ import { registerFieldVariableGetter } from "./fields/field_variable_getter.js";
 import { registerFieldVariable } from "./fields/field_variable.js";
 import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator.js";
 import { registerRecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater.js";
+import { registerScratchBlockPaster } from "./scratch_block_paster.js";
 import { registerStatusIndicatorLabelFlyoutInflater } from "./status_indicator_label_flyout_inflater.js";
 import { registerScratchContinuousCategory } from "./scratch_continuous_category.js";
 
@@ -94,6 +95,7 @@ export function inject(container: Element, options: Blockly.BlocklyOptions) {
   registerFieldVariable();
   registerFieldVerticalSeparator();
   registerRecyclableBlockFlyoutInflater();
+  registerScratchBlockPaster();
   registerStatusIndicatorLabelFlyoutInflater();
   registerScratchContinuousCategory();
 
@@ -129,3 +131,7 @@ Blockly.ContextMenuRegistry.registry.unregister("blockDelete");
 contextMenuItems.registerDeleteBlock();
 Blockly.ContextMenuRegistry.registry.unregister("workspaceDelete");
 contextMenuItems.registerDeleteAll();
+Blockly.comments.CommentView.defaultCommentSize = new Blockly.utils.Size(
+  200,
+  200
+);
