@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { CheckboxBubble } from "./checkbox_bubble.js";
+import { CheckboxBubble } from "./checkbox_bubble";
 
 /**
  * Invisible icon that exists solely to host the corresponding checkbox bubble.

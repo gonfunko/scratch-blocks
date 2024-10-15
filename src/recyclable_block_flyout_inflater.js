@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { CheckboxBubble } from "./checkbox_bubble.js";
+import { CheckboxBubble } from "./checkbox_bubble";
 
 /**
  * A block inflater that caches and reuses blocks to improve performance.

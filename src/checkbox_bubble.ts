@@ -8,30 +8,24 @@ import * as Blockly from "blockly/core";
 
 /**
  * A checkbox shown next to reporter blocks in the flyout.
- * @implements {Blockly.IBubble}
- * @implements {Blockly.IRenderedElement}
  */
-export class CheckboxBubble {
+export class CheckboxBubble
+  implements Blockly.IBubble, Blockly.IRenderedElement
+{
   /**
    * Size of a checkbox next to a variable reporter.
-   * @type {number}
-   * @const
    */
-  static CHECKBOX_SIZE = 25;
+  static readonly CHECKBOX_SIZE = 25;
 
   /**
    * Amount of touchable padding around reporter checkboxes.
-   * @type {number}
-   * @const
    */
-  static CHECKBOX_TOUCH_PADDING = 12;
+  static readonly CHECKBOX_TOUCH_PADDING = 12;
 
   /**
    * SVG path data for checkmark in checkbox.
-   * @type {string}
-   * @const
    */
-  static CHECKMARK_PATH =
+  static readonly CHECKMARK_PATH =
     "M" +
     CheckboxBubble.CHECKBOX_SIZE / 4 +
     " " +
@@ -46,59 +40,48 @@ export class CheckboxBubble {
     CheckboxBubble.CHECKBOX_SIZE / 3;
 
   /**
-   * Size of the checkbox corner radius
-   * @type {number}
-   * @const
+   * Size of the checkbox corner radius.
    */
-  static CHECKBOX_CORNER_RADIUS = 5;
+  static readonly CHECKBOX_CORNER_RADIUS = 5;
 
   /**
-   * @type {number}
-   * @const
+   * The margin around a checkbox.
    */
-  static CHECKBOX_MARGIN = 12;
+  static readonly CHECKBOX_MARGIN = 12;
 
   /**
    * Total additional width of a row that contains a checkbox.
-   * @type {number}
-   * @const
    */
-  static CHECKBOX_SPACE_X =
+  static readonly CHECKBOX_SPACE_X =
     CheckboxBubble.CHECKBOX_SIZE + 2 * CheckboxBubble.CHECKBOX_MARGIN;
 
   /**
    * Root SVG element for this bubble.
-   * @type {!SVGGElement}
    */
-  svgRoot;
+  svgRoot: SVGGElement;
 
   /**
    * Identifier for click handler, to allow unregistering during disposal.
-   * @type {!Blockly.browserEvents.Data}
    */
-  clickListener;
+  clickListener: Blockly.browserEvents.Data;
 
   /**
    * Whether or not this bubble is displayed as checked. Note that the source of
    * truth is the Scratch VM.
-   * @type {boolean}
    */
   checked = false;
 
   /**
    * The location of this bubble in workspace coordinates.
-   * @type {!Blockly.utils.Coordinate}
    */
   location = new Blockly.utils.Coordinate(0, 0);
 
   /**
    * Creates a new flyout checkbox bubble.
    *
-   * @param {!Blockly.BlockSvg} sourceBlock The block this bubble should be
-   *     associated with.
+   * @param sourceBlock The block this bubble should be associated with.
    */
-  constructor(sourceBlock) {
-    this.sourceBlock = sourceBlock;
+  constructor(private sourceBlock: Blockly.BlockSvg) {
     this.svgRoot = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.G,
       {},
@@ -149,9 +132,9 @@ export class CheckboxBubble {
 
     this.clickListener = Blockly.browserEvents.bind(
       this.svgRoot,
-      "mousedown",
+      "pointerdown",
       null,
-      (event) => {
+      (event: PointerEvent) => {
         this.setChecked(!this.checked);
         event.stopPropagation();
         event.preventDefault();
@@ -163,9 +146,9 @@ export class CheckboxBubble {
   /**
    * Sets whether or not this bubble should be displayed in the checked state.
    *
-   * @param {boolean} checked True if this bubble should be checked.
+   * @param checked True if this bubble should be checked.
    */
-  setChecked(checked) {
+  setChecked(checked: boolean) {
     if (checked === this.checked) return;
 
     this.checked = checked;
@@ -191,28 +174,28 @@ export class CheckboxBubble {
    *
    * This method is patched by scratch-gui to query the VM state.
    *
-   * @param {string} blockId The ID of the block in question.
-   * @returns {boolean} True if the block's checkbox should be checked.
+   * @param blockId The ID of the block in question.
+   * @returns True if the block's checkbox should be checked.
    */
-  isChecked(blockId) {
+  isChecked(blockId: string): boolean {
     return false;
   }
 
   /**
    * Returns whether this bubble is movable by the user.
    *
-   * @returns {boolean} Always returns false.
+   * @returns Always returns false.
    */
-  isMovable() {
+  isMovable(): boolean {
     return false;
   }
 
   /**
    * Returns the root SVG element for this bubble.
    *
-   * @returns {!SVGGElement} The root SVG element.
+   * @returns The root SVG element.
    */
-  getSvgRoot() {
+  getSvgRoot(): SVGGElement {
     return this.svgRoot;
   }
 
@@ -235,10 +218,10 @@ export class CheckboxBubble {
   /**
    * Moves this bubble to the specified location.
    *
-   * @param {number} x The location on the X axis to move to.
-   * @param {number} y The location on the Y axis to move to.
+   * @param x The location on the X axis to move to.
+   * @param y The location on the Y axis to move to.
    */
-  moveTo(x, y) {
+  moveTo(x: number, y: number) {
     this.location.x = x;
     this.location.y = y;
     this.svgRoot.setAttribute("transform", `translate(${x}, ${y})`);
@@ -247,9 +230,9 @@ export class CheckboxBubble {
   /**
    * Returns this bubble's location in workspace coordinates.
    *
-   * @returns {!Blockly.utils.Coordinate} The bubble's location.
+   * @returns The bubble's location.
    */
-  getRelativeToSurfaceXY() {
+  getRelativeToSurfaceXY(): Blockly.utils.Coordinate {
     return this.location;
   }
 
@@ -266,17 +249,17 @@ export class CheckboxBubble {
   // to its block and is not draggable by the user.
   showContextMenu() {}
 
-  setDragging(dragging) {}
+  setDragging(dragging: boolean) {}
 
-  startDrag(event) {}
+  startDrag(event: PointerEvent) {}
 
-  drag(newLocation, event) {}
+  drag(newLocation: Blockly.utils.Coordinate, event: PointerEvent) {}
 
-  moveDuringDrag(newLocation) {}
+  moveDuringDrag(newLocation: Blockly.utils.Coordinate) {}
 
   endDrag() {}
 
   revertDrag() {}
 
-  setDeleteStyle(enable) {}
+  setDeleteStyle(enable: boolean) {}
 }

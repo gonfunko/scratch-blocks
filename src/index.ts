@@ -77,7 +77,7 @@ export { CheckableContinuousFlyout };
 export { ScratchVariables };
 export { contextMenuItems };
 export { FieldColourSlider, FieldNote };
-export { CheckboxBubble } from "./checkbox_bubble.js";
+export { CheckboxBubble } from "./checkbox_bubble";
 export {
   StatusIndicatorLabel,
   StatusButtonState,
