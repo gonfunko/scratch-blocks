@@ -68,7 +68,7 @@ import { registerScratchContinuousCategory } from "./scratch_continuous_category
 export * from "blockly/core";
 export * from "./block_reporting.js";
 export * from "./categories.js";
-export * from "./procedures.js";
+export * from "./procedures";
 export * from "../msg/scratch_msgs.js";
 export * from "./constants.js";
 export { glowStack };

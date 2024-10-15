@@ -26,7 +26,7 @@
  * @author fenichel@google.com (Rachel Fenichel)
  */
 import * as Blockly from "blockly/core";
-import { ScratchProcedures } from "../procedures.js";
+import { ScratchProcedures } from "../procedures";
 import * as Constants from "../constants.js";
 import { FlyoutCheckboxIcon } from "../flyout_checkbox_icon.js";
 
