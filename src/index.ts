@@ -62,7 +62,7 @@ import { registerFieldVariable } from "./fields/field_variable.js";
 import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator.js";
 import { registerRecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater.js";
 import { registerScratchBlockPaster } from "./scratch_block_paster.js";
-import { registerStatusIndicatorLabelFlyoutInflater } from "./status_indicator_label_flyout_inflater.js";
+import { registerStatusIndicatorLabelFlyoutInflater } from "./status_indicator_label_flyout_inflater";
 import { registerScratchContinuousCategory } from "./scratch_continuous_category.js";
 
 export * from "blockly/core";

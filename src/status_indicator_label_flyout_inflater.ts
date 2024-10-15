@@ -13,12 +13,15 @@ import { StatusIndicatorLabel } from "./status_indicator_label";
 class StatusIndicatorLabelFlyoutInflater extends Blockly.LabelFlyoutInflater {
   /**
    * Creates a status indicator label on the flyout from the given state.
-   * @param {!Object} state JSON representation of a status indicator label.
-   * @param {!Blockly.WorkspaceSvg} flyoutWorkspace The workspace to create the
+   * @param state JSON representation of a status indicator label.
+   * @param flyoutWorkspace The workspace to create the
    *     label on.
-   * @returns {!StatusIndicatorLabel} The newly created status indicator label.
+   * @returns The newly created status indicator label.
    */
-  load(state, flyoutWorkspace) {
+  load(
+    state: Blockly.utils.toolbox.LabelInfo,
+    flyoutWorkspace: Blockly.WorkspaceSvg
+  ): StatusIndicatorLabel {
     const label = new StatusIndicatorLabel(
       flyoutWorkspace,
       flyoutWorkspace.targetWorkspace,
