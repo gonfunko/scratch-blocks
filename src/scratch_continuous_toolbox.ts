@@ -6,7 +6,7 @@
 
 import * as Blockly from "blockly/core";
 import { ContinuousToolbox } from "@blockly/continuous-toolbox";
-import { ScratchContinuousCategory } from "./scratch_continuous_category.js";
+import { ScratchContinuousCategory } from "./scratch_continuous_category";
 
 /**
  * A toolbox that displays items from all categories in one scrolling list.

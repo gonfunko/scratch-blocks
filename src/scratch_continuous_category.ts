@@ -7,34 +7,41 @@
 import * as Blockly from "blockly/core";
 import { ContinuousCategory } from "@blockly/continuous-toolbox";
 
+type StatusIndicatorCategoryInfo = Blockly.utils.toolbox.CategoryInfo & {
+  showStatusButton?: string;
+};
+
+/**
+ * Selectable category shown in the Scratch toolbox.
+ */
 export class ScratchContinuousCategory extends ContinuousCategory {
   /**
    * Whether this toolbox category has a status indicator button on its label
    * in the flyout, typically for extensions that interface with hardware
    * devices.
-   * @type {boolean}
    */
-  showStatusButton = false;
+  private showStatusButton = false;
 
   /** Creates a new ScratchContinuousCategory.
    *
-   * @param {!Blockly.toolbox.CategoryInfo} toolboxItemDef A toolbox item
-   *     definition.
-   * @param {!Blockly.Toolbox} parentToolbox The toolbox this category is being
-   *     added to.
-   * @param {?Blockly.ICollapsibleToolboxItem} opt_parent The parent toolbox
-   *     category, if any.
+   * @param toolboxItemDef A toolbox item definition.
+   * @param parentToolbox The toolbox this category is being added to.
+   * @param opt_parent The parent toolbox category, if any.
    */
-  constructor(toolboxItemDef, parentToolbox, opt_parent) {
+  constructor(
+    toolboxItemDef: StatusIndicatorCategoryInfo,
+    parentToolbox: Blockly.Toolbox,
+    opt_parent?: Blockly.ICollapsibleToolboxItem
+  ) {
     super(toolboxItemDef, parentToolbox, opt_parent);
     this.showStatusButton = toolboxItemDef["showStatusButton"] === "true";
   }
 
   /**
    * Creates a DOM element for this category's icon.
-   * @returns {!HTMLElement} A DOM element for this category's icon.
+   * @returns A DOM element for this category's icon.
    */
-  createIconDom_() {
+  createIconDom_(): HTMLElement {
     if (this.toolboxItemDef_.iconURI) {
       const icon = document.createElement("img");
       icon.src = this.toolboxItemDef_.iconURI;
@@ -49,9 +56,9 @@ export class ScratchContinuousCategory extends ContinuousCategory {
 
   /**
    * Sets whether or not this category is selected.
-   * @param {boolean} isSelected True if this category is selected.
+   * @param isSelected True if this category is selected.
    */
-  setSelected(isSelected) {
+  setSelected(isSelected: boolean) {
     super.setSelected(isSelected);
     // Prevent hardcoding the background color to grey.
     this.rowDiv_.style.backgroundColor = "";
