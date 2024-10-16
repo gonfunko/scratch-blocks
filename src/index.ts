@@ -33,7 +33,7 @@ import {
 import { CheckableContinuousFlyout } from "./checkable_continuous_flyout.js";
 import { buildGlowFilter, glowStack } from "./glows.js";
 import { ScratchContinuousToolbox } from "./scratch_continuous_toolbox";
-import "./scratch_comment_icon.js";
+import "./scratch_comment_icon";
 import "./scratch_dragger";
 import "./scratch_variable_map";
 import "./scratch_variable_model";

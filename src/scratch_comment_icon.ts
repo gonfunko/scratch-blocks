@@ -7,15 +7,32 @@
 import * as Blockly from "blockly/core";
 import { ScratchCommentBubble } from "./scratch_comment_bubble.js";
 
+interface CommentState {
+  text: string;
+  height: number;
+  width: number;
+  x: number;
+  y: number;
+  collapsed: boolean;
+}
+
 /**
  * Custom comment icon that draws no icon indicator, used for block comments.
- * @implements {IHasBubble}
- * @implements {ISerializable}
  */
-class ScratchCommentIcon extends Blockly.icons.Icon {
-  constructor(sourceBlock) {
+class ScratchCommentIcon
+  extends Blockly.icons.Icon
+  implements Blockly.ISerializable, Blockly.IHasBubble
+{
+  private commentBubble: ScratchCommentBubble;
+  private onTextChangedListener: (oldText: string, newText: string) => void;
+  private onSizeChangedListener: (
+    oldSize: Blockly.utils.Size,
+    newSize: Blockly.utils.Size
+  ) => void;
+  private onCollapseListener: (collapsed: boolean) => void;
+
+  constructor(protected sourceBlock: Blockly.BlockSvg) {
     super(sourceBlock);
-    this.sourceBlock = sourceBlock;
     this.commentBubble = new ScratchCommentBubble(this.sourceBlock);
     Blockly.Events.fire(
       new (Blockly.Events.get("block_comment_create"))(this.commentBubble)
@@ -28,28 +45,28 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     this.commentBubble.addOnCollapseListener(this.onCollapseListener);
   }
 
-  getType() {
+  getType(): Blockly.icons.IconType<ScratchCommentIcon> {
     return Blockly.icons.IconType.COMMENT;
   }
 
-  initView(pointerDownListener) {
+  initView(pointerDownListener: (e: PointerEvent) => void) {
     // Scratch comments have no indicator icon on the block.
     return;
   }
 
-  getSize() {
+  getSize(): Blockly.utils.Size {
     // Awful hack to cancel out the default padding added to icons.
     return new Blockly.utils.Size(-8, 0);
   }
 
-  getAnchorPoint() {
+  getAnchorPoint(): Blockly.utils.Coordinate {
     const blockRect = this.sourceBlock.getBoundingRectangleWithoutChildren();
     const y = blockRect.top + this.offsetInBlock.y;
     const x = this.sourceBlock.workspace.RTL ? blockRect.left : blockRect.right;
     return new Blockly.utils.Coordinate(x, y);
   }
 
-  onLocationChange(blockOrigin) {
+  onLocationChange(blockOrigin: Blockly.utils.Coordinate) {
     if (!this.sourceBlock || !this.commentBubble) return;
 
     if (this.sourceBlock.isInsertionMarker()) {
@@ -70,15 +87,15 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     );
   }
 
-  setText(text) {
+  setText(text: string) {
     this.commentBubble?.setText(text);
   }
 
-  getText() {
+  getText(): string {
     return this.commentBubble?.getText() ?? "";
   }
 
-  onTextChanged(oldText, newText) {
+  onTextChanged(oldText: string, newText: string) {
     Blockly.Events.fire(
       new (Blockly.Events.get(Blockly.Events.BLOCK_CHANGE))(
         this.sourceBlock,
@@ -97,7 +114,7 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     );
   }
 
-  onCollapsed(collapsed) {
+  onCollapsed(collapsed: boolean) {
     Blockly.Events.fire(
       new (Blockly.Events.get("block_comment_collapse"))(
         this.commentBubble,
@@ -106,7 +123,7 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     );
   }
 
-  onSizeChanged(oldSize, newSize) {
+  onSizeChanged(oldSize: Blockly.utils.Size, newSize: Blockly.utils.Size) {
     Blockly.Events.fire(
       new (Blockly.Events.get("block_comment_resize"))(
         this.commentBubble,
@@ -116,15 +133,15 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     );
   }
 
-  setBubbleSize(size) {
+  setBubbleSize(size: Blockly.utils.Size) {
     this.commentBubble?.setSize(size);
   }
 
-  getBubbleSize() {
+  getBubbleSize(): Blockly.utils.Size {
     return this.commentBubble?.getSize() ?? new Blockly.utils.Size(0, 0);
   }
 
-  setBubbleLocation(newLocation) {
+  setBubbleLocation(newLocation: Blockly.utils.Coordinate) {
     const oldLocation = this.getBubbleLocation();
     this.commentBubble?.moveTo(newLocation);
     Blockly.Events.fire(
@@ -136,11 +153,11 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     );
   }
 
-  getBubbleLocation() {
+  getBubbleLocation(): Blockly.utils.Coordinate {
     return this.commentBubble?.getRelativeToSurfaceXY();
   }
 
-  saveState() {
+  saveState(): CommentState | null {
     if (!this.commentBubble) return null;
 
     const size = this.getBubbleSize();
@@ -159,7 +176,8 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     };
   }
 
-  loadState(state) {
+  loadState(state: CommentState) {
+    Blockly.Events.setGroup(true);
     this.setText(state["text"]);
     this.setBubbleSize(new Blockly.utils.Size(state["width"], state["height"]));
     const delta = new Blockly.utils.Coordinate(state["x"], state["y"]);
@@ -169,20 +187,19 @@ class ScratchCommentIcon extends Blockly.icons.Icon {
     );
     this.commentBubble.moveTo(newBubbleLocation);
     this.commentBubble.setCollapsed(state["collapsed"]);
+    Blockly.Events.setGroup(false);
   }
 
-  bubbleIsVisible() {
+  bubbleIsVisible(): boolean {
     return true;
   }
 
-  async setBubbleVisible(visible) {
+  async setBubbleVisible(visible: boolean) {
     this.commentBubble.setCollapsed(!visible);
   }
 
   dispose() {
-    this.commentBubble?.dispose();
-    this.commentBubble = null;
-    this.sourceBlock = null;
+    this.commentBubble.dispose();
     super.dispose();
   }
 }
