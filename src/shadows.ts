@@ -7,7 +7,11 @@
 import * as Blockly from "blockly/core";
 import { Colours } from "./colours.js";
 
-export function buildShadowFilter(workspace) {
+/**
+ * Creates an SVG filter to apply drop shadows to blocks being dragged and
+ * inserts it into the DOM.
+ */
+export function buildShadowFilter(workspace: Blockly.WorkspaceSvg) {
   const svg = workspace.getParentSvg();
   const defs = Blockly.utils.dom.createSvgElement(
     Blockly.utils.Svg.DEFS,
@@ -15,7 +19,7 @@ export function buildShadowFilter(workspace) {
     svg
   );
   // Adjust these width/height, x/y properties to stop the shadow from clipping
-  var dragShadowFilter = Blockly.utils.dom.createSvgElement(
+  const dragShadowFilter = Blockly.utils.dom.createSvgElement(
     "filter",
     {
       id: "blocklyDragShadowFilter",
@@ -34,7 +38,7 @@ export function buildShadowFilter(workspace) {
     },
     dragShadowFilter
   );
-  var componentTransfer = Blockly.utils.dom.createSvgElement(
+  const componentTransfer = Blockly.utils.dom.createSvgElement(
     "feComponentTransfer",
     { result: "offsetBlur" },
     dragShadowFilter

@@ -46,7 +46,7 @@ import "./events/events_block_comment_delete.js";
 import "./events/events_block_comment_move.js";
 import "./events/events_block_comment_resize.js";
 import "./events/events_scratch_variable_create.js";
-import { buildShadowFilter } from "./shadows.js";
+import { buildShadowFilter } from "./shadows";
 import { registerFieldAngle } from "./fields/field_angle.js";
 import {
   registerFieldColourSlider,
