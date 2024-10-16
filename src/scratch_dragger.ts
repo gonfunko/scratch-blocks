@@ -7,21 +7,19 @@
 import * as Blockly from "blockly/core";
 import { BlockDragOutside } from "./events/events_block_drag_outside.js";
 import { BlockDragEnd } from "./events/events_block_drag_end.js";
+import { isProcedureBlock, getCallers } from "./procedures";
 
 const BOUNDLESS_CLASS = "boundless";
 
 class ScratchDragger extends Blockly.dragging.Dragger {
-  constructor(draggable, workspace) {
-    super(draggable, workspace);
-    this.draggedOutOfBounds = false;
-    this.originatedFromFlyout = false;
-  }
+  draggedOutOfBounds = false;
+  originatedFromFlyout = false;
 
-  setDraggable(draggable) {
+  setDraggable(draggable: Blockly.IDraggable) {
     this.draggable = draggable;
   }
 
-  onDragStart(event) {
+  onDragStart(event: PointerEvent) {
     super.onDragStart(event);
     if (this.draggable instanceof Blockly.BlockSvg) {
       this.workspace.addClass(BOUNDLESS_CLASS);
@@ -41,12 +39,12 @@ class ScratchDragger extends Blockly.dragging.Dragger {
     }
   }
 
-  onDrag(event, totalDelta) {
+  onDrag(event: PointerEvent, totalDelta: Blockly.utils.Coordinate) {
     super.onDrag(event, totalDelta);
     this.updateOutOfBoundsState(event);
   }
 
-  updateOutOfBoundsState(event) {
+  updateOutOfBoundsState(event: PointerEvent) {
     if (this.draggable instanceof Blockly.BlockSvg) {
       const outOfBounds = !this.isInsideWorkspace(event);
       if (outOfBounds !== this.draggedOutOfBounds) {
@@ -60,18 +58,25 @@ class ScratchDragger extends Blockly.dragging.Dragger {
     }
   }
 
-  onDragEnd(event) {
+  onDragEnd(event: PointerEvent) {
     if (
       this.draggable instanceof Blockly.BlockSvg &&
       this.draggable.type === "procedures_definition" &&
       this.wouldDeleteDraggable(event, this.draggable.getRootBlock())
     ) {
-      const procCode = this.draggable
-        .getInputTargetBlock("custom_block")
-        .getProcCode();
-      const hasCaller = this.workspace
-        .getBlocksByType("procedures_call")
-        .some((b) => b.getProcCode() === procCode);
+      const prototype = this.draggable
+        .getInput("custom_block")
+        .connection.targetBlock();
+      const hasCaller =
+        prototype instanceof Blockly.BlockSvg &&
+        isProcedureBlock(prototype) &&
+        getCallers(
+          prototype.getProcCode(),
+          this.draggable.workspace,
+          this.draggable.getRootBlock(),
+          false
+        ).length > 0;
+
       if (hasCaller) {
         Blockly.dialog.alert(Blockly.Msg.PROCEDURE_USED);
         this.draggable.revertDrag();
@@ -95,14 +100,17 @@ class ScratchDragger extends Blockly.dragging.Dragger {
       // deleted.
       if (this.originatedFromFlyout && this.draggedOutOfBounds) {
         Blockly.renderManagement.finishQueuedRenders().then(() => {
-          this.getDragRoot(this.draggable).dispose();
+          const rootBlock = this.getDragRoot(this.draggable);
+          if (rootBlock instanceof Blockly.BlockSvg) {
+            rootBlock.dispose();
+          }
         });
       }
     }
     this.workspace.removeClass(BOUNDLESS_CLASS);
   }
 
-  shouldReturnToStart(event, rootDraggable) {
+  shouldReturnToStart(event: PointerEvent, rootDraggable: Blockly.IDraggable) {
     // If a block is dragged out of the workspace to be e.g. dropped on another
     // sprite, it should remain in the same place on the workspace where it was,
     // rather than being moved to an invisible part of the workspace.
@@ -111,18 +119,18 @@ class ScratchDragger extends Blockly.dragging.Dragger {
     );
   }
 
-  getDragRoot(block) {
+  getDragRoot(draggable: Blockly.IDraggable) {
     // We can't just use getRootBlock() here because, when blocks are detached
     // from a stack via dragging, getRootBlock() still returns the root of that
     // stack.
-    if (block.isShadow()) {
-      return block.getParent();
+    if (draggable instanceof Blockly.BlockSvg && draggable.isShadow()) {
+      return draggable.getParent();
     }
 
-    return block;
+    return draggable;
   }
 
-  isInsideWorkspace(event) {
+  isInsideWorkspace(event: PointerEvent) {
     const bounds = this.workspace.getParentSvg().getBoundingClientRect();
     const workspaceRect = new Blockly.utils.Rect(
       bounds.top,

@@ -32,6 +32,13 @@ export { LIST_VARIABLE_TYPE };
 const PROCEDURES_DEFINITION_BLOCK_TYPE = "procedures_definition";
 export { PROCEDURES_DEFINITION_BLOCK_TYPE };
 
+/*
+ * The type of all procedure declaration blocks.
+ * @const {string}
+ */
+const PROCEDURES_DECLARATION_BLOCK_TYPE = "procedures_declaration";
+export { PROCEDURES_DECLARATION_BLOCK_TYPE };
+
 /**
  * The type of all procedure prototype blocks.
  * @const {string}

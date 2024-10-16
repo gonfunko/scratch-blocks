@@ -115,7 +115,7 @@ function addCreateButton(workspace: Blockly.WorkspaceSvg, xmlList: Element[]) {
  *     with definitionRoot.
  * @return Array of caller blocks.
  */
-function getCallers(
+export function getCallers(
   name: string,
   workspace: Blockly.WorkspaceSvg,
   definitionRoot: Blockly.BlockSvg,
@@ -420,10 +420,12 @@ function deleteProcedureDefCallback(
  * @param block The block to check.
  * @returns True if the block is a procedure block, otherwise false.
  */
-function isProcedureBlock(block: Blockly.BlockSvg): block is ProcedureBlock {
+export function isProcedureBlock(
+  block: Blockly.BlockSvg
+): block is ProcedureBlock {
   return (
     block.type === Constants.PROCEDURES_CALL_BLOCK_TYPE ||
-    block.type === Constants.PROCEDURES_DEFINITION_BLOCK_TYPE ||
+    block.type === Constants.PROCEDURES_DECLARATION_BLOCK_TYPE ||
     block.type === Constants.PROCEDURES_PROTOTYPE_BLOCK_TYPE
   );
 }
