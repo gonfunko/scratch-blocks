@@ -37,7 +37,7 @@ import "./scratch_comment_icon.js";
 import "./scratch_dragger";
 import "./scratch_variable_map";
 import "./scratch_variable_model";
-import "./scratch_connection_checker.js";
+import "./scratch_connection_checker";
 import "./flyout_checkbox_icon.js";
 import "./events/events_block_comment_change.js";
 import "./events/events_block_comment_collapse.js";
