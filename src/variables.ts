@@ -78,7 +78,7 @@ export function createVariable(
 ) {
   // Decide on a modal message based on the opt_type. If opt_type was not
   // provided, default to the original message for scalar variables.
-  var newMsg, modalTitle;
+  let newMsg, modalTitle;
   if (opt_type === BROADCAST_MESSAGE_VARIABLE_TYPE) {
     newMsg = Blockly.Msg.NEW_BROADCAST_MESSAGE_TITLE;
     modalTitle = Blockly.Msg.BROADCAST_MODAL_TITLE;
@@ -95,7 +95,7 @@ export function createVariable(
     newMsg = Blockly.Msg.NEW_VARIABLE_TITLE;
     modalTitle = Blockly.Msg.VARIABLE_MODAL_TITLE;
   }
-  var validate = nameValidator.bind(null, opt_type);
+  const validate = nameValidator.bind(null, opt_type);
 
   // Prompt the user to enter a name for the variable
   prompt(
@@ -107,15 +107,15 @@ export function createVariable(
       variableOptions?: { scope?: string; isCloud?: boolean }
     ) {
       variableOptions = variableOptions || {};
-      var scope = variableOptions.scope;
-      var isLocal = scope === "local" || false;
-      var isCloud = variableOptions.isCloud || false;
+      const scope = variableOptions.scope;
+      const isLocal = scope === "local" || false;
+      const isCloud = variableOptions.isCloud || false;
       // Default to [] if additionalVars is not provided
       additionalVars = additionalVars || [];
       // Only use additionalVars for global variable creation.
-      var additionalVarNames = isLocal ? [] : additionalVars;
+      const additionalVarNames = isLocal ? [] : additionalVars;
 
-      var validatedText = validate(
+      const validatedText = validate(
         text,
         workspace,
         additionalVarNames,
@@ -138,7 +138,7 @@ export function createVariable(
 
         const toolbox = workspace.getToolbox();
         const flyout = toolbox.getFlyout();
-        var variableBlockId = variable.getId();
+        const variableBlockId = variable.getId();
         if (
           toolbox instanceof ScratchContinuousToolbox &&
           flyout instanceof CheckableContinuousFlyout
@@ -245,7 +245,7 @@ function validateBroadcastMessageName(
     // no name was provided or the user cancelled the prompt
     return null;
   }
-  var variable = workspace.getVariable(name, BROADCAST_MESSAGE_VARIABLE_TYPE);
+  const variable = workspace.getVariable(name, BROADCAST_MESSAGE_VARIABLE_TYPE);
   if (variable) {
     // If the user provided a name for a broadcast message that already exists,
     // use the provided callback function to update the selected option in
@@ -320,15 +320,12 @@ export function renameVariable(
   opt_callback: (id?: string) => void
 ) {
   // Validation and modal message/title depends on the variable type
-  var promptMsg, modalTitle;
-  var varType = variable.getType();
+  let promptMsg, modalTitle;
+  const varType = variable.getType();
   if (varType === BROADCAST_MESSAGE_VARIABLE_TYPE) {
     console.warn(
-      "Unexpected attempt to rename a broadcast message with " +
-        "id: " +
-        variable.getId() +
-        " and name: " +
-        variable.getName()
+      `Unexpected attempt to rename a broadcast message with
+      id: "${variable.getId()} and name: ${variable.getName()}`
     );
     return;
   }
@@ -340,10 +337,10 @@ export function renameVariable(
     promptMsg = Blockly.Msg.RENAME_VARIABLE_TITLE;
     modalTitle = Blockly.Msg.RENAME_VARIABLE_MODAL_TITLE;
   }
-  var validate = nameValidator.bind(null, varType);
+  const validate = nameValidator.bind(null, varType);
 
-  var promptText = promptMsg.replace("%1", variable.getName());
-  var promptDefaultText = variable.getName();
+  const promptText = promptMsg.replace("%1", variable.getName());
+  let promptDefaultText = variable.getName();
   if (variable.isCloud && variable.getName().indexOf(CLOUD_PREFIX) == 0) {
     promptDefaultText = promptDefaultText.substring(CLOUD_PREFIX.length);
   }
@@ -351,7 +348,7 @@ export function renameVariable(
   prompt(
     promptText,
     promptDefaultText,
-    function (newName: string, additionalVars: string[]) {
+    (newName: string, additionalVars: string[]) => {
       if (
         variable.isCloud &&
         newName.length > 0 &&
@@ -361,8 +358,8 @@ export function renameVariable(
         // The name validator will add the prefix back
       }
       additionalVars = additionalVars || [];
-      var additionalVarNames = variable.isLocal ? [] : additionalVars;
-      var validatedText = validate(
+      const additionalVarNames = variable.isLocal ? [] : additionalVars;
+      const validatedText = validate(
         newName,
         workspace,
         additionalVarNames,
