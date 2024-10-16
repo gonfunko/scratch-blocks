@@ -6,8 +6,11 @@
 
 import * as Blockly from "blockly/core";
 
+/**
+ * Class that provides storage for variables.
+ */
 class ScratchVariableMap extends Blockly.VariableMap {
-  getVariable(name, type) {
+  getVariable(name: string, type: string) {
     // Variable names in Blockly are case-insensitive, but case sensitive in
     // Scratch. Override the implementation to only return a variable whose name
     // is identical to the one requested.
