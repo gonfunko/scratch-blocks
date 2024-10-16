@@ -21,7 +21,7 @@ import "./blocks/procedures.js";
 import "./blocks/sensing.js";
 import "./blocks/sound.js";
 import * as scratchBlocksUtils from "./scratch_blocks_utils.js";
-import * as ScratchVariables from "./variables.js";
+import * as ScratchVariables from "./variables";
 import "./css.js";
 import "./renderer/renderer.js";
 import * as contextMenuItems from "./context_menu_items.js";

@@ -6,7 +6,7 @@
 
 import * as Blockly from "blockly/core";
 
-class ScratchVariableModel extends Blockly.VariableModel {
+export class ScratchVariableModel extends Blockly.VariableModel {
   constructor(workspace, name, type, id, isLocal, isCloud) {
     super(workspace, name, type, id);
     // isLocal and isCloud may not be passed when creating broadcast message

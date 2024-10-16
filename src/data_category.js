@@ -29,7 +29,7 @@
  * @namespace
  **/
 import * as Blockly from "blockly/core";
-import { createVariable } from "./variables.js";
+import { createVariable } from "./variables";
 import { LIST_VARIABLE_TYPE, SCALAR_VARIABLE_TYPE } from "./constants.js";
 
 /**

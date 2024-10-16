@@ -22,7 +22,7 @@ import * as Blockly from "blockly/core";
 import { Categories } from "../categories.js";
 import * as Constants from "../constants.js";
 import * as scratchBlocksUtils from "../scratch_blocks_utils.js";
-import { renameVariable } from "../variables.js";
+import { renameVariable } from "../variables";
 
 Blockly.Blocks["data_variable"] = {
   /**
