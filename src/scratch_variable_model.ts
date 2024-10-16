@@ -6,13 +6,19 @@
 
 import * as Blockly from "blockly/core";
 
+/**
+ * Class that represents a variable with extra fields for Scratch.
+ */
 export class ScratchVariableModel extends Blockly.VariableModel {
-  constructor(workspace, name, type, id, isLocal, isCloud) {
+  constructor(
+    workspace: Blockly.WorkspaceSvg,
+    name: string,
+    type: string,
+    id: string,
+    public isLocal = false,
+    public isCloud = false
+  ) {
     super(workspace, name, type, id);
-    // isLocal and isCloud may not be passed when creating broadcast message
-    // variables, which conveniently are neither local nor cloud.
-    this.isLocal = !!isLocal;
-    this.isCloud = !!isCloud;
   }
 }
 

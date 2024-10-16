@@ -27,7 +27,7 @@ import {
   LIST_VARIABLE_TYPE,
   BROADCAST_MESSAGE_VARIABLE_TYPE,
 } from "./constants.js";
-import { ScratchVariableModel } from "./scratch_variable_model.js";
+import { ScratchVariableModel } from "./scratch_variable_model";
 import { ScratchContinuousToolbox } from "./scratch_continuous_toolbox.js";
 import { CheckableContinuousFlyout } from "./checkable_continuous_flyout.js";
 
