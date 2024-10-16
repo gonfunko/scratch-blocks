@@ -8,21 +8,28 @@ import * as Blockly from "blockly/core";
 import { ContinuousToolbox } from "@blockly/continuous-toolbox";
 import { ScratchContinuousCategory } from "./scratch_continuous_category.js";
 
+/**
+ * A toolbox that displays items from all categories in one scrolling list.
+ */
 export class ScratchContinuousToolbox extends ContinuousToolbox {
-  postRenderCallbacks = [];
+  /**
+   * List of functions to run after the next time the toolbox renders.
+   */
+  private postRenderCallbacks: (() => void)[] = [];
 
   refreshSelection() {
-    // Intentionally a no-op, Scratch manually manages refreshing the toolbox via forceRerender().
+    // Intentionally a no-op, Scratch manually manages refreshing the toolbox
+    // via forceRerender().
   }
 
   /**
    * Gets the contents that should be shown in the flyout.
-   * @returns {!Blockly.utils.toolbox.FlyoutItemInfoArray} Flyout contents.
+   *
+   * @returns Flyout contents.
    */
-  getInitialFlyoutContents_() {
+  getInitialFlyoutContents_(): Blockly.utils.toolbox.FlyoutItemInfoArray {
     // TODO(#211) Clean this up when the continuous toolbox plugin is updated.
-    /** @type {!Blockly.utils.toolbox.FlyoutItemInfoArray} */
-    let contents = [];
+    let contents: Blockly.utils.toolbox.FlyoutItemInfoArray = [];
     for (const toolboxItem of this.getToolboxItems()) {
       if (toolboxItem instanceof ScratchContinuousCategory) {
         if (toolboxItem.shouldShowStatusButton()) {
@@ -35,19 +42,14 @@ export class ScratchContinuousToolbox extends ContinuousToolbox {
           // Create a label node to go at the top of the category
           contents.push({ kind: "LABEL", text: toolboxItem.getName() });
         }
-        /**
-         * @type {string|Blockly.utils.toolbox.FlyoutItemInfoArray|
-         *    Blockly.utils.toolbox.FlyoutItemInfo}
-         */
         let itemContents = toolboxItem.getContents();
 
         // Handle custom categories (e.g. variables and functions)
         if (typeof itemContents === "string") {
-          itemContents =
-            /** @type {!Blockly.utils.toolbox.DynamicCategoryInfo} */ ({
-              custom: itemContents,
-              kind: "CATEGORY",
-            });
+          itemContents = {
+            custom: itemContents,
+            kind: "CATEGORY",
+          };
         }
         contents = contents.concat(itemContents);
       }
@@ -70,9 +72,9 @@ export class ScratchContinuousToolbox extends ContinuousToolbox {
 
   /**
    * Runs the specified callback after the next rerender.
-   * @param {!Function} A callback to run whenever the toolbox next rerenders.
+   * @param callback A callback to run whenever the toolbox next rerenders.
    */
-  runAfterRerender(callback) {
+  runAfterRerender(callback: () => void) {
     this.postRenderCallbacks.push(callback);
   }
 }
