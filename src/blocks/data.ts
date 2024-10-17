@@ -22,6 +22,8 @@ import * as Blockly from "blockly/core";
 import * as Constants from "../constants";
 import * as scratchBlocksUtils from "../scratch_blocks_utils.js";
 import { renameVariable } from "../variables";
+import type { FieldVariable } from "../fields/field_variable.js";
+import type { ScratchVariableModel } from "../scratch_variable_model";
 
 Blockly.Blocks["data_variable"] = {
   /**
@@ -506,43 +508,50 @@ Blockly.Blocks["data_hidelist"] = {
 const CUSTOM_CONTEXT_MENU_GET_VARIABLE_MIXIN = {
   /**
    * Add context menu option to change the selected variable.
-   * @param {!Array} options List of menu options to add to.
-   * @this Blockly.Block
+   *
+   * @param options List of menu options to add to.
    */
-  customContextMenu: function (options) {
-    var fieldName = "VARIABLE";
+  customContextMenu: function (
+    options: Array<
+      | Blockly.ContextMenuRegistry.ContextMenuOption
+      | Blockly.ContextMenuRegistry.LegacyContextMenuOption
+    >
+  ) {
+    const fieldName = "VARIABLE";
     if (this.isCollapsed()) {
       return;
     }
-    var currentVarName = this.getField(fieldName).getVariable().getName();
+    const currentVarName = this.getField(fieldName).getVariable().getName();
     if (!this.isInFlyout) {
-      var variablesList = this.workspace.getVariablesOfType(
-        Constants.SCALAR_VARIABLE_TYPE
-      );
-      variablesList.sort(function (a, b) {
-        return scratchBlocksUtils.compareStrings(a.getName(), b.getName());
-      });
-      for (var i = 0; i < variablesList.length; i++) {
-        var varName = variablesList[i].getName();
-        if (varName == currentVarName) continue;
+      this.workspace
+        .getVariablesOfType(Constants.SCALAR_VARIABLE_TYPE)
+        .sort(function (
+          a: Blockly.IVariableModel<Blockly.IVariableState>,
+          b: Blockly.IVariableModel<Blockly.IVariableState>
+        ) {
+          return scratchBlocksUtils.compareStrings(a.getName(), b.getName());
+        })
+        .forEach((variable: Blockly.IVariableModel<Blockly.IVariableState>) => {
+          const varName = variable.getName();
+          if (varName === currentVarName) return;
 
-        var option = { enabled: true };
-        option.text = varName;
-
-        option.callback = VARIABLE_OPTION_CALLBACK_FACTORY(
-          this,
-          variablesList[i].getId(),
-          fieldName
-        );
-        options.push(option);
-      }
+          options.push({
+            enabled: true,
+            text: varName,
+            callback: VARIABLE_OPTION_CALLBACK_FACTORY(
+              this,
+              variable.getId(),
+              fieldName
+            ),
+          });
+        });
     } else {
-      var renameOption = {
+      const renameOption = {
         text: Blockly.Msg.RENAME_VARIABLE,
         enabled: true,
         callback: RENAME_OPTION_CALLBACK_FACTORY(this, fieldName),
       };
-      var deleteOption = {
+      const deleteOption = {
         text: Blockly.Msg.DELETE_VARIABLE.replace("%1", currentVarName),
         enabled: true,
         callback: DELETE_OPTION_CALLBACK_FACTORY(this, fieldName),
@@ -564,48 +573,54 @@ Blockly.Extensions.registerMixin(
  * @mixin
  * @augments Blockly.Block
  * @package
- * @readonly
  */
 const CUSTOM_CONTEXT_MENU_GET_LIST_MIXIN = {
   /**
    * Add context menu option to change the selected list.
-   * @param {!Array} options List of menu options to add to.
-   * @this Blockly.Block
+   *
+   * @param options List of menu options to add to.
    */
-  customContextMenu: function (options) {
-    var fieldName = "LIST";
+  customContextMenu: function (
+    options: Array<
+      | Blockly.ContextMenuRegistry.ContextMenuOption
+      | Blockly.ContextMenuRegistry.LegacyContextMenuOption
+    >
+  ) {
+    const fieldName = "LIST";
     if (this.isCollapsed()) {
       return;
     }
-    var currentVarName = this.getField(fieldName).getVariable().getName();
+    const currentVarName = this.getField(fieldName).getVariable().getName();
     if (!this.isInFlyout) {
-      var variablesList = this.workspace.getVariablesOfType(
-        Constants.LIST_VARIABLE_TYPE
-      );
-      variablesList.sort(function (a, b) {
-        return scratchBlocksUtils.compareStrings(a.getName(), b.getName());
-      });
-      for (var i = 0; i < variablesList.length; i++) {
-        var varName = variablesList[i].getName();
-        if (varName == currentVarName) continue;
+      this.workspace
+        .getVariablesOfType(Constants.LIST_VARIABLE_TYPE)
+        .sort(function (
+          a: Blockly.IVariableModel<Blockly.IVariableState>,
+          b: Blockly.IVariableModel<Blockly.IVariableState>
+        ) {
+          return scratchBlocksUtils.compareStrings(a.getName(), b.getName());
+        })
+        .forEach((variable: Blockly.IVariableModel<Blockly.IVariableState>) => {
+          const varName = variable.getName();
+          if (varName === currentVarName) return;
 
-        var option = { enabled: true };
-        option.text = varName;
-
-        option.callback = VARIABLE_OPTION_CALLBACK_FACTORY(
-          this,
-          variablesList[i].getId(),
-          fieldName
-        );
-        options.push(option);
-      }
+          options.push({
+            enabled: true,
+            text: varName,
+            callback: VARIABLE_OPTION_CALLBACK_FACTORY(
+              this,
+              variable.getId(),
+              fieldName
+            ),
+          });
+        });
     } else {
-      var renameOption = {
+      const renameOption = {
         text: Blockly.Msg.RENAME_LIST,
         enabled: true,
         callback: RENAME_OPTION_CALLBACK_FACTORY(this, fieldName),
       };
-      var deleteOption = {
+      const deleteOption = {
         text: Blockly.Msg.DELETE_LIST.replace("%1", currentVarName),
         enabled: true,
         callback: DELETE_OPTION_CALLBACK_FACTORY(this, fieldName),
@@ -625,14 +640,19 @@ Blockly.Extensions.registerMixin(
  * block.  Each variable on the workspace gets its own item in the dropdown
  * menu, and clicking on that item changes the text of the field on the source
  * block.
- * @param {!Blockly.Block} block The block to update.
- * @param {string} id The id of the variable to set on this block.
- * @param {string} fieldName The name of the field to update on the block.
- * @return {!function()} A function that updates the block with the new name.
+ *
+ * @param block The block to update.
+ * @param id The id of the variable to set on this block.
+ * @param fieldName The name of the field to update on the block.
+ * @returns A function that updates the block with the new name.
  */
-const VARIABLE_OPTION_CALLBACK_FACTORY = function (block, id, fieldName) {
-  return function () {
-    var variableField = block.getField(fieldName);
+const VARIABLE_OPTION_CALLBACK_FACTORY = function (
+  block: Blockly.Block,
+  id: string,
+  fieldName: string
+): () => void {
+  return () => {
+    const variableField = block.getField(fieldName);
     if (!variableField) {
       console.log("Tried to get a variable field on the wrong type of block.");
     }
@@ -643,28 +663,38 @@ const VARIABLE_OPTION_CALLBACK_FACTORY = function (block, id, fieldName) {
 /**
  * Callback for rename variable dropdown menu option associated with a
  * variable getter block.
- * @param {!Blockly.Block} block The block with the variable to rename.
- * @param {string} fieldName The name of the field to inspect on the block.
- * @return {!function()} A function that renames the variable.
+ *
+ * @param block The block with the variable to rename.
+ * @param fieldName The name of the field to inspect on the block.
+ * @returns A function that renames the variable.
  */
-const RENAME_OPTION_CALLBACK_FACTORY = function (block, fieldName) {
-  return function () {
-    var workspace = block.workspace;
-    var variable = block.getField(fieldName).getVariable();
-    renameVariable(workspace, variable);
+const RENAME_OPTION_CALLBACK_FACTORY = function (
+  block: Blockly.Block,
+  fieldName: string
+): () => void {
+  return () => {
+    const workspace = block.workspace;
+    const variable = (
+      block.getField(fieldName) as FieldVariable
+    ).getVariable() as ScratchVariableModel;
+    renameVariable(workspace as Blockly.WorkspaceSvg, variable);
   };
 };
 
 /**
  * Callback for delete variable dropdown menu option associated with a
  * variable getter block.
- * @param {!Blockly.Block} block The block with the variable to delete.
- * @param {string} fieldName The name of the field to inspect on the block.
- * @return {!function()} A function that deletes the variable.
+ *
+ * @param block The block with the variable to delete.
+ * @param fieldName The name of the field to inspect on the block.
+ * @return A function that deletes the variable.
  */
-const DELETE_OPTION_CALLBACK_FACTORY = function (block, fieldName) {
-  return function () {
-    const variable = block.getField(fieldName).getVariable();
+const DELETE_OPTION_CALLBACK_FACTORY = function (
+  block: Blockly.Block,
+  fieldName: string
+): () => void {
+  return () => {
+    const variable = (block.getField(fieldName) as FieldVariable).getVariable();
     Blockly.Variables.deleteVariable(variable.getWorkspace(), variable, block);
   };
 };

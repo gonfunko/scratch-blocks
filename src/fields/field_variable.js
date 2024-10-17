@@ -27,7 +27,7 @@ import * as Constants from "../constants";
 import { ScratchMsgs } from "../../msg/scratch_msgs.js";
 import { createVariable, renameVariable } from "../variables";
 
-class FieldVariable extends Blockly.FieldVariable {
+export class FieldVariable extends Blockly.FieldVariable {
   originalStyle;
 
   constructor(varName, validator, variableTypes, defaultType, config) {

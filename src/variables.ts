@@ -73,7 +73,7 @@ export function setPromptHandler(handler: PromptType) {
  */
 export function createVariable(
   workspace: Blockly.WorkspaceSvg,
-  opt_callback: (id?: string) => void,
+  opt_callback?: (id?: string) => void,
   opt_type?: string
 ) {
   // Decide on a modal message based on the opt_type. If opt_type was not
@@ -192,7 +192,7 @@ function nameValidator(
   workspace: Blockly.WorkspaceSvg,
   additionalVars: string[],
   isCloud: boolean,
-  opt_callback: (id?: string) => void
+  opt_callback?: (id?: string) => void
 ): string {
   // The validators for the different variable types require slightly different
   // arguments. For broadcast messages, if a broadcast message of the provided
@@ -239,7 +239,7 @@ function nameValidator(
 function validateBroadcastMessageName(
   name: string,
   workspace: Blockly.WorkspaceSvg,
-  opt_callback: (id?: string) => void
+  opt_callback?: (id?: string) => void
 ): string | null {
   if (!name) {
     // no name was provided or the user cancelled the prompt
@@ -317,7 +317,7 @@ function validateScalarVarOrListName(
 export function renameVariable(
   workspace: Blockly.WorkspaceSvg,
   variable: ScratchVariableModel,
-  opt_callback: (id?: string) => void
+  opt_callback?: (id?: string) => void
 ) {
   // Validation and modal message/title depends on the variable type
   let promptMsg, modalTitle;

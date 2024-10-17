@@ -12,7 +12,7 @@ import "./blocks/note";
 import "./blocks/text";
 import "./blocks/vertical_extensions.js";
 import "./blocks/control";
-import "./blocks/data.js";
+import "./blocks/data";
 import "./blocks/event";
 import "./blocks/looks";
 import "./blocks/motion";
