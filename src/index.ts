@@ -16,7 +16,7 @@ import "./blocks/data.js";
 import "./blocks/event";
 import "./blocks/looks";
 import "./blocks/motion";
-import "./blocks/operators.js";
+import "./blocks/operators";
 import "./blocks/procedures.js";
 import "./blocks/sensing.js";
 import "./blocks/sound.js";
