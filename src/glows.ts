@@ -1,30 +1,41 @@
+/**
+ * @license
+ * Copyright 2024 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import * as Blockly from "blockly/core";
 import { Colours } from "./colours.js";
 
 /**
  * Glow/unglow a stack in the workspace.
- * @param {?string} id ID of block which starts the stack.
- * @param {boolean} isGlowingStack Whether to glow the stack.
+ *
+ * @param id ID of block which starts the stack.
+ * @param isGlowingStack Whether to glow the stack.
  */
-export function glowStack(id, isGlowingStack) {
-  if (id) {
-    const block =
-      Blockly.getMainWorkspace().getBlockById(id) ||
-      Blockly.getMainWorkspace().getFlyout().getWorkspace().getBlockById(id);
-    if (!block) {
-      throw "Tried to glow block that does not exist.";
-    }
+export function glowStack(id: string, isGlowingStack: boolean) {
+  const block = (Blockly.getMainWorkspace().getBlockById(id) ||
+    (Blockly.getMainWorkspace() as Blockly.WorkspaceSvg)
+      .getFlyout()
+      .getWorkspace()
+      .getBlockById(id)) as Blockly.BlockSvg;
+  if (!block) {
+    throw "Tried to glow block that does not exist.";
+  }
 
-    const svg = block.getSvgRoot();
-    if (isGlowingStack && !svg.hasAttribute("filter")) {
-      svg.setAttribute("filter", "url(#blocklyStackGlowFilter)");
-    } else if (!isGlowingStack && svg.hasAttribute("filter")) {
-      svg.removeAttribute("filter");
-    }
+  const svg = block.getSvgRoot();
+  if (isGlowingStack && !svg.hasAttribute("filter")) {
+    svg.setAttribute("filter", "url(#blocklyStackGlowFilter)");
+  } else if (!isGlowingStack && svg.hasAttribute("filter")) {
+    svg.removeAttribute("filter");
   }
 }
 
-export function buildGlowFilter(workspace) {
+/**
+ * Creates an SVG filter to render block glows and adds it to the DOM.
+ * @param workspace The workspace whose DOM the filter will be inserted in.
+ */
+export function buildGlowFilter(workspace: Blockly.WorkspaceSvg) {
   const svg = workspace.getParentSvg();
   const defs = Blockly.utils.dom.createSvgElement(
     Blockly.utils.Svg.DEFS,
