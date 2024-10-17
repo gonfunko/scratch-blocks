@@ -13,7 +13,7 @@ import "./blocks/text.js";
 import "./blocks/vertical_extensions.js";
 import "./blocks/control";
 import "./blocks/data.js";
-import "./blocks/event.js";
+import "./blocks/event";
 import "./blocks/looks.js";
 import "./blocks/motion.js";
 import "./blocks/operators.js";
