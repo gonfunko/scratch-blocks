@@ -14,7 +14,7 @@ import "./blocks/vertical_extensions.js";
 import "./blocks/control";
 import "./blocks/data.js";
 import "./blocks/event";
-import "./blocks/looks.js";
+import "./blocks/looks";
 import "./blocks/motion.js";
 import "./blocks/operators.js";
 import "./blocks/procedures.js";
