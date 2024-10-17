@@ -24,36 +24,66 @@
 
 import * as Blockly from "blockly/core";
 import { FieldTextInputRemovable } from "../fields/field_textinput_removable.js";
+import type { ScratchDragger } from "../scratch_dragger";
 
-class DuplicateOnDragDraggable {
-  constructor(block) {
-    this.block = block;
-  }
+/**
+ * An object mapping argument IDs to blocks and shadow DOMs.
+ */
+type ConnectionMap = {
+  [key: string]: {
+    shadow: Element;
+    block: Blockly.BlockSvg;
+  };
+};
 
-  isMovable() {
+/**
+ * Possible types for procedure arguments.
+ */
+enum ArgumentType {
+  STRING = "s",
+  NUMBER = "n",
+  BOOLEAN = "b",
+}
+
+/**
+ * Class representing a draggable block that copies itself on drag.
+ */
+class DuplicateOnDragDraggable implements Blockly.IDraggable {
+  private copy?: Blockly.BlockSvg;
+  constructor(private block: Blockly.BlockSvg) {}
+
+  isMovable(): boolean {
     return true;
   }
 
-  startDrag(e) {
+  startDrag(e: PointerEvent) {
     const data = this.block.toCopyData();
-    this.copy = Blockly.clipboard.paste(data, this.block.workspace);
+    this.copy = Blockly.clipboard.paste(
+      data,
+      this.block.workspace
+    ) as Blockly.BlockSvg;
     this.copy.startDrag(e);
   }
 
-  drag(e) {
-    this.block.workspace
-      .getGesture(e)
-      .getCurrentDragger()
-      .setDraggable(this.copy);
-    this.copy.drag(e);
+  drag(newLoc: Blockly.utils.Coordinate, e?: PointerEvent) {
+    (
+      this.block.workspace.getGesture(e).getCurrentDragger() as ScratchDragger
+    ).setDraggable(this.copy);
+    this.copy.drag(newLoc, e);
   }
 
-  endDrag(e) {
+  endDrag(e: PointerEvent) {
     this.copy?.endDrag(e);
   }
 
-  revertDrag(e) {
+  revertDrag() {
     this.copy?.dispose();
+  }
+
+  getRelativeToSurfaceXY() {
+    return this.copy
+      ? this.copy.getRelativeToSurfaceXY()
+      : this.block.getRelativeToSurfaceXY();
   }
 }
 
@@ -62,10 +92,10 @@ class DuplicateOnDragDraggable {
 /**
  * Create XML to represent the (non-editable) name and arguments of a procedure
  * call block.
- * @return {!Element} XML storage element.
- * @this Blockly.Block
+ *
+ * @return XML storage element.
  */
-function callerMutationToDom() {
+function callerMutationToDom(): Element {
   var container = document.createElement("mutation");
   container.setAttribute("proccode", this.procCode_);
   container.setAttribute("argumentids", JSON.stringify(this.argumentIds_));
@@ -76,10 +106,10 @@ function callerMutationToDom() {
 /**
  * Parse XML to restore the (non-editable) name and arguments of a procedure
  * call block.
- * @param {!Element} xmlElement XML storage element.
- * @this Blockly.Block
+ *
+ * @param xmlElement XML storage element.
  */
-function callerDomToMutation(xmlElement) {
+function callerDomToMutation(xmlElement: Element) {
   this.procCode_ = xmlElement.getAttribute("proccode");
   this.generateShadows_ = JSON.parse(
     xmlElement.getAttribute("generateshadows")
@@ -91,17 +121,17 @@ function callerDomToMutation(xmlElement) {
 
 /**
  * Create XML to represent the (non-editable) name and arguments of a
+ *
  * procedures_prototype block or a procedures_declaration block.
- * @param {boolean=} opt_generateShadows Whether to include the generateshadows
- *     flag in the generated XML.  False if not provided.
- * @return {!Element} XML storage element.
- * @this Blockly.Block
+ * @param opt_generateShadows Whether to include the generateshadows flag in the
+ *     generated XML. False if not provided.
+ * @return XML storage element.
  */
-function definitionMutationToDom(opt_generateShadows) {
+function definitionMutationToDom(opt_generateShadows?: boolean): Element {
   var container = document.createElement("mutation");
 
   if (opt_generateShadows) {
-    container.setAttribute("generateshadows", true);
+    container.setAttribute("generateshadows", "true");
   }
   container.setAttribute("proccode", this.procCode_);
   container.setAttribute("argumentids", JSON.stringify(this.argumentIds_));
@@ -117,10 +147,10 @@ function definitionMutationToDom(opt_generateShadows) {
 /**
  * Parse XML to restore the (non-editable) name and arguments of a
  * procedures_prototype block or a procedures_declaration block.
- * @param {!Element} xmlElement XML storage element.
- * @this Blockly.Block
+ *
+ * @param xmlElement XML storage element.
  */
-function definitionDomToMutation(xmlElement) {
+function definitionDomToMutation(xmlElement: Element) {
   this.procCode_ = xmlElement.getAttribute("proccode");
   this.warp_ = JSON.parse(xmlElement.getAttribute("warp"));
 
@@ -145,18 +175,16 @@ function definitionDomToMutation(xmlElement) {
 /**
  * Returns the name of the procedure this block calls, or the empty string if
  * it has not yet been set.
- * @return {string} Procedure name.
- * @this Blockly.Block
+ *
+ * @return Procedure name.
  */
-function getProcCode() {
+function getProcCode(): string {
   return this.procCode_;
 }
 
 /**
  * Update the block's structure and appearance to match the internally stored
  * mutation.
- * @private
- * @this Blockly.Block
  */
 function updateDisplay_() {
   var connectionMap = this.disconnectOldBlocks_();
@@ -170,14 +198,12 @@ function updateDisplay_() {
  * in case they can be reattached later.  Also save the shadow DOM if it exists.
  * The result is a map from argument ID to information that was associated with
  * that argument at the beginning of the mutation.
- * @return {!Object.<string, {shadow: Element, block: Blockly.Block}>} An object
- *     mapping argument IDs to blocks and shadow DOMs.
- * @private
- * @this Blockly.Block
+ *
+ * @return An object mapping argument IDs to blocks and shadow DOMs.
  */
-function disconnectOldBlocks_() {
+function disconnectOldBlocks_(): ConnectionMap {
   // Remove old stuff
-  var connectionMap = {};
+  var connectionMap: ConnectionMap = {};
   for (var i = 0, input; (input = this.inputList[i]); i++) {
     if (input.connection) {
       var target = input.connection.targetBlock();
@@ -198,8 +224,6 @@ function disconnectOldBlocks_() {
 /**
  * Remove all inputs on the block, including dummy inputs.
  * Assumes no input has shadow DOM set.
- * @private
- * @this Blockly.Block
  */
 function removeAllInputs_() {
   // Delete inputs directly instead of with block.removeInput to avoid splicing
@@ -213,15 +237,13 @@ function removeAllInputs_() {
 /**
  * Create all inputs specified by the new procCode, and populate them with
  * shadow blocks or reconnected old blocks as appropriate.
- * @param {!Object.<string, {shadow: Element, block: Blockly.Block}>}
- *     connectionMap An object mapping argument IDs to blocks and shadow DOMs.
- * @private
- * @this Blockly.Block
+ *
+ * @param connectionMap An object mapping argument IDs to blocks and shadow DOMs.
  */
-function createAllInputs_(connectionMap) {
+function createAllInputs_(connectionMap: ConnectionMap) {
   // Split the proc into components, by %n, %b, and %s (ignoring escaped).
   var procComponents = this.procCode_.split(/(?=[^\\]%[nbs])/);
-  procComponents = procComponents.map(function (c) {
+  procComponents = procComponents.map(function (c: string) {
     return c.trim(); // Strip whitespace.
   });
   // Create arguments and labels as appropriate.
@@ -231,7 +253,11 @@ function createAllInputs_(connectionMap) {
     if (component.substring(0, 1) == "%") {
       var argumentType = component.substring(1, 2);
       if (
-        !(argumentType == "n" || argumentType == "b" || argumentType == "s")
+        !(
+          argumentType === ArgumentType.NUMBER ||
+          argumentType === ArgumentType.BOOLEAN ||
+          argumentType === ArgumentType.STRING
+        )
       ) {
         throw new Error(
           "Found an custom procedure with an invalid type: " + argumentType
@@ -242,7 +268,7 @@ function createAllInputs_(connectionMap) {
       var id = this.argumentIds_[argumentCount];
 
       var input = this.appendValueInput(id);
-      if (argumentType == "b") {
+      if (argumentType === ArgumentType.BOOLEAN) {
         input.setCheck("Boolean");
       }
       this.populateArgument_(
@@ -262,13 +288,11 @@ function createAllInputs_(connectionMap) {
 
 /**
  * Delete all shadow blocks in the given map.
- * @param {!Object.<string, Blockly.Block>} connectionMap An object mapping
- *     argument IDs to the blocks that were connected to those IDs at the
- *     beginning of the mutation.
- * @private
- * @this Blockly.Block
+ *
+ * @param connectionMap An object mapping argument IDs to the blocks that were
+ *     connected to those IDs at the beginning of the mutation.
  */
-function deleteShadows_(connectionMap) {
+function deleteShadows_(connectionMap: ConnectionMap) {
   // Get rid of all of the old shadow blocks if they aren't connected.
   if (connectionMap) {
     for (var id in connectionMap) {
@@ -290,10 +314,10 @@ function deleteShadows_(connectionMap) {
 /**
  * Add a label field with the given text to a procedures_call or
  * procedures_prototype block.
- * @param {string} text The label text.
- * @private
+ *
+ * @param text The label text.
  */
-function addLabelField_(text) {
+function addLabelField_(text: string) {
   this.appendDummyInput().appendField(text);
 }
 
@@ -301,10 +325,10 @@ function addLabelField_(text) {
  * Add a label editor with the given text to a procedures_declaration
  * block.  Editing the text in the label editor updates the text of the
  * corresponding label fields on function calls.
- * @param {string} text The label text.
- * @private
+ *
+ * @param text The label text.
  */
-function addLabelEditor_(text) {
+function addLabelEditor_(text: string) {
   if (text) {
     this.appendDummyInput(Blockly.utils.idGenerator.genUid()).appendField(
       new FieldTextInputRemovable(text)
@@ -314,14 +338,13 @@ function addLabelEditor_(text) {
 
 /**
  * Build a DOM node representing a shadow block of the given type.
- * @param {string} type One of 's' (string) or 'n' (number).
- * @return {!Element} The DOM node representing the new shadow block.
- * @private
- * @this Blockly.Block
+ *
+ * @param type One of 's' (string) or 'n' (number).
+ * @return The DOM node representing the new shadow block.
  */
-function buildShadowDom_(type) {
-  var shadowDom = goog.dom.createDom("shadow");
-  if (type == "n") {
+function buildShadowDom_(type: ArgumentType): Element {
+  var shadowDom = document.createElement("shadow");
+  if (type === ArgumentType.NUMBER) {
     var shadowType = "math_number";
     var fieldName = "NUM";
     var fieldValue = "1";
@@ -331,7 +354,8 @@ function buildShadowDom_(type) {
     var fieldValue = "";
   }
   shadowDom.setAttribute("type", shadowType);
-  var fieldDom = goog.dom.createDom("field", null, fieldValue);
+  var fieldDom = document.createElement("field");
+  fieldDom.textContent = fieldValue;
   fieldDom.setAttribute("name", fieldName);
   shadowDom.appendChild(fieldDom);
   return shadowDom;
@@ -339,19 +363,22 @@ function buildShadowDom_(type) {
 
 /**
  * Create a new shadow block and attach it to the given input.
- * @param {!Blockly.Input} input The value input to attach a block to.
- * @param {string} argumentType One of 'b' (boolean), 's' (string) or
+ *
+ * @param input The value input to attach a block to.
+ * @param argumentType One of 'b' (boolean), 's' (string) or
  *     'n' (number).
- * @private
- * @this Blockly.Block
  */
-function attachShadow_(input, argumentType) {
-  if (argumentType == "n" || argumentType == "s") {
-    var blockType = argumentType == "n" ? "math_number" : "text";
+function attachShadow_(input: Blockly.Input, argumentType: ArgumentType) {
+  if (
+    argumentType === ArgumentType.NUMBER ||
+    argumentType === ArgumentType.STRING
+  ) {
+    var blockType =
+      argumentType === ArgumentType.NUMBER ? "math_number" : "text";
     Blockly.Events.disable();
     try {
       var newBlock = this.workspace.newBlock(blockType);
-      if (argumentType == "n") {
+      if (argumentType === ArgumentType.NUMBER) {
         newBlock.setFieldValue("1", "NUM");
       } else {
         newBlock.setFieldValue("", "TEXT");
@@ -375,16 +402,21 @@ function attachShadow_(input, argumentType) {
 
 /**
  * Create a new argument reporter block.
- * @param {string} argumentType One of 'b' (boolean), 's' (string) or
+ *
+ * @param argumentType One of 'b' (boolean), 's' (string) or
  *     'n' (number).
- * @param {string} displayName The name of the argument as provided by the
+ * @param displayName The name of the argument as provided by the
  *     user, which becomes the text of the label on the argument reporter block.
- * @return {!Blockly.BlockSvg} The newly created argument reporter block.
- * @private
- * @this Blockly.Block
+ * @return The newly created argument reporter block.
  */
-function createArgumentReporter_(argumentType, displayName) {
-  if (argumentType == "n" || argumentType == "s") {
+function createArgumentReporter_(
+  argumentType: ArgumentType,
+  displayName: string
+): Blockly.BlockSvg {
+  if (
+    argumentType === ArgumentType.NUMBER ||
+    argumentType === ArgumentType.STRING
+  ) {
     var blockType = "argument_reporter_string_number";
   } else {
     var blockType = "argument_reporter_boolean";
@@ -412,16 +444,20 @@ function createArgumentReporter_(argumentType, displayName) {
 /**
  * Populate the argument by attaching the correct child block or shadow to the
  * given input.
- * @param {string} type One of 'b' (boolean), 's' (string) or 'n' (number).
- * @param {number} index The index of this argument into the argument id array.
- * @param {!Object.<string, {shadow: Element, block: Blockly.Block}>}
- *     connectionMap An object mapping argument IDs to blocks and shadow DOMs.
- * @param {string} id The ID of the input to populate.
- * @param {!Blockly.Input} input The newly created input to populate.
- * @private
- * @this Blockly.Block
+ *
+ * @param type One of 'b' (boolean), 's' (string) or 'n' (number).
+ * @param index The index of this argument into the argument id array.
+ * @param connectionMap An object mapping argument IDs to blocks and shadow DOMs.
+ * @param id The ID of the input to populate.
+ * @param input The newly created input to populate.
  */
-function populateArgumentOnCaller_(type, index, connectionMap, id, input) {
+function populateArgumentOnCaller_(
+  type: ArgumentType,
+  index: number,
+  connectionMap: ConnectionMap,
+  id: string,
+  input: Blockly.Input
+) {
   var oldBlock = null;
   var oldShadow = null;
   if (connectionMap && id in connectionMap) {
@@ -434,7 +470,7 @@ function populateArgumentOnCaller_(type, index, connectionMap, id, input) {
     // Reattach the old block and shadow DOM.
     connectionMap[input.name] = null;
     oldBlock.outputConnection.connect(input.connection);
-    if (type != "b" && this.generateShadows_) {
+    if (type !== ArgumentType.BOOLEAN && this.generateShadows_) {
       var shadowDom = oldShadow || this.buildShadowDom_(type);
       console.log("setting shadow dom: " + shadowDom);
       input.connection.setShadowDom(shadowDom);
@@ -447,17 +483,21 @@ function populateArgumentOnCaller_(type, index, connectionMap, id, input) {
 /**
  * Populate the argument by attaching the correct argument reporter to the given
  * input.
- * @param {string} type One of 'b' (boolean), 's' (string) or 'n' (number).
- * @param {number} index The index of this argument into the argument ID and
+ *
+ * @param type One of 'b' (boolean), 's' (string) or 'n' (number).
+ * @param index The index of this argument into the argument ID and
  *     argument display name arrays.
- * @param {!Object.<string, {shadow: Element, block: Blockly.Block}>}
- *     connectionMap An object mapping argument IDs to blocks and shadow DOMs.
- * @param {string} id The ID of the input to populate.
- * @param {!Blockly.Input} input The newly created input to populate.
- * @private
- * @this Blockly.Block
+ * @param connectionMap An object mapping argument IDs to blocks and shadow DOMs.
+ * @param id The ID of the input to populate.
+ * @param input The newly created input to populate.
  */
-function populateArgumentOnPrototype_(type, index, connectionMap, id, input) {
+function populateArgumentOnPrototype_(
+  type: ArgumentType,
+  index: number,
+  connectionMap: ConnectionMap,
+  id: string,
+  input: Blockly.Input
+) {
   var oldBlock = null;
   if (connectionMap && id in connectionMap) {
     var saveInfo = connectionMap[id];
@@ -468,14 +508,15 @@ function populateArgumentOnPrototype_(type, index, connectionMap, id, input) {
   var displayName = this.displayNames_[index];
 
   // Decide which block to attach.
+  let argumentReporter: Blockly.BlockSvg;
   if (connectionMap && oldBlock && oldTypeMatches) {
     // Update the text if needed. The old argument reporter is the same type,
     // and on the same input, but the argument's display name may have changed.
-    var argumentReporter = oldBlock;
+    argumentReporter = oldBlock;
     argumentReporter.setFieldValue(displayName, "VALUE");
     connectionMap[input.name] = null;
   } else {
-    var argumentReporter = this.createArgumentReporter_(type, displayName);
+    argumentReporter = this.createArgumentReporter_(type, displayName);
   }
 
   // Attach the block.
@@ -485,17 +526,21 @@ function populateArgumentOnPrototype_(type, index, connectionMap, id, input) {
 /**
  * Populate the argument by attaching the correct argument editor to the given
  * input.
- * @param {string} type One of 'b' (boolean), 's' (string) or 'n' (number).
- * @param {number} index The index of this argument into the argument id and
+ *
+ * @param type One of 'b' (boolean), 's' (string) or 'n' (number).
+ * @param index The index of this argument into the argument id and
  *     argument display name arrays.
- * @param {!Object.<string, {shadow: Element, block: Blockly.Block}>}
- *     connectionMap An object mapping argument IDs to blocks and shadow DOMs.
- * @param {string} id The ID of the input to populate.
- * @param {!Blockly.Input} input The newly created input to populate.
- * @private
- * @this Blockly.Block
+ * @param connectionMap An object mapping argument IDs to blocks and shadow DOMs.
+ * @param id The ID of the input to populate.
+ * @param input The newly created input to populate.
  */
-function populateArgumentOnDeclaration_(type, index, connectionMap, id, input) {
+function populateArgumentOnDeclaration_(
+  type: ArgumentType,
+  index: number,
+  connectionMap: ConnectionMap,
+  id: string,
+  input: Blockly.Input
+) {
   var oldBlock = null;
   if (connectionMap && id in connectionMap) {
     var saveInfo = connectionMap[id];
@@ -509,12 +554,13 @@ function populateArgumentOnDeclaration_(type, index, connectionMap, id, input) {
   var displayName = this.displayNames_[index];
 
   // Decide which block to attach.
+  let argumentEditor: Blockly.BlockSvg;
   if (oldBlock && oldTypeMatches) {
-    var argumentEditor = oldBlock;
+    argumentEditor = oldBlock;
     oldBlock.setFieldValue(displayName, "TEXT");
     connectionMap[input.name] = null;
   } else {
-    var argumentEditor = this.createArgumentEditor_(type, displayName);
+    argumentEditor = this.createArgumentEditor_(type, displayName);
   }
 
   // Attach the block.
@@ -524,21 +570,28 @@ function populateArgumentOnDeclaration_(type, index, connectionMap, id, input) {
 /**
  * Check whether the type of the old block corresponds to the given argument
  * type.
- * @param {Blockly.BlockSvg} oldBlock The old block to check.
- * @param {string} type The argument type.  One of 'n', 'n', or 's'.
- * @return {boolean} True if the type matches, false otherwise.
+ *
+ * @param oldBlock The old block to check.
+ * @param type The argument type.  One of 'n', 'n', or 's'.
+ * @return True if the type matches, false otherwise.
  */
-function checkOldTypeMatches_(oldBlock, type) {
+function checkOldTypeMatches_(
+  oldBlock: Blockly.BlockSvg,
+  type: string
+): boolean {
   if (!oldBlock) {
     return false;
   }
   if (
-    (type == "n" || type == "s") &&
+    (type === ArgumentType.NUMBER || type === ArgumentType.STRING) &&
     oldBlock.type == "argument_reporter_string_number"
   ) {
     return true;
   }
-  if (type == "b" && oldBlock.type == "argument_reporter_boolean") {
+  if (
+    type === ArgumentType.BOOLEAN &&
+    oldBlock.type == "argument_reporter_boolean"
+  ) {
     return true;
   }
   return false;
@@ -548,18 +601,22 @@ function checkOldTypeMatches_(oldBlock, type) {
  * Create an argument editor.
  * An argument editor is a shadow block with a single text field, which is used
  * to set the display name of the argument.
- * @param {string} argumentType One of 'b' (boolean), 's' (string) or
+ * @param argumentType One of 'b' (boolean), 's' (string) or
  *     'n' (number).
- * @param {string} displayName The display name  of this argument, which is the
+ * @param displayName The display name  of this argument, which is the
  *     text of the field on the shadow block.
- * @return {!Blockly.BlockSvg} The newly created argument editor block.
- * @private
- * @this Blockly.Block
+ * @return The newly created argument editor block.
  */
-function createArgumentEditor_(argumentType, displayName) {
+function createArgumentEditor_(
+  argumentType: ArgumentType,
+  displayName: string
+): Blockly.BlockSvg {
   Blockly.Events.disable();
   try {
-    if (argumentType == "n" || argumentType == "s") {
+    if (
+      argumentType === ArgumentType.NUMBER ||
+      argumentType === ArgumentType.STRING
+    ) {
       var newBlock = this.workspace.newBlock("argument_editor_string_number");
     } else {
       var newBlock = this.workspace.newBlock("argument_editor_boolean");
@@ -636,7 +693,7 @@ function focusLastEditor_() {
  * @public
  */
 function addLabelExternal() {
-  Blockly.WidgetDiv.hide(true);
+  Blockly.WidgetDiv.hide();
   this.procCode_ = this.procCode_ + " label text";
   this.updateDisplay_();
   this.focusLastEditor_();
@@ -648,7 +705,7 @@ function addLabelExternal() {
  * @public
  */
 function addBooleanExternal() {
-  Blockly.WidgetDiv.hide(true);
+  Blockly.WidgetDiv.hide();
   this.procCode_ = this.procCode_ + " %b";
   this.displayNames_.push("boolean");
   this.argumentIds_.push(Blockly.utils.idGenerator.genUid());
@@ -663,7 +720,7 @@ function addBooleanExternal() {
  * @public
  */
 function addStringNumberExternal() {
-  Blockly.WidgetDiv.hide(true);
+  Blockly.WidgetDiv.hide();
   this.procCode_ = this.procCode_ + " %s";
   this.displayNames_.push("number or text");
   this.argumentIds_.push(Blockly.utils.idGenerator.genUid());
@@ -677,7 +734,7 @@ function addStringNumberExternal() {
  * @return {boolean} The value of the warp_ property.
  * @public
  */
-function getWarp() {
+function getWarp(): boolean {
   return this.warp_;
 }
 
@@ -686,7 +743,7 @@ function getWarp() {
  * @param {boolean} warp The value of the warp_ property.
  * @public
  */
-function setWarp(warp) {
+function setWarp(warp: boolean) {
   this.warp_ = warp;
 }
 
@@ -695,7 +752,7 @@ function setWarp(warp) {
  * @param {Blockly.Field} field The field being removed.
  * @public
  */
-function removeFieldCallback(field) {
+function removeFieldCallback(field: Blockly.Field) {
   // Do not delete if there is only one input
   if (this.inputList.length === 1) {
     return;
@@ -717,7 +774,7 @@ function removeFieldCallback(field) {
     }
   }
   if (inputNameToRemove) {
-    Blockly.WidgetDiv.hide(true);
+    Blockly.WidgetDiv.hide();
     this.removeInput(inputNameToRemove);
     this.onChangeFn();
     this.updateDisplay_();
@@ -729,7 +786,7 @@ function removeFieldCallback(field) {
  * @param {Blockly.Field} field The field being removed.
  * @public
  */
-function removeArgumentCallback_(field) {
+function removeArgumentCallback_(field: Blockly.Field) {
   if (this.parentBlock_ && this.parentBlock_.removeFieldCallback) {
     this.parentBlock_.removeFieldCallback(field);
   }
@@ -748,7 +805,10 @@ function removeArgumentCallback_(field) {
  * @param {!Array<string>} prevDisplayNames The previous argument names.
  * @this Blockly.Block
  */
-function updateArgumentReporterNames_(prevArgIds, prevDisplayNames) {
+function updateArgumentReporterNames_(
+  prevArgIds: string[],
+  prevDisplayNames: string[]
+) {
   var nameChanges = [];
   var argReporters = [];
   var definitionBlock = this.getParent();

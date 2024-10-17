@@ -17,7 +17,7 @@ const BOUNDLESS_CLASS = "boundless";
 /**
  * Class responsible for managing dragging items on the workspace.
  */
-class ScratchDragger extends Blockly.dragging.Dragger {
+export class ScratchDragger extends Blockly.dragging.Dragger {
   /**
    * Whether or not the current drag location is outside of the main workspace.
    */
