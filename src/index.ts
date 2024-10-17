@@ -11,7 +11,7 @@ import "./blocks/matrix.js";
 import "./blocks/note.js";
 import "./blocks/text.js";
 import "./blocks/vertical_extensions.js";
-import "./blocks/control.js";
+import "./blocks/control";
 import "./blocks/data.js";
 import "./blocks/event.js";
 import "./blocks/looks.js";
