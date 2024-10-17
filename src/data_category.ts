@@ -36,19 +36,17 @@ import { LIST_VARIABLE_TYPE, SCALAR_VARIABLE_TYPE } from "./constants.js";
 export function getVariablesCategory(
   workspace: Blockly.WorkspaceSvg
 ): Element[] {
-  var variableModelList = workspace.getVariablesOfType(SCALAR_VARIABLE_TYPE);
-  variableModelList.sort(Blockly.Variables.compareByName);
-  var xmlList: Element[] = [];
+  const scalarVariables = workspace.getVariablesOfType(SCALAR_VARIABLE_TYPE);
+  scalarVariables.sort(Blockly.Variables.compareByName);
+  const xmlList: Element[] = [];
 
   addCreateButton(xmlList, workspace, "VARIABLE");
 
-  for (var i = 0; i < variableModelList.length; i++) {
-    addDataVariable(xmlList, variableModelList[i]);
-  }
+  scalarVariables.forEach((variable) => addDataVariable(xmlList, variable));
 
-  if (variableModelList.length > 0) {
+  if (scalarVariables.length > 0) {
     xmlList[xmlList.length - 1].setAttribute("gap", "24");
-    var firstVariable = variableModelList[0];
+    const firstVariable = scalarVariables[0];
 
     addSetVariableTo(xmlList, firstVariable);
     addChangeVariableBy(xmlList, firstVariable);
@@ -58,15 +56,13 @@ export function getVariablesCategory(
 
   // Now add list variables to the flyout
   addCreateButton(xmlList, workspace, "LIST");
-  variableModelList = workspace.getVariablesOfType(LIST_VARIABLE_TYPE);
-  variableModelList.sort(Blockly.Variables.compareByName);
-  for (var i = 0; i < variableModelList.length; i++) {
-    addDataList(xmlList, variableModelList[i]);
-  }
+  const listVariables = workspace.getVariablesOfType(LIST_VARIABLE_TYPE);
+  listVariables.sort(Blockly.Variables.compareByName);
+  listVariables.forEach((variable) => addDataList(xmlList, variable));
 
-  if (variableModelList.length > 0) {
+  if (listVariables.length > 0) {
     xmlList[xmlList.length - 1].setAttribute("gap", "24");
-    var firstVariable = variableModelList[0];
+    const firstVariable = listVariables[0];
 
     addAddToList(xmlList, firstVariable);
     addSep(xmlList);
@@ -480,18 +476,18 @@ function addCreateButton(
   workspace: Blockly.WorkspaceSvg,
   type: string
 ) {
-  var button = document.createElement("button");
+  const button = document.createElement("button");
   // Set default msg, callbackKey, and callback values for type 'VARIABLE'
-  var msg = Blockly.Msg.NEW_VARIABLE;
-  var callbackKey = "CREATE_VARIABLE";
-  var callback = function (button: Blockly.FlyoutButton) {
+  let msg = Blockly.Msg.NEW_VARIABLE;
+  let callbackKey = "CREATE_VARIABLE";
+  let callback = function (button: Blockly.FlyoutButton) {
     createVariable(button.getTargetWorkspace(), null, SCALAR_VARIABLE_TYPE);
   };
 
   if (type === "LIST") {
     msg = Blockly.Msg.NEW_LIST;
     callbackKey = "CREATE_LIST";
-    callback = function (button) {
+    callback = function (button: Blockly.FlyoutButton) {
       createVariable(button.getTargetWorkspace(), null, LIST_VARIABLE_TYPE);
     };
   }
@@ -533,8 +529,8 @@ function addBlock(
   opt_secondValue?: string[]
 ) {
   if (Blockly.Blocks[blockType]) {
-    var firstValueField;
-    var secondValueField;
+    let firstValueField;
+    let secondValueField;
     if (opt_value) {
       firstValueField = createValue(opt_value[0], opt_value[1], opt_value[2]);
     }
@@ -547,18 +543,14 @@ function addBlock(
     }
 
     var gap = 8;
-    var blockText =
-      "<xml>" +
-      '<block type="' +
-      blockType +
-      '" gap="' +
-      gap +
-      '">' +
-      generateVariableFieldXml(variable, fieldName) +
-      firstValueField +
-      secondValueField +
-      "</block>" +
-      "</xml>";
+    var blockText = `
+      <xml>
+        <block type="${blockType}" gap="${gap}">
+          ${generateVariableFieldXml(variable, fieldName)}
+          ${firstValueField}
+          ${secondValueField}
+        </block>
+      </xml>`;
     var block = Blockly.utils.xml.textToDom(blockText).firstElementChild;
     xmlList.push(block);
   }
@@ -593,7 +585,7 @@ function generateVariableFieldXml(
  * @returns The generated dom element in text.
  */
 function createValue(valueName: string, type: string, value: string): string {
-  var fieldName;
+  let fieldName;
   switch (valueName) {
     case "ITEM":
       fieldName = "TEXT";
@@ -609,20 +601,12 @@ function createValue(valueName: string, type: string, value: string): string {
       }
       break;
   }
-  var valueField =
-    '<value name="' +
-    valueName +
-    '">' +
-    '<shadow type="' +
-    type +
-    '">' +
-    '<field name="' +
-    fieldName +
-    '">' +
-    value +
-    "</field>" +
-    "</shadow>" +
-    "</value>";
+  const valueField = `
+    <value name="${valueName}">
+      <shadow type="${type}">
+        <field name="${fieldName}">${value}</field>
+      </shadow>
+    </value>`;
   return valueField;
 }
 
@@ -632,8 +616,7 @@ function createValue(valueName: string, type: string, value: string): string {
  * @param xmlList Array of XML block elements.
  */
 function addSep(xmlList: Element[]) {
-  var gap = 36;
-  var sepText = "<xml>" + '<sep gap="' + gap + '"/>' + "</xml>";
-  var sep = Blockly.utils.xml.textToDom(sepText).firstElementChild;
+  const sepText = `<xml><sep gap="36"/></xml>`;
+  const sep = Blockly.utils.xml.textToDom(sepText).firstElementChild;
   xmlList.push(sep);
 }
