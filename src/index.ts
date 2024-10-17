@@ -70,7 +70,7 @@ export * from "./block_reporting.js";
 export * from "./categories.js";
 export * from "./procedures";
 export * from "../msg/scratch_msgs.js";
-export * from "./constants.js";
+export * from "./constants";
 export { glowStack };
 export { scratchBlocksUtils };
 export { CheckableContinuousFlyout };

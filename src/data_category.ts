@@ -25,7 +25,7 @@
 
 import * as Blockly from "blockly/core";
 import { createVariable } from "./variables";
-import { LIST_VARIABLE_TYPE, SCALAR_VARIABLE_TYPE } from "./constants.js";
+import { LIST_VARIABLE_TYPE, SCALAR_VARIABLE_TYPE } from "./constants";
 
 /**
  * Construct the blocks required by the flyout for the variable category.

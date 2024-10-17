@@ -27,7 +27,7 @@
  */
 import * as Blockly from "blockly/core";
 import { ScratchProcedures } from "../procedures";
-import * as Constants from "../constants.js";
+import * as Constants from "../constants";
 import { FlyoutCheckboxIcon } from "../flyout_checkbox_icon";
 
 const VerticalExtensions = {};

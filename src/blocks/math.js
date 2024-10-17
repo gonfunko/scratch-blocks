@@ -23,7 +23,7 @@
  * @author q.neutron@gmail.com (Quynh Neutron)
  */
 import * as Blockly from "blockly/core";
-import * as Constants from "../constants.js";
+import * as Constants from "../constants";
 
 Blockly.Blocks["math_number"] = {
   /**

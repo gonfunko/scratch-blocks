@@ -23,7 +23,7 @@
  * @author khanning@gmail.com (Kreg Hanning)
  */
 import * as Blockly from "blockly/core";
-import * as Constants from "../constants.js";
+import * as Constants from "../constants";
 
 Blockly.Blocks["matrix"] = {
   /**

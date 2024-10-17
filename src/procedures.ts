@@ -24,7 +24,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import * as Constants from "./constants.js";
+import * as Constants from "./constants";
 import * as scratchBlocksUtils from "../src/scratch_blocks_utils.js";
 
 /**

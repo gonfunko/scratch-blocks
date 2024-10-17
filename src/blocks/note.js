@@ -23,7 +23,7 @@
  * @author ericr@media.mit.edu (Eric Rosenbaum)
  */
 import * as Blockly from "blockly/core";
-import * as Constants from "../constants.js";
+import * as Constants from "../constants";
 
 Blockly.Blocks["note"] = {
   /**

@@ -20,7 +20,7 @@
 
 import * as Blockly from "blockly/core";
 import { Categories } from "../categories.js";
-import * as Constants from "../constants.js";
+import * as Constants from "../constants";
 
 Blockly.Blocks["event_whentouchingobject"] = {
   /**

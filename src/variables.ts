@@ -26,7 +26,7 @@ import * as Blockly from "blockly/core";
 import {
   LIST_VARIABLE_TYPE,
   BROADCAST_MESSAGE_VARIABLE_TYPE,
-} from "./constants.js";
+} from "./constants";
 import { ScratchVariableModel } from "./scratch_variable_model";
 import { ScratchContinuousToolbox } from "./scratch_continuous_toolbox";
 import { CheckableContinuousFlyout } from "./checkable_continuous_flyout.js";
