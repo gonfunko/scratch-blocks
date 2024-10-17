@@ -382,4 +382,4 @@ export function renameVariable(
   );
 }
 
-export { getVariablesCategory } from "./data_category.js";
+export { getVariablesCategory } from "./data_category";
