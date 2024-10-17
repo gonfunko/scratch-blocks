@@ -22,7 +22,7 @@ import "./blocks/sensing.js";
 import "./blocks/sound.js";
 import * as scratchBlocksUtils from "./scratch_blocks_utils.js";
 import * as ScratchVariables from "./variables";
-import "./css.js";
+import "./css";
 import "./renderer/renderer.js";
 import * as contextMenuItems from "./context_menu_items.js";
 import {
