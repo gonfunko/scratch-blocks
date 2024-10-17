@@ -11,19 +11,19 @@ import * as Blockly from "blockly/core";
  */
 export function registerDeleteBlock() {
   const deleteOption = {
-    displayText(scope) {
+    displayText(scope: Blockly.ContextMenuRegistry.Scope) {
       const descendantCount = getDeletableBlocksInStack(scope.block).length;
       return descendantCount === 1
         ? Blockly.Msg["DELETE_BLOCK"]
         : Blockly.Msg["DELETE_X_BLOCKS"].replace("%1", `${descendantCount}`);
     },
-    preconditionFn(scope) {
+    preconditionFn(scope: Blockly.ContextMenuRegistry.Scope) {
       if (!scope.block.isInFlyout && scope.block.isDeletable()) {
         return "enabled";
       }
       return "hidden";
     },
-    callback(scope) {
+    callback(scope: Blockly.ContextMenuRegistry.Scope) {
       Blockly.Events.setGroup(true);
       scope.block.dispose(true, true);
       Blockly.Events.setGroup(false);
@@ -35,7 +35,9 @@ export function registerDeleteBlock() {
   Blockly.ContextMenuRegistry.registry.register(deleteOption);
 }
 
-function getDeletableBlocksInStack(block) {
+function getDeletableBlocksInStack(
+  block: Blockly.BlockSvg
+): Blockly.BlockSvg[] {
   let descendants = block.getDescendants(false).filter(isDeletable);
   if (block.getNextBlock()) {
     // Next blocks are not deleted.
@@ -48,7 +50,7 @@ function getDeletableBlocksInStack(block) {
   return descendants;
 }
 
-function isDeletable(block) {
+function isDeletable(block: Blockly.BlockSvg): boolean {
   return block.isDeletable() && !block.isShadow();
 }
 
@@ -57,7 +59,7 @@ function isDeletable(block) {
  */
 export function registerDeleteAll() {
   const deleteOption = {
-    displayText(scope) {
+    displayText(scope: Blockly.ContextMenuRegistry.Scope) {
       if (!scope.workspace) {
         return "";
       }
@@ -72,7 +74,7 @@ export function registerDeleteAll() {
         `${deletableBlocksLength}`
       );
     },
-    preconditionFn(scope) {
+    preconditionFn(scope: Blockly.ContextMenuRegistry.Scope) {
       if (!scope.workspace) {
         return "disabled";
       }
@@ -81,7 +83,7 @@ export function registerDeleteAll() {
       ).length;
       return deletableBlocksLength > 0 ? "enabled" : "disabled";
     },
-    callback(scope) {
+    callback(scope: Blockly.ContextMenuRegistry.Scope) {
       if (!scope.workspace) {
         return;
       }
@@ -95,7 +97,7 @@ export function registerDeleteAll() {
             "%1",
             String(deletableBlocks.length)
           ),
-          function (ok) {
+          function (ok: boolean) {
             if (ok) {
               deleteNext(deletableBlocks);
             }
@@ -116,10 +118,14 @@ export function registerDeleteAll() {
  * @param workspace to delete all blocks from.
  * @returns list of blocks to delete.
  */
-function getDeletableBlocksInWorkspace(workspace) {
+function getDeletableBlocksInWorkspace(
+  workspace: Blockly.WorkspaceSvg
+): Blockly.BlockSvg[] {
   return workspace
     .getTopBlocks(true)
-    .flatMap((b) => b.getDescendants(false).filter(isDeletable));
+    .flatMap((b: Blockly.BlockSvg) =>
+      b.getDescendants(false).filter(isDeletable)
+    );
 }
 
 /**
@@ -129,7 +135,7 @@ function getDeletableBlocksInWorkspace(workspace) {
  * @param eventGroup Event group ID with which all delete events should be
  *     associated.  If not specified, create a new group.
  */
-function deleteNext(deleteList, eventGroup) {
+function deleteNext(deleteList: Blockly.BlockSvg[], eventGroup?: string) {
   const DELAY = 10;
   if (eventGroup) {
     Blockly.Events.setGroup(eventGroup);
