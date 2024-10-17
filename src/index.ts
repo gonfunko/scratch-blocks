@@ -66,7 +66,7 @@ import { registerStatusIndicatorLabelFlyoutInflater } from "./status_indicator_l
 import { registerScratchContinuousCategory } from "./scratch_continuous_category";
 
 export * from "blockly/core";
-export * from "./block_reporting.js";
+export * from "./block_reporting";
 export * from "./procedures";
 export * from "../msg/scratch_msgs.js";
 export * from "./constants";

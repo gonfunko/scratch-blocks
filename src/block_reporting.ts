@@ -1,10 +1,12 @@
 import * as Blockly from "blockly/core";
 import { Colours } from "./colours";
 
-export function reportValue(id, value) {
-  const block =
-    Blockly.getMainWorkspace().getBlockById(id) ||
-    Blockly.getMainWorkspace().getFlyout().getWorkspace().getBlockById(id);
+export function reportValue(id: string, value: string) {
+  const block = (Blockly.getMainWorkspace().getBlockById(id) ||
+    (Blockly.getMainWorkspace() as Blockly.WorkspaceSvg)
+      .getFlyout()
+      .getWorkspace()
+      .getBlockById(id)) as Blockly.BlockSvg;
   if (!block) {
     throw "Tried to report value on block that does not exist.";
   }
