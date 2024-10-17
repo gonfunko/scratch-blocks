@@ -10,7 +10,7 @@ import "./blocks/math";
 import "./blocks/matrix";
 import "./blocks/note";
 import "./blocks/text";
-import "./blocks/vertical_extensions.js";
+import "./blocks/vertical_extensions";
 import "./blocks/control";
 import "./blocks/data";
 import "./blocks/event";
