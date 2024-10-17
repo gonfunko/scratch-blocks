@@ -18,7 +18,7 @@ import "./blocks/looks";
 import "./blocks/motion";
 import "./blocks/operators";
 import "./blocks/procedures.js";
-import "./blocks/sensing.js";
+import "./blocks/sensing";
 import "./blocks/sound.js";
 import * as scratchBlocksUtils from "./scratch_blocks_utils.js";
 import * as ScratchVariables from "./variables";
