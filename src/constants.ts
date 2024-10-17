@@ -1,4 +1,10 @@
 /**
+ * @license
+ * Copyright 2024 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
  * String representing the variable type of scalar variables.
  * This string, for use in differentiating between types of variables,
  * indicates that the current variable is a scalar variable.
