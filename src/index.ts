@@ -19,7 +19,7 @@ import "./blocks/motion";
 import "./blocks/operators";
 import "./blocks/procedures.js";
 import "./blocks/sensing";
-import "./blocks/sound.js";
+import "./blocks/sound";
 import * as scratchBlocksUtils from "./scratch_blocks_utils.js";
 import * as ScratchVariables from "./variables";
 import "./css";
