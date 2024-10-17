@@ -49,13 +49,23 @@ enum ArgumentType {
  * Class representing a draggable block that copies itself on drag.
  */
 class DuplicateOnDragDraggable implements Blockly.IDraggable {
+  /**
+   * The newly-created duplicate block.
+   */
   private copy?: Blockly.BlockSvg;
   constructor(private block: Blockly.BlockSvg) {}
 
+  /**
+   * Returns whether or not this draggable is movable. */
   isMovable(): boolean {
     return true;
   }
 
+  /**
+   * Handles the start of a drag.
+   *
+   * @param e The event that triggered the drag.
+   */
   startDrag(e: PointerEvent) {
     const data = this.block.toCopyData();
     this.copy = Blockly.clipboard.paste(
@@ -93,10 +103,10 @@ class DuplicateOnDragDraggable implements Blockly.IDraggable {
  * Create XML to represent the (non-editable) name and arguments of a procedure
  * call block.
  *
- * @return XML storage element.
+ * @returns XML storage element.
  */
 function callerMutationToDom(): Element {
-  var container = document.createElement("mutation");
+  const container = document.createElement("mutation");
   container.setAttribute("proccode", this.procCode_);
   container.setAttribute("argumentids", JSON.stringify(this.argumentIds_));
   container.setAttribute("warp", JSON.stringify(this.warp_));
@@ -121,14 +131,14 @@ function callerDomToMutation(xmlElement: Element) {
 
 /**
  * Create XML to represent the (non-editable) name and arguments of a
- *
  * procedures_prototype block or a procedures_declaration block.
+ *
  * @param opt_generateShadows Whether to include the generateshadows flag in the
  *     generated XML. False if not provided.
- * @return XML storage element.
+ * @returns XML storage element.
  */
 function definitionMutationToDom(opt_generateShadows?: boolean): Element {
-  var container = document.createElement("mutation");
+  const container = document.createElement("mutation");
 
   if (opt_generateShadows) {
     container.setAttribute("generateshadows", "true");
@@ -154,8 +164,8 @@ function definitionDomToMutation(xmlElement: Element) {
   this.procCode_ = xmlElement.getAttribute("proccode");
   this.warp_ = JSON.parse(xmlElement.getAttribute("warp"));
 
-  var prevArgIds = this.argumentIds_;
-  var prevDisplayNames = this.displayNames_;
+  const prevArgIds = this.argumentIds_;
+  const prevDisplayNames = this.displayNames_;
 
   this.argumentIds_ = JSON.parse(xmlElement.getAttribute("argumentids"));
   this.displayNames_ = JSON.parse(xmlElement.getAttribute("argumentnames"));
@@ -176,7 +186,7 @@ function definitionDomToMutation(xmlElement: Element) {
  * Returns the name of the procedure this block calls, or the empty string if
  * it has not yet been set.
  *
- * @return Procedure name.
+ * @returns Procedure name.
  */
 function getProcCode(): string {
   return this.procCode_;
@@ -187,7 +197,7 @@ function getProcCode(): string {
  * mutation.
  */
 function updateDisplay_() {
-  var connectionMap = this.disconnectOldBlocks_();
+  const connectionMap = this.disconnectOldBlocks_();
   this.removeAllInputs_();
   this.createAllInputs_(connectionMap);
   this.deleteShadows_(connectionMap);
@@ -199,12 +209,12 @@ function updateDisplay_() {
  * The result is a map from argument ID to information that was associated with
  * that argument at the beginning of the mutation.
  *
- * @return An object mapping argument IDs to blocks and shadow DOMs.
+ * @returns An object mapping argument IDs to blocks and shadow DOMs.
  */
 function disconnectOldBlocks_(): ConnectionMap {
   // Remove old stuff
-  var connectionMap: ConnectionMap = {};
-  for (var i = 0, input; (input = this.inputList[i]); i++) {
+  const connectionMap: ConnectionMap = {};
+  for (const input of this.inputList) {
     if (input.connection) {
       var target = input.connection.targetBlock();
       var saveInfo = {
@@ -228,9 +238,7 @@ function disconnectOldBlocks_(): ConnectionMap {
 function removeAllInputs_() {
   // Delete inputs directly instead of with block.removeInput to avoid splicing
   // out of the input list at every index.
-  for (var i = 0, input; (input = this.inputList[i]); i++) {
-    input.dispose();
-  }
+  this.inputList.forEach((input: Blockly.Input) => input.dispose());
   this.inputList = [];
 }
 
@@ -242,16 +250,17 @@ function removeAllInputs_() {
  */
 function createAllInputs_(connectionMap: ConnectionMap) {
   // Split the proc into components, by %n, %b, and %s (ignoring escaped).
-  var procComponents = this.procCode_.split(/(?=[^\\]%[nbs])/);
-  procComponents = procComponents.map(function (c: string) {
-    return c.trim(); // Strip whitespace.
-  });
+  const procComponents = this.procCode_
+    .split(/(?=[^\\]%[nbs])/)
+    .map(function (c: string) {
+      return c.trim(); // Strip whitespace.
+    });
   // Create arguments and labels as appropriate.
-  var argumentCount = 0;
-  for (var i = 0, component; (component = procComponents[i]); i++) {
-    var labelText;
-    if (component.substring(0, 1) == "%") {
-      var argumentType = component.substring(1, 2);
+  let argumentCount = 0;
+  for (const component of procComponents) {
+    let labelText;
+    if (component.substring(0, 1) === "%") {
+      const argumentType = component.substring(1, 2);
       if (
         !(
           argumentType === ArgumentType.NUMBER ||
@@ -265,9 +274,9 @@ function createAllInputs_(connectionMap: ConnectionMap) {
       }
       labelText = component.substring(2).trim();
 
-      var id = this.argumentIds_[argumentCount];
+      const id = this.argumentIds_[argumentCount];
 
-      var input = this.appendValueInput(id);
+      const input = this.appendValueInput(id);
       if (argumentType === ArgumentType.BOOLEAN) {
         input.setCheck("Boolean");
       }
@@ -295,10 +304,10 @@ function createAllInputs_(connectionMap: ConnectionMap) {
 function deleteShadows_(connectionMap: ConnectionMap) {
   // Get rid of all of the old shadow blocks if they aren't connected.
   if (connectionMap) {
-    for (var id in connectionMap) {
-      var saveInfo = connectionMap[id];
+    for (const id in connectionMap) {
+      const saveInfo = connectionMap[id];
       if (saveInfo) {
-        var block = saveInfo["block"];
+        const block = saveInfo["block"];
         if (block && block.isShadow()) {
           block.dispose();
           connectionMap[id] = null;
@@ -340,21 +349,22 @@ function addLabelEditor_(text: string) {
  * Build a DOM node representing a shadow block of the given type.
  *
  * @param type One of 's' (string) or 'n' (number).
- * @return The DOM node representing the new shadow block.
+ * @returns The DOM node representing the new shadow block.
  */
 function buildShadowDom_(type: ArgumentType): Element {
-  var shadowDom = document.createElement("shadow");
+  const shadowDom = document.createElement("shadow");
+  let shadowType, fieldName, fieldValue;
   if (type === ArgumentType.NUMBER) {
-    var shadowType = "math_number";
-    var fieldName = "NUM";
-    var fieldValue = "1";
+    shadowType = "math_number";
+    fieldName = "NUM";
+    fieldValue = "1";
   } else {
-    var shadowType = "text";
-    var fieldName = "TEXT";
-    var fieldValue = "";
+    shadowType = "text";
+    fieldName = "TEXT";
+    fieldValue = "";
   }
   shadowDom.setAttribute("type", shadowType);
-  var fieldDom = document.createElement("field");
+  const fieldDom = document.createElement("field");
   fieldDom.textContent = fieldValue;
   fieldDom.setAttribute("name", fieldName);
   shadowDom.appendChild(fieldDom);
@@ -373,11 +383,12 @@ function attachShadow_(input: Blockly.Input, argumentType: ArgumentType) {
     argumentType === ArgumentType.NUMBER ||
     argumentType === ArgumentType.STRING
   ) {
-    var blockType =
+    const blockType =
       argumentType === ArgumentType.NUMBER ? "math_number" : "text";
     Blockly.Events.disable();
+    let newBlock;
     try {
-      var newBlock = this.workspace.newBlock(blockType);
+      newBlock = this.workspace.newBlock(blockType);
       if (argumentType === ArgumentType.NUMBER) {
         newBlock.setFieldValue("1", "NUM");
       } else {
@@ -407,23 +418,25 @@ function attachShadow_(input: Blockly.Input, argumentType: ArgumentType) {
  *     'n' (number).
  * @param displayName The name of the argument as provided by the
  *     user, which becomes the text of the label on the argument reporter block.
- * @return The newly created argument reporter block.
+ * @returns The newly created argument reporter block.
  */
 function createArgumentReporter_(
   argumentType: ArgumentType,
   displayName: string
 ): Blockly.BlockSvg {
+  let blockType;
   if (
     argumentType === ArgumentType.NUMBER ||
     argumentType === ArgumentType.STRING
   ) {
-    var blockType = "argument_reporter_string_number";
+    blockType = "argument_reporter_string_number";
   } else {
-    var blockType = "argument_reporter_boolean";
+    blockType = "argument_reporter_boolean";
   }
   Blockly.Events.disable();
+  let newBlock;
   try {
-    var newBlock = this.workspace.newBlock(blockType);
+    newBlock = this.workspace.newBlock(blockType);
     newBlock.setShadow(true);
     newBlock.setFieldValue(displayName, "VALUE");
     if (!this.isInsertionMarker()) {
@@ -458,10 +471,10 @@ function populateArgumentOnCaller_(
   id: string,
   input: Blockly.Input
 ) {
-  var oldBlock = null;
-  var oldShadow = null;
+  let oldBlock: Blockly.BlockSvg;
+  let oldShadow: Element;
   if (connectionMap && id in connectionMap) {
-    var saveInfo = connectionMap[id];
+    const saveInfo = connectionMap[id];
     oldBlock = saveInfo["block"];
     oldShadow = saveInfo["shadow"];
   }
@@ -471,8 +484,7 @@ function populateArgumentOnCaller_(
     connectionMap[input.name] = null;
     oldBlock.outputConnection.connect(input.connection);
     if (type !== ArgumentType.BOOLEAN && this.generateShadows_) {
-      var shadowDom = oldShadow || this.buildShadowDom_(type);
-      console.log("setting shadow dom: " + shadowDom);
+      const shadowDom = oldShadow || this.buildShadowDom_(type);
       input.connection.setShadowDom(shadowDom);
     }
   } else if (this.generateShadows_) {
@@ -498,14 +510,14 @@ function populateArgumentOnPrototype_(
   id: string,
   input: Blockly.Input
 ) {
-  var oldBlock = null;
+  let oldBlock = null;
   if (connectionMap && id in connectionMap) {
-    var saveInfo = connectionMap[id];
+    const saveInfo = connectionMap[id];
     oldBlock = saveInfo["block"];
   }
 
-  var oldTypeMatches = checkOldTypeMatches_(oldBlock, type);
-  var displayName = this.displayNames_[index];
+  const oldTypeMatches = checkOldTypeMatches_(oldBlock, type);
+  const displayName = this.displayNames_[index];
 
   // Decide which block to attach.
   let argumentReporter: Blockly.BlockSvg;
@@ -528,8 +540,8 @@ function populateArgumentOnPrototype_(
  * input.
  *
  * @param type One of 'b' (boolean), 's' (string) or 'n' (number).
- * @param index The index of this argument into the argument id and
- *     argument display name arrays.
+ * @param index The index of this argument into the argument id and argument
+ *     display name arrays.
  * @param connectionMap An object mapping argument IDs to blocks and shadow DOMs.
  * @param id The ID of the input to populate.
  * @param input The newly created input to populate.
@@ -541,17 +553,17 @@ function populateArgumentOnDeclaration_(
   id: string,
   input: Blockly.Input
 ) {
-  var oldBlock = null;
+  let oldBlock = null;
   if (connectionMap && id in connectionMap) {
-    var saveInfo = connectionMap[id];
+    const saveInfo = connectionMap[id];
     oldBlock = saveInfo["block"];
   }
 
   // TODO: This always returns false, because it checks for argument reporter
   // blocks instead of argument editor blocks.  Create a new version for argument
   // editors.
-  var oldTypeMatches = checkOldTypeMatches_(oldBlock, type);
-  var displayName = this.displayNames_[index];
+  const oldTypeMatches = checkOldTypeMatches_(oldBlock, type);
+  const displayName = this.displayNames_[index];
 
   // Decide which block to attach.
   let argumentEditor: Blockly.BlockSvg;
@@ -573,10 +585,10 @@ function populateArgumentOnDeclaration_(
  *
  * @param oldBlock The old block to check.
  * @param type The argument type.  One of 'n', 'n', or 's'.
- * @return True if the type matches, false otherwise.
+ * @returns True if the type matches, false otherwise.
  */
 function checkOldTypeMatches_(
-  oldBlock: Blockly.BlockSvg,
+  oldBlock: Blockly.BlockSvg | null,
   type: string
 ): boolean {
   if (!oldBlock) {
@@ -584,13 +596,13 @@ function checkOldTypeMatches_(
   }
   if (
     (type === ArgumentType.NUMBER || type === ArgumentType.STRING) &&
-    oldBlock.type == "argument_reporter_string_number"
+    oldBlock.type === "argument_reporter_string_number"
   ) {
     return true;
   }
   if (
     type === ArgumentType.BOOLEAN &&
-    oldBlock.type == "argument_reporter_boolean"
+    oldBlock.type === "argument_reporter_boolean"
   ) {
     return true;
   }
@@ -601,25 +613,26 @@ function checkOldTypeMatches_(
  * Create an argument editor.
  * An argument editor is a shadow block with a single text field, which is used
  * to set the display name of the argument.
- * @param argumentType One of 'b' (boolean), 's' (string) or
- *     'n' (number).
- * @param displayName The display name  of this argument, which is the
- *     text of the field on the shadow block.
- * @return The newly created argument editor block.
+ *
+ * @param argumentType One of 'b' (boolean), 's' (string) or 'n' (number).
+ * @param displayName The display name  of this argument, which is the text of
+ *     the field on the shadow block.
+ * @returns The newly created argument editor block.
  */
 function createArgumentEditor_(
   argumentType: ArgumentType,
   displayName: string
 ): Blockly.BlockSvg {
   Blockly.Events.disable();
+  let newBlock;
   try {
     if (
       argumentType === ArgumentType.NUMBER ||
       argumentType === ArgumentType.STRING
     ) {
-      var newBlock = this.workspace.newBlock("argument_editor_string_number");
+      newBlock = this.workspace.newBlock("argument_editor_string_number");
     } else {
-      var newBlock = this.workspace.newBlock("argument_editor_boolean");
+      newBlock = this.workspace.newBlock("argument_editor_boolean");
     }
     newBlock.setFieldValue(displayName, "TEXT");
     newBlock.setShadow(true);
@@ -646,19 +659,19 @@ function updateDeclarationProcCode_() {
   this.procCode_ = "";
   this.displayNames_ = [];
   this.argumentIds_ = [];
-  for (var i = 0; i < this.inputList.length; i++) {
-    if (i != 0) {
+  for (let i = 0; i < this.inputList.length; i++) {
+    if (i !== 0) {
       this.procCode_ += " ";
     }
-    var input = this.inputList[i];
-    if (input.type == Blockly.inputs.inputTypes.DUMMY) {
+    const input = this.inputList[i];
+    if (input.type === Blockly.inputs.inputTypes.DUMMY) {
       this.procCode_ += input.fieldRow[0].getValue();
-    } else if (input.type == Blockly.inputs.inputTypes.VALUE) {
+    } else if (input.type === Blockly.inputs.inputTypes.VALUE) {
       // Inspect the argument editor.
-      var target = input.connection.targetBlock();
+      const target = input.connection.targetBlock();
       this.displayNames_.push(target.getFieldValue("TEXT"));
       this.argumentIds_.push(input.name);
-      if (target.type == "argument_editor_boolean") {
+      if (target.type === "argument_editor_boolean") {
         this.procCode_ += "%b";
       } else {
         this.procCode_ += "%s";
@@ -673,16 +686,15 @@ function updateDeclarationProcCode_() {
 
 /**
  * Focus on the last argument editor or label editor on the block.
- * @private
  */
 function focusLastEditor_() {
   if (this.inputList.length > 0) {
-    var newInput = this.inputList[this.inputList.length - 1];
-    if (newInput.type == Blockly.inputs.inputTypes.DUMMY) {
+    const newInput = this.inputList[this.inputList.length - 1];
+    if (newInput.type === Blockly.inputs.inputTypes.DUMMY) {
       newInput.fieldRow[0].showEditor_();
-    } else if (newInput.type == Blockly.inputs.inputTypes.VALUE) {
+    } else if (newInput.type === Blockly.inputs.inputTypes.VALUE) {
       // Inspect the argument editor.
-      var target = newInput.connection.targetBlock();
+      const target = newInput.connection.targetBlock();
       target.getField("TEXT").showEditor_();
     }
   }
@@ -690,7 +702,6 @@ function focusLastEditor_() {
 
 /**
  * Externally-visible function to add a label to the procedure declaration.
- * @public
  */
 function addLabelExternal() {
   Blockly.WidgetDiv.hide();
@@ -702,7 +713,6 @@ function addLabelExternal() {
 /**
  * Externally-visible function to add a boolean argument to the procedure
  * declaration.
- * @public
  */
 function addBooleanExternal() {
   Blockly.WidgetDiv.hide();
@@ -717,7 +727,6 @@ function addBooleanExternal() {
 /**
  * Externally-visible function to add a string/number argument to the procedure
  * declaration.
- * @public
  */
 function addStringNumberExternal() {
   Blockly.WidgetDiv.hide();
@@ -731,8 +740,8 @@ function addStringNumberExternal() {
 
 /**
  * Externally-visible function to get the warp on procedure declaration.
- * @return {boolean} The value of the warp_ property.
- * @public
+ *
+ * @returns The value of the warp_ property.
  */
 function getWarp(): boolean {
   return this.warp_;
@@ -740,8 +749,8 @@ function getWarp(): boolean {
 
 /**
  * Externally-visible function to set the warp on procedure declaration.
- * @param {boolean} warp The value of the warp_ property.
- * @public
+ *
+ * @param warp The value of the warp_ property.
  */
 function setWarp(warp: boolean) {
   this.warp_ = warp;
@@ -749,8 +758,8 @@ function setWarp(warp: boolean) {
 
 /**
  * Callback to remove a field, only for the declaration block.
- * @param {Blockly.Field} field The field being removed.
- * @public
+ *
+ * @param field The field being removed.
  */
 function removeFieldCallback(field: Blockly.Field) {
   // Do not delete if there is only one input
@@ -762,12 +771,12 @@ function removeFieldCallback(field: Blockly.Field) {
     var input = this.inputList[n];
     if (input.connection) {
       var target = input.connection.targetBlock();
-      if (field.name && target.getField(field.name) == field) {
+      if (field.name && target.getField(field.name) === field) {
         inputNameToRemove = input.name;
       }
     } else {
       for (var j = 0; j < input.fieldRow.length; j++) {
-        if (input.fieldRow[j] == field) {
+        if (input.fieldRow[j] === field) {
           inputNameToRemove = input.name;
         }
       }
@@ -783,8 +792,8 @@ function removeFieldCallback(field: Blockly.Field) {
 
 /**
  * Callback to pass removeField up to the declaration block from arguments.
- * @param {Blockly.Field} field The field being removed.
- * @public
+ *
+ * @param field The field being removed.
  */
 function removeArgumentCallback_(field: Blockly.Field) {
   if (this.parentBlock_ && this.parentBlock_.removeFieldCallback) {
@@ -801,23 +810,21 @@ function removeArgumentCallback_(field: Blockly.Field) {
  * Until there is a more explicit way of identifying argument reporter blocks using ids,
  * be conservative and only update argument reporters that are used in the
  * stack below the prototype, ie the definition.
- * @param {!Array<string>} prevArgIds The previous ordering of argument ids.
- * @param {!Array<string>} prevDisplayNames The previous argument names.
- * @this Blockly.Block
+ *
+ * @param prevArgIds The previous ordering of argument ids.
+ * @param prevDisplayNames The previous argument names.
  */
 function updateArgumentReporterNames_(
   prevArgIds: string[],
   prevDisplayNames: string[]
 ) {
-  var nameChanges = [];
-  var argReporters = [];
-  var definitionBlock = this.getParent();
+  const nameChanges: { newName: string; blocks: Blockly.BlockSvg[] }[] = [];
+  const argReporters: Blockly.BlockSvg[] = [];
+  const definitionBlock = this.getParent();
   if (!definitionBlock) return;
 
   // Create a list of argument reporters that are descendants of the definition stack (see above comment)
-  var allBlocks = definitionBlock.getDescendants(false);
-  for (var i = 0; i < allBlocks.length; i++) {
-    var block = allBlocks[i];
+  definitionBlock.getDescendants(false).forEach((block: Blockly.BlockSvg) => {
     if (
       (block.type === "argument_reporter_string_number" ||
         block.type === "argument_reporter_boolean") &&
@@ -826,20 +833,20 @@ function updateArgumentReporterNames_(
       // Exclude arg reporters in the prototype block, which are shadows.
       argReporters.push(block);
     }
-  }
+  });
 
   // Create a list of "name changes", including the new name and blocks matching the old name
   // Only search over the current set of argument ids, ignore args that have been removed
-  for (var i = 0, id; (id = this.argumentIds_[i]); i++) {
+  for (let i = 0, id; (id = this.argumentIds_[i]); i++) {
     // Find the previous index of this argument id. Could be -1 if it is newly added.
-    var prevIndex = prevArgIds.indexOf(id);
-    if (prevIndex == -1) continue; // Newly added argument, no corresponding previous argument to update.
-    var prevName = prevDisplayNames[prevIndex];
-    if (prevName != this.displayNames_[i]) {
+    const prevIndex = prevArgIds.indexOf(id);
+    if (prevIndex === -1) continue; // Newly added argument, no corresponding previous argument to update.
+    const prevName = prevDisplayNames[prevIndex];
+    if (prevName !== this.displayNames_[i]) {
       nameChanges.push({
         newName: this.displayNames_[i],
-        blocks: argReporters.filter(function (block) {
-          return block.getFieldValue("VALUE") == prevName;
+        blocks: argReporters.filter((block) => {
+          return block.getFieldValue("VALUE") === prevName;
         }),
       });
     }
@@ -847,8 +854,8 @@ function updateArgumentReporterNames_(
 
   // Finally update the blocks for each name change.
   // Do this after creating the lists to avoid cycles of renaming.
-  for (var j = 0, nameChange; (nameChange = nameChanges[j]); j++) {
-    for (var k = 0, block; (block = nameChange.blocks[k]); k++) {
+  for (const nameChange of nameChanges) {
+    for (const block of nameChange.blocks) {
       block.setFieldValue(nameChange.newName, "VALUE");
     }
   }
