@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Colours } from "./colours.js";
+import { Colours } from "./colours";
 
 /**
  * Creates an SVG filter to apply drop shadows to blocks being dragged and

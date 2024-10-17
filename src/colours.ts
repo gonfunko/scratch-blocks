@@ -55,10 +55,17 @@ const Colours = {
   contextualMenuHover: "rgba(77, 151, 255, .25)",
 };
 
-function varify(coloursObj, prefix = "--colour") {
-  return Object.keys(coloursObj)
-    .map((key) => {
-      const colour = coloursObj[key];
+/**
+ * Converts the given colours to CSS variables.
+ *
+ * @param coloursObj A (potentially nested) object whose keys are colour names
+ *     and values are CSS colours.
+ * @param prefix A prefix to prepend to the CSS variables.
+ * @returns A string containing CSS variable definitions for the colours.
+ */
+function varify(coloursObj: Object, prefix = "--colour"): string {
+  return Object.entries(coloursObj)
+    .map(([key, colour]) => {
       if (typeof colour === "string") {
         return `${prefix}-${key}: ${colour};`;
       } else {

@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Colours } from "./colours.js";
+import { Colours } from "./colours";
 
 /**
  * Glow/unglow a stack in the workspace.

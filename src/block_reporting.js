@@ -1,5 +1,5 @@
 import * as Blockly from "blockly/core";
-import { Colours } from "./colours.js";
+import { Colours } from "./colours";
 
 export function reportValue(id, value) {
   const block =

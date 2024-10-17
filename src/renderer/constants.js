@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { cssVarify } from "../colours.js";
+import { cssVarify } from "../colours";
 
 export class ConstantProvider extends Blockly.zelos.ConstantProvider {
   REPLACEMENT_GLOW_COLOUR = "#ffffff";
