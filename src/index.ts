@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import "./blocks/colour.js";
+import "./blocks/colour";
 import "./blocks/math.js";
 import "./blocks/matrix.js";
 import "./blocks/note.js";
