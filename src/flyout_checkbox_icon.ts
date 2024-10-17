@@ -9,51 +9,47 @@ import { CheckboxBubble } from "./checkbox_bubble";
 
 /**
  * Invisible icon that exists solely to host the corresponding checkbox bubble.
- * @implements {Blockly.IIcon}
- * @implements {Blockly.IHasBubble}
  */
-export class FlyoutCheckboxIcon {
-  sourceBlock;
-  checkboxBubble;
-  type = new Blockly.icons.IconType("checkbox");
+export class FlyoutCheckboxIcon implements Blockly.IIcon, Blockly.IHasBubble {
+  private checkboxBubble: CheckboxBubble;
+  private type = new Blockly.icons.IconType("checkbox");
 
-  constructor(sourceBlock) {
-    this.sourceBlock = sourceBlock;
+  constructor(private sourceBlock: Blockly.BlockSvg) {
     if (this.sourceBlock.workspace.isFlyout) {
       this.checkboxBubble = new CheckboxBubble(this.sourceBlock);
     }
   }
 
-  getType() {
+  getType(): Blockly.icons.IconType<FlyoutCheckboxIcon> {
     return this.type;
   }
 
-  getWeight() {
+  getWeight(): number {
     return -1;
   }
 
-  getSize() {
+  getSize(): Blockly.utils.Size {
     // Awful hack to cancel out the default padding added to icons.
     return new Blockly.utils.Size(-8, 0);
   }
 
-  isShownWhenCollapsed() {
+  isShownWhenCollapsed(): boolean {
     return false;
   }
 
-  isClickableInFlyout() {
+  isClickableInFlyout(): boolean {
     return false;
   }
 
-  bubbleIsVisible() {
+  bubbleIsVisible(): boolean {
     return this.sourceBlock.workspace.isFlyout;
   }
 
-  onLocationChange(blockOrigin) {
+  onLocationChange(blockOrigin: Blockly.utils.Coordinate) {
     this.checkboxBubble?.updateLocation();
   }
 
-  setChecked(checked) {
+  setChecked(checked: boolean) {
     this.checkboxBubble?.setChecked(checked);
   }
 
@@ -75,9 +71,9 @@ export class FlyoutCheckboxIcon {
 
   onClick() {}
 
-  async setBubbleVisible(visible) {}
+  async setBubbleVisible(visible: boolean) {}
 
-  initView(pointerDownListener) {}
+  initView(pointerDownListener: (e: PointerEvent) => void) {}
 }
 
 Blockly.registry.register(
