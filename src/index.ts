@@ -8,7 +8,7 @@ import * as Blockly from "blockly/core";
 import "./blocks/colour";
 import "./blocks/math";
 import "./blocks/matrix";
-import "./blocks/note.js";
+import "./blocks/note";
 import "./blocks/text.js";
 import "./blocks/vertical_extensions.js";
 import "./blocks/control";
