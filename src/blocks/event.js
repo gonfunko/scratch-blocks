@@ -19,7 +19,6 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../categories.js";
 import * as Constants from "../constants";
 
 Blockly.Blocks["event_whentouchingobject"] = {
@@ -36,7 +35,6 @@ Blockly.Blocks["event_whentouchingobject"] = {
           name: "TOUCHINGOBJECTMENU",
         },
       ],
-      category: Categories.event,
       extensions: ["colours_event", "shape_hat"],
     });
   },
@@ -84,7 +82,6 @@ Blockly.Blocks["event_whenflagclicked"] = {
           alt: "flag",
         },
       ],
-      category: Categories.event,
       extensions: ["colours_event", "shape_hat"],
     });
   },
@@ -98,7 +95,6 @@ Blockly.Blocks["event_whenthisspriteclicked"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.EVENT_WHENTHISSPRITECLICKED,
-      category: Categories.event,
       extensions: ["colours_event", "shape_hat"],
     });
   },
@@ -112,7 +108,6 @@ Blockly.Blocks["event_whenstageclicked"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.EVENT_WHENSTAGECLICKED,
-      category: Categories.event,
       extensions: ["colours_event", "shape_hat"],
     });
   },
@@ -136,7 +131,6 @@ Blockly.Blocks["event_whenbroadcastreceived"] = {
           variable: Blockly.Msg.DEFAULT_BROADCAST_MESSAGE_NAME,
         },
       ],
-      category: Categories.event,
       extensions: ["colours_event", "shape_hat"],
     });
   },
@@ -170,7 +164,6 @@ Blockly.Blocks["event_whengreaterthan"] = {
           name: "VALUE",
         },
       ],
-      category: Categories.event,
       extensions: ["colours_event", "shape_hat"],
     });
   },
@@ -213,7 +206,6 @@ Blockly.Blocks["event_broadcast"] = {
           name: "BROADCAST_INPUT",
         },
       ],
-      category: Categories.event,
       extensions: ["colours_event", "shape_statement"],
     });
   },
@@ -233,7 +225,6 @@ Blockly.Blocks["event_broadcastandwait"] = {
           name: "BROADCAST_INPUT",
         },
       ],
-      category: Categories.event,
       extensions: ["colours_event", "shape_statement"],
     });
   },
@@ -298,7 +289,6 @@ Blockly.Blocks["event_whenkeypressed"] = {
           ],
         },
       ],
-      category: Categories.event,
       extensions: ["colours_event", "shape_hat"],
     });
   },

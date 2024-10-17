@@ -19,7 +19,6 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../categories.js";
 import * as Constants from "../constants";
 import * as scratchBlocksUtils from "../scratch_blocks_utils.js";
 import { renameVariable } from "../variables";
@@ -40,7 +39,6 @@ Blockly.Blocks["data_variable"] = {
           allowedVariableType: Constants.SCALAR_VARIABLE_TYPE,
         },
       ],
-      category: Categories.data,
       extensions: [
         "contextMenu_getVariableBlock",
         "colours_data",
@@ -71,7 +69,6 @@ Blockly.Blocks["data_setvariableto"] = {
           name: "VALUE",
         },
       ],
-      category: Categories.data,
       extensions: ["colours_data", "shape_statement"],
     });
   },
@@ -97,7 +94,6 @@ Blockly.Blocks["data_changevariableby"] = {
           name: "VALUE",
         },
       ],
-      category: Categories.data,
       extensions: ["colours_data", "shape_statement"],
     });
   },
@@ -121,7 +117,6 @@ Blockly.Blocks["data_showvariable"] = {
       ],
       previousStatement: null,
       nextStatement: null,
-      category: Categories.data,
       extensions: ["colours_data"],
     });
   },
@@ -145,7 +140,6 @@ Blockly.Blocks["data_hidevariable"] = {
       ],
       previousStatement: null,
       nextStatement: null,
-      category: Categories.data,
       extensions: ["colours_data"],
     });
   },
@@ -166,7 +160,6 @@ Blockly.Blocks["data_listcontents"] = {
           allowedVariableType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
-      category: Categories.dataLists,
       extensions: [
         "contextMenu_getListBlock",
         "colours_data_lists",
@@ -199,7 +192,6 @@ Blockly.Blocks["data_listindexall"] = {
           ],
         },
       ],
-      category: Categories.data,
       extensions: ["colours_textfield", "output_string"],
     });
   },
@@ -227,7 +219,6 @@ Blockly.Blocks["data_listindexrandom"] = {
           ],
         },
       ],
-      category: Categories.data,
       extensions: ["colours_textfield", "output_string"],
     });
   },
@@ -253,7 +244,6 @@ Blockly.Blocks["data_addtolist"] = {
           defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "shape_statement"],
     });
   },
@@ -279,7 +269,6 @@ Blockly.Blocks["data_deleteoflist"] = {
           defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "shape_statement"],
     });
   },
@@ -301,7 +290,6 @@ Blockly.Blocks["data_deletealloflist"] = {
           defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "shape_statement"],
     });
   },
@@ -331,7 +319,6 @@ Blockly.Blocks["data_insertatlist"] = {
           defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "shape_statement"],
     });
   },
@@ -361,7 +348,6 @@ Blockly.Blocks["data_replaceitemoflist"] = {
           name: "ITEM",
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "shape_statement"],
     });
   },
@@ -388,7 +374,6 @@ Blockly.Blocks["data_itemoflist"] = {
         },
       ],
       output: null,
-      category: Categories.dataLists,
       extensions: ["colours_data_lists"],
       outputShape: Constants.OUTPUT_SHAPE_ROUND,
     });
@@ -416,7 +401,6 @@ Blockly.Blocks["data_itemnumoflist"] = {
         },
       ],
       output: null,
-      category: Categories.dataLists,
       extensions: ["colours_data_lists"],
       outputShape: Constants.OUTPUT_SHAPE_ROUND,
     });
@@ -439,7 +423,6 @@ Blockly.Blocks["data_lengthoflist"] = {
           defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "output_number"],
     });
   },
@@ -465,7 +448,6 @@ Blockly.Blocks["data_listcontainsitem"] = {
           name: "ITEM",
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "output_boolean"],
     });
   },
@@ -487,7 +469,6 @@ Blockly.Blocks["data_showlist"] = {
           defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "shape_statement"],
     });
   },
@@ -509,7 +490,6 @@ Blockly.Blocks["data_hidelist"] = {
           defaultType: Constants.LIST_VARIABLE_TYPE,
         },
       ],
-      category: Categories.dataLists,
       extensions: ["colours_data_lists", "shape_statement"],
     });
   },

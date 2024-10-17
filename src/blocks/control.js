@@ -19,7 +19,6 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../categories.js";
 
 Blockly.Blocks["control_forever"] = {
   /**
@@ -51,7 +50,6 @@ Blockly.Blocks["control_forever"] = {
           flip_rtl: true,
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_end"],
     });
   },
@@ -93,7 +91,6 @@ Blockly.Blocks["control_repeat"] = {
           flip_rtl: true,
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -122,7 +119,6 @@ Blockly.Blocks["control_if"] = {
           name: "SUBSTACK",
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -159,7 +155,6 @@ Blockly.Blocks["control_if_else"] = {
           name: "SUBSTACK2",
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -217,7 +212,6 @@ Blockly.Blocks["control_wait"] = {
           name: "DURATION",
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -238,7 +232,6 @@ Blockly.Blocks["control_wait_until"] = {
           check: "Boolean",
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -279,7 +272,6 @@ Blockly.Blocks["control_repeat_until"] = {
           flip_rtl: true,
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -320,7 +312,6 @@ Blockly.Blocks["control_while"] = {
           flip_rtl: true,
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -353,7 +344,6 @@ Blockly.Blocks["control_for_each"] = {
           name: "SUBSTACK",
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -369,7 +359,6 @@ Blockly.Blocks["control_start_as_clone"] = {
       id: "control_start_as_clone",
       message0: Blockly.Msg.CONTROL_STARTASCLONE,
       args0: [],
-      category: Categories.control,
       extensions: ["colours_control", "shape_hat"],
     });
   },
@@ -395,7 +384,6 @@ Blockly.Blocks["control_create_clone_of"] = {
           name: "CLONE_OPTION",
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -410,7 +398,6 @@ Blockly.Blocks["control_delete_this_clone"] = {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_DELETETHISCLONE,
       args0: [],
-      category: Categories.control,
       extensions: ["colours_control", "shape_end"],
     });
   },
@@ -425,7 +412,6 @@ Blockly.Blocks["control_get_counter"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_COUNTER,
-      category: Categories.control,
       extensions: ["colours_control", "output_number"],
     });
   },
@@ -440,7 +426,6 @@ Blockly.Blocks["control_incr_counter"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_INCRCOUNTER,
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -455,7 +440,6 @@ Blockly.Blocks["control_clear_counter"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_CLEARCOUNTER,
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },
@@ -485,7 +469,6 @@ Blockly.Blocks["control_all_at_once"] = {
           name: "SUBSTACK",
         },
       ],
-      category: Categories.control,
       extensions: ["colours_control", "shape_statement"],
     });
   },

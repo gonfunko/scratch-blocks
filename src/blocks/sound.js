@@ -19,7 +19,6 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../categories.js";
 
 /**
  * Sound effects drop-down menu. Populated dynamically by scratch-gui.
@@ -40,7 +39,6 @@ Blockly.Blocks["sound_play"] = {
           name: "SOUND_MENU",
         },
       ],
-      category: Categories.sound,
       extensions: ["colours_sounds", "shape_statement"],
     });
   },
@@ -60,7 +58,6 @@ Blockly.Blocks["sound_playuntildone"] = {
           name: "SOUND_MENU",
         },
       ],
-      category: Categories.sound,
       extensions: ["colours_sounds", "shape_statement"],
     });
   },
@@ -74,7 +71,6 @@ Blockly.Blocks["sound_stopallsounds"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.SOUND_STOPALLSOUNDS,
-      category: Categories.sound,
       extensions: ["colours_sounds", "shape_statement"],
     });
   },
@@ -102,7 +98,6 @@ Blockly.Blocks["sound_seteffectto"] = {
           name: "VALUE",
         },
       ],
-      category: Categories.sound,
       extensions: ["colours_sounds", "shape_statement"],
     });
   },
@@ -130,7 +125,6 @@ Blockly.Blocks["sound_changeeffectby"] = {
           name: "VALUE",
         },
       ],
-      category: Categories.sound,
       extensions: ["colours_sounds", "shape_statement"],
     });
   },
@@ -144,7 +138,6 @@ Blockly.Blocks["sound_cleareffects"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.SOUND_CLEAREFFECTS,
-      category: Categories.sound,
       extensions: ["colours_sounds", "shape_statement"],
     });
   },
@@ -164,7 +157,6 @@ Blockly.Blocks["sound_changevolumeby"] = {
           name: "VOLUME",
         },
       ],
-      category: Categories.sound,
       extensions: ["colours_sounds", "shape_statement"],
     });
   },
@@ -184,7 +176,6 @@ Blockly.Blocks["sound_setvolumeto"] = {
           name: "VOLUME",
         },
       ],
-      category: Categories.sound,
       extensions: ["colours_sounds", "shape_statement"],
     });
   },
@@ -198,7 +189,6 @@ Blockly.Blocks["sound_volume"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.SOUND_VOLUME,
-      category: Categories.sound,
       extensions: ["colours_sounds", "output_number", "monitor_block"],
     });
   },

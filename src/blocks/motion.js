@@ -19,7 +19,6 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../categories.js";
 
 Blockly.Blocks["motion_movesteps"] = {
   /**
@@ -35,7 +34,6 @@ Blockly.Blocks["motion_movesteps"] = {
           name: "STEPS",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -62,7 +60,6 @@ Blockly.Blocks["motion_turnright"] = {
           name: "DEGREES",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -89,7 +86,6 @@ Blockly.Blocks["motion_turnleft"] = {
           name: "DEGREES",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -109,7 +105,6 @@ Blockly.Blocks["motion_pointindirection"] = {
           name: "DIRECTION",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -134,7 +129,6 @@ Blockly.Blocks["motion_pointtowards"] = {
           name: "TOWARDS",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -163,7 +157,6 @@ Blockly.Blocks["motion_gotoxy"] = {
           name: "Y",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -183,7 +176,6 @@ Blockly.Blocks["motion_goto"] = {
           name: "TO",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -211,7 +203,6 @@ Blockly.Blocks["motion_glidesecstoxy"] = {
           name: "Y",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -240,7 +231,6 @@ Blockly.Blocks["motion_glideto"] = {
           name: "TO",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -260,7 +250,6 @@ Blockly.Blocks["motion_changexby"] = {
           name: "DX",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -280,7 +269,6 @@ Blockly.Blocks["motion_setx"] = {
           name: "X",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -300,7 +288,6 @@ Blockly.Blocks["motion_changeyby"] = {
           name: "DY",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -320,7 +307,6 @@ Blockly.Blocks["motion_sety"] = {
           name: "Y",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -334,7 +320,6 @@ Blockly.Blocks["motion_ifonedgebounce"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_IFONEDGEBOUNCE,
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -359,7 +344,6 @@ Blockly.Blocks["motion_setrotationstyle"] = {
           ],
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -373,7 +357,6 @@ Blockly.Blocks["motion_xposition"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_XPOSITION,
-      category: Categories.motion,
       extensions: ["colours_motion", "output_number", "monitor_block"],
     });
   },
@@ -387,7 +370,6 @@ Blockly.Blocks["motion_yposition"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_YPOSITION,
-      category: Categories.motion,
       extensions: ["colours_motion", "output_number", "monitor_block"],
     });
   },
@@ -401,7 +383,6 @@ Blockly.Blocks["motion_direction"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_DIRECTION,
-      category: Categories.motion,
       extensions: ["colours_motion", "output_number", "monitor_block"],
     });
   },
@@ -423,7 +404,6 @@ Blockly.Blocks["motion_scroll_right"] = {
           name: "DISTANCE",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -445,7 +425,6 @@ Blockly.Blocks["motion_scroll_up"] = {
           name: "DISTANCE",
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -474,7 +453,6 @@ Blockly.Blocks["motion_align_scene"] = {
           ],
         },
       ],
-      category: Categories.motion,
       extensions: ["colours_motion", "shape_statement"],
     });
   },
@@ -490,7 +468,6 @@ Blockly.Blocks["motion_xscroll"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_XSCROLL,
-      category: Categories.motion,
       extensions: ["colours_motion", "output_number"],
     });
   },
@@ -506,7 +483,6 @@ Blockly.Blocks["motion_yscroll"] = {
   init: function () {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_YSCROLL,
-      category: Categories.motion,
       extensions: ["colours_motion", "output_number"],
     });
   },

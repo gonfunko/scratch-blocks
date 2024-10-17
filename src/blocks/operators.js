@@ -19,7 +19,6 @@
  */
 
 import * as Blockly from "blockly/core";
-import { Categories } from "../categories.js";
 
 Blockly.Blocks["operator_add"] = {
   /**
@@ -39,7 +38,6 @@ Blockly.Blocks["operator_add"] = {
           name: "NUM2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_number"],
     });
   },
@@ -63,7 +61,6 @@ Blockly.Blocks["operator_subtract"] = {
           name: "NUM2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_number"],
     });
   },
@@ -87,7 +84,6 @@ Blockly.Blocks["operator_multiply"] = {
           name: "NUM2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_number"],
     });
   },
@@ -111,7 +107,6 @@ Blockly.Blocks["operator_divide"] = {
           name: "NUM2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_number"],
     });
   },
@@ -135,7 +130,6 @@ Blockly.Blocks["operator_random"] = {
           name: "TO",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_number"],
     });
   },
@@ -159,7 +153,6 @@ Blockly.Blocks["operator_lt"] = {
           name: "OPERAND2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_boolean"],
     });
   },
@@ -183,7 +176,6 @@ Blockly.Blocks["operator_equals"] = {
           name: "OPERAND2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_boolean"],
     });
   },
@@ -207,7 +199,6 @@ Blockly.Blocks["operator_gt"] = {
           name: "OPERAND2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_boolean"],
     });
   },
@@ -233,7 +224,6 @@ Blockly.Blocks["operator_and"] = {
           check: "Boolean",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_boolean"],
     });
   },
@@ -259,7 +249,6 @@ Blockly.Blocks["operator_or"] = {
           check: "Boolean",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_boolean"],
     });
   },
@@ -280,7 +269,6 @@ Blockly.Blocks["operator_not"] = {
           check: "Boolean",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_boolean"],
     });
   },
@@ -304,7 +292,6 @@ Blockly.Blocks["operator_join"] = {
           name: "STRING2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_string"],
     });
   },
@@ -328,7 +315,6 @@ Blockly.Blocks["operator_letter_of"] = {
           name: "STRING",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_string"],
     });
   },
@@ -348,7 +334,6 @@ Blockly.Blocks["operator_length"] = {
           name: "STRING",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_string"],
     });
   },
@@ -372,7 +357,6 @@ Blockly.Blocks["operator_contains"] = {
           name: "STRING2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_boolean"],
     });
   },
@@ -396,7 +380,6 @@ Blockly.Blocks["operator_mod"] = {
           name: "NUM2",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_number"],
     });
   },
@@ -416,7 +399,6 @@ Blockly.Blocks["operator_round"] = {
           name: "NUM",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_number"],
     });
   },
@@ -456,7 +438,6 @@ Blockly.Blocks["operator_mathop"] = {
           name: "NUM",
         },
       ],
-      category: Categories.operators,
       extensions: ["colours_operators", "output_number"],
     });
   },
