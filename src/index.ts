@@ -58,7 +58,7 @@ import { registerFieldNote, FieldNote } from "./fields/field_note.js";
 import { registerFieldNumber } from "./fields/field_number.js";
 import { registerFieldTextInputRemovable } from "./fields/field_textinput_removable.js";
 import { registerFieldVariableGetter } from "./fields/field_variable_getter.js";
-import { registerFieldVariable } from "./fields/field_variable.js";
+import { registerScratchFieldVariable } from "./fields/scratch_field_variable";
 import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator.js";
 import { registerRecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater";
 import { registerScratchBlockPaster } from "./scratch_block_paster";
@@ -91,7 +91,7 @@ export function inject(container: Element, options: Blockly.BlocklyOptions) {
   registerFieldNumber();
   registerFieldTextInputRemovable();
   registerFieldVariableGetter();
-  registerFieldVariable();
+  registerScratchFieldVariable();
   registerFieldVerticalSeparator();
   registerRecyclableBlockFlyoutInflater();
   registerScratchBlockPaster();

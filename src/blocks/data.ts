@@ -22,7 +22,7 @@ import * as Blockly from "blockly/core";
 import * as Constants from "../constants";
 import * as scratchBlocksUtils from "../scratch_blocks_utils.js";
 import { renameVariable } from "../variables";
-import type { FieldVariable } from "../fields/field_variable.js";
+import type { ScratchFieldVariable } from "../fields/scratch_field_variable";
 import type { ScratchVariableModel } from "../scratch_variable_model";
 
 Blockly.Blocks["data_variable"] = {
@@ -499,7 +499,7 @@ const CUSTOM_CONTEXT_MENU_GET_VARIABLE_MIXIN = {
     if (this.isCollapsed()) {
       return;
     }
-    const currentVarName = (this.getField(fieldName) as FieldVariable)
+    const currentVarName = (this.getField(fieldName) as ScratchFieldVariable)
       .getVariable()
       .getName();
     if (!this.isInFlyout) {
@@ -568,7 +568,7 @@ const CUSTOM_CONTEXT_MENU_GET_LIST_MIXIN = {
     if (this.isCollapsed()) {
       return;
     }
-    const currentVarName = (this.getField(fieldName) as FieldVariable)
+    const currentVarName = (this.getField(fieldName) as ScratchFieldVariable)
       .getVariable()
       .getName();
     if (!this.isInFlyout) {
@@ -655,7 +655,7 @@ const RENAME_OPTION_CALLBACK_FACTORY = function (
   return () => {
     const workspace = block.workspace;
     const variable = (
-      block.getField(fieldName) as FieldVariable
+      block.getField(fieldName) as ScratchFieldVariable
     ).getVariable() as ScratchVariableModel;
     renameVariable(workspace as Blockly.WorkspaceSvg, variable);
   };
@@ -674,7 +674,9 @@ const DELETE_OPTION_CALLBACK_FACTORY = function (
   fieldName: string
 ): () => void {
   return () => {
-    const variable = (block.getField(fieldName) as FieldVariable).getVariable();
+    const variable = (
+      block.getField(fieldName) as ScratchFieldVariable
+    ).getVariable();
     Blockly.Variables.deleteVariable(variable.getWorkspace(), variable, block);
   };
 };
