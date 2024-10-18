@@ -59,7 +59,7 @@ import { registerFieldNumber } from "./fields/field_number.js";
 import { registerFieldTextInputRemovable } from "./fields/field_textinput_removable.js";
 import { registerFieldVariableGetter } from "./fields/field_variable_getter.js";
 import { registerScratchFieldVariable } from "./fields/scratch_field_variable";
-import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator.js";
+import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator";
 import { registerRecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater";
 import { registerScratchBlockPaster } from "./scratch_block_paster";
 import { registerStatusIndicatorLabelFlyoutInflater } from "./status_indicator_label_flyout_inflater";

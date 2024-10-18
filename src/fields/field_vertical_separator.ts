@@ -26,10 +26,10 @@ import * as Blockly from "blockly/core";
 
 /**
  * Class for a vertical separator line.
- * @extends {Blockly.Field}
- * @constructor
  */
 class FieldVerticalSeparator extends Blockly.Field {
+  private lineElement?: SVGLineElement;
+
   constructor() {
     super(Blockly.Field.SKIP_SETUP);
     /**
@@ -39,17 +39,10 @@ class FieldVerticalSeparator extends Blockly.Field {
   }
 
   /**
-   * Construct a FieldVerticalSeparator from a JSON arg object.
-   * @param {!Object} _element A JSON object with options (unused, but passed in
-   *     by Field.fromJson).
-   * @returns {!Blockly.FieldVerticalSeparator} The new field instance.
-   * @package
-   * @nocollapse
+   * Construct a FieldVerticalSeparator.
+   * @returns The new field instance.
    */
-  static fromJson = function (
-    /* eslint-disable no-unused-vars */ _element
-    /* eslint-enable no-unused-vars */
-  ) {
+  static fromJson = function () {
     return new FieldVerticalSeparator();
   };
 
@@ -57,14 +50,14 @@ class FieldVerticalSeparator extends Blockly.Field {
    * Install this field on a block.
    */
   initView() {
-    const height = 10 * this.getConstants().GRID_UNIT;
+    const height =
+      10 * (this.getConstants() as Blockly.zelos.ConstantProvider).GRID_UNIT;
     this.size_ = new Blockly.utils.Size(1, height);
 
-    /** @type {SVGElement} */
-    this.lineElement_ = Blockly.utils.dom.createSvgElement(
+    this.lineElement = Blockly.utils.dom.createSvgElement(
       "line",
       {
-        stroke: this.sourceBlock_.getColourSecondary(),
+        stroke: (this.sourceBlock_ as Blockly.BlockSvg).getColourSecondary(),
         "stroke-linecap": "round",
         x1: 0,
         y1: 0,
@@ -79,19 +72,17 @@ class FieldVerticalSeparator extends Blockly.Field {
    * Set the height of the line element, without adjusting the field's height.
    * This allows the line's height to be changed without causing it to be
    * centered with the new height (needed for correct rendering of hat blocks).
-   * @param {number} newHeight the new height for the line.
+   * @param newHeight the new height for the line.
    * @package
    */
-  setLineHeight(newHeight) {
-    this.lineElement_.setAttribute("y2", newHeight);
+  setLineHeight(newHeight: number) {
+    this.lineElement.setAttribute("y2", `${newHeight}`);
   }
 
   /**
    * Get the value of this field. A no-op in this case.
-   * @return {string} null.
-   * @override
    */
-  getValue() {
+  getValue(): string | null {
     return null;
   }
 
@@ -101,19 +92,13 @@ class FieldVerticalSeparator extends Blockly.Field {
 
   /**
    * Set the value of this field. A no-op in this case.
-   * @param {?string} src New value.
-   * @override
    */
-  setValue(
-    /* eslint-disable no-unused-vars */ src
-    /* eslint-enable no-unused-vars */
-  ) {
+  setValue() {
     return;
   }
 
   /**
    * Separator lines are fixed width, no need to render.
-   * @private
    */
   render_() {
     // NOP
@@ -121,7 +106,6 @@ class FieldVerticalSeparator extends Blockly.Field {
 
   /**
    * Separator lines are fixed width, no need to update.
-   * @private
    */
   updateWidth() {
     // NOP
