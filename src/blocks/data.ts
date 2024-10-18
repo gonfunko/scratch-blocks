@@ -28,9 +28,8 @@ import type { ScratchVariableModel } from "../scratch_variable_model";
 Blockly.Blocks["data_variable"] = {
   /**
    * Block of Variables
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       lastDummyAlign0: "CENTRE",
@@ -54,9 +53,8 @@ Blockly.Blocks["data_variable"] = {
 Blockly.Blocks["data_setvariableto"] = {
   /**
    * Block to set variable to a certain value
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_SETVARIABLETO,
       args0: [
@@ -79,9 +77,8 @@ Blockly.Blocks["data_setvariableto"] = {
 Blockly.Blocks["data_changevariableby"] = {
   /**
    * Block to change variable by a certain value
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_CHANGEVARIABLEBY,
       args0: [
@@ -104,9 +101,8 @@ Blockly.Blocks["data_changevariableby"] = {
 Blockly.Blocks["data_showvariable"] = {
   /**
    * Block to show a variable
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_SHOWVARIABLE,
       args0: [
@@ -127,9 +123,8 @@ Blockly.Blocks["data_showvariable"] = {
 Blockly.Blocks["data_hidevariable"] = {
   /**
    * Block to hide a variable
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_HIDEVARIABLE,
       args0: [
@@ -150,9 +145,8 @@ Blockly.Blocks["data_hidevariable"] = {
 Blockly.Blocks["data_listcontents"] = {
   /**
    * List reporter.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [
@@ -175,9 +169,8 @@ Blockly.Blocks["data_listcontents"] = {
 Blockly.Blocks["data_listindexall"] = {
   /**
    * List index menu, with all option.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [
@@ -202,9 +195,8 @@ Blockly.Blocks["data_listindexall"] = {
 Blockly.Blocks["data_listindexrandom"] = {
   /**
    * List index menu, with random option.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [
@@ -229,9 +221,8 @@ Blockly.Blocks["data_listindexrandom"] = {
 Blockly.Blocks["data_addtolist"] = {
   /**
    * Block to add item to list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_ADDTOLIST,
       args0: [
@@ -254,9 +245,8 @@ Blockly.Blocks["data_addtolist"] = {
 Blockly.Blocks["data_deleteoflist"] = {
   /**
    * Block to delete item from list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_DELETEOFLIST,
       args0: [
@@ -279,9 +269,8 @@ Blockly.Blocks["data_deleteoflist"] = {
 Blockly.Blocks["data_deletealloflist"] = {
   /**
    * Block to delete all items from list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_DELETEALLOFLIST,
       args0: [
@@ -300,9 +289,8 @@ Blockly.Blocks["data_deletealloflist"] = {
 Blockly.Blocks["data_insertatlist"] = {
   /**
    * Block to insert item to list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_INSERTATLIST,
       args0: [
@@ -329,9 +317,8 @@ Blockly.Blocks["data_insertatlist"] = {
 Blockly.Blocks["data_replaceitemoflist"] = {
   /**
    * Block to insert item to list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_REPLACEITEMOFLIST,
       args0: [
@@ -358,9 +345,8 @@ Blockly.Blocks["data_replaceitemoflist"] = {
 Blockly.Blocks["data_itemoflist"] = {
   /**
    * Block for reporting item of list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_ITEMOFLIST,
       args0: [
@@ -385,9 +371,8 @@ Blockly.Blocks["data_itemoflist"] = {
 Blockly.Blocks["data_itemnumoflist"] = {
   /**
    * Block for reporting the item # of a string in a list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_ITEMNUMOFLIST,
       args0: [
@@ -412,9 +397,8 @@ Blockly.Blocks["data_itemnumoflist"] = {
 Blockly.Blocks["data_lengthoflist"] = {
   /**
    * Block for reporting length of list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_LENGTHOFLIST,
       args0: [
@@ -433,9 +417,8 @@ Blockly.Blocks["data_lengthoflist"] = {
 Blockly.Blocks["data_listcontainsitem"] = {
   /**
    * Block to report whether list contains item.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_LISTCONTAINSITEM,
       args0: [
@@ -458,9 +441,8 @@ Blockly.Blocks["data_listcontainsitem"] = {
 Blockly.Blocks["data_showlist"] = {
   /**
    * Block to show a list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_SHOWLIST,
       args0: [
@@ -479,9 +461,8 @@ Blockly.Blocks["data_showlist"] = {
 Blockly.Blocks["data_hidelist"] = {
   /**
    * Block to hide a list.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.DATA_HIDELIST,
       args0: [
@@ -500,10 +481,6 @@ Blockly.Blocks["data_hidelist"] = {
 /**
  * Mixin to add a context menu for a data_variable block.  It adds one item for
  * each variable defined on the workspace.
- * @mixin
- * @augments Blockly.Block
- * @package
- * @readonly
  */
 const CUSTOM_CONTEXT_MENU_GET_VARIABLE_MIXIN = {
   /**
@@ -512,6 +489,7 @@ const CUSTOM_CONTEXT_MENU_GET_VARIABLE_MIXIN = {
    * @param options List of menu options to add to.
    */
   customContextMenu: function (
+    this: Blockly.Block,
     options: Array<
       | Blockly.ContextMenuRegistry.ContextMenuOption
       | Blockly.ContextMenuRegistry.LegacyContextMenuOption
@@ -521,7 +499,9 @@ const CUSTOM_CONTEXT_MENU_GET_VARIABLE_MIXIN = {
     if (this.isCollapsed()) {
       return;
     }
-    const currentVarName = this.getField(fieldName).getVariable().getName();
+    const currentVarName = (this.getField(fieldName) as FieldVariable)
+      .getVariable()
+      .getName();
     if (!this.isInFlyout) {
       this.workspace
         .getVariablesOfType(Constants.SCALAR_VARIABLE_TYPE)
@@ -570,9 +550,6 @@ Blockly.Extensions.registerMixin(
 /**
  * Mixin to add a context menu for a data_listcontents block.  It adds one item for
  * each list defined on the workspace.
- * @mixin
- * @augments Blockly.Block
- * @package
  */
 const CUSTOM_CONTEXT_MENU_GET_LIST_MIXIN = {
   /**
@@ -581,6 +558,7 @@ const CUSTOM_CONTEXT_MENU_GET_LIST_MIXIN = {
    * @param options List of menu options to add to.
    */
   customContextMenu: function (
+    this: Blockly.Block,
     options: Array<
       | Blockly.ContextMenuRegistry.ContextMenuOption
       | Blockly.ContextMenuRegistry.LegacyContextMenuOption
@@ -590,7 +568,9 @@ const CUSTOM_CONTEXT_MENU_GET_LIST_MIXIN = {
     if (this.isCollapsed()) {
       return;
     }
-    const currentVarName = this.getField(fieldName).getVariable().getName();
+    const currentVarName = (this.getField(fieldName) as FieldVariable)
+      .getVariable()
+      .getName();
     if (!this.isInFlyout) {
       this.workspace
         .getVariablesOfType(Constants.LIST_VARIABLE_TYPE)

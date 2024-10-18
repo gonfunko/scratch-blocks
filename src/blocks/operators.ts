@@ -23,9 +23,8 @@ import * as Blockly from "blockly/core";
 Blockly.Blocks["operator_add"] = {
   /**
    * Block for adding two numbers.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_ADD,
       args0: [
@@ -46,9 +45,8 @@ Blockly.Blocks["operator_add"] = {
 Blockly.Blocks["operator_subtract"] = {
   /**
    * Block for subtracting two numbers.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_SUBTRACT,
       args0: [
@@ -69,9 +67,8 @@ Blockly.Blocks["operator_subtract"] = {
 Blockly.Blocks["operator_multiply"] = {
   /**
    * Block for multiplying two numbers.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_MULTIPLY,
       args0: [
@@ -92,9 +89,8 @@ Blockly.Blocks["operator_multiply"] = {
 Blockly.Blocks["operator_divide"] = {
   /**
    * Block for dividing two numbers.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_DIVIDE,
       args0: [
@@ -115,9 +111,8 @@ Blockly.Blocks["operator_divide"] = {
 Blockly.Blocks["operator_random"] = {
   /**
    * Block for picking a random number.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_RANDOM,
       args0: [
@@ -138,9 +133,8 @@ Blockly.Blocks["operator_random"] = {
 Blockly.Blocks["operator_lt"] = {
   /**
    * Block for less than comparator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_LT,
       args0: [
@@ -161,9 +155,8 @@ Blockly.Blocks["operator_lt"] = {
 Blockly.Blocks["operator_equals"] = {
   /**
    * Block for equals comparator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_EQUALS,
       args0: [
@@ -184,9 +177,8 @@ Blockly.Blocks["operator_equals"] = {
 Blockly.Blocks["operator_gt"] = {
   /**
    * Block for greater than comparator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_GT,
       args0: [
@@ -207,9 +199,8 @@ Blockly.Blocks["operator_gt"] = {
 Blockly.Blocks["operator_and"] = {
   /**
    * Block for "and" boolean comparator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_AND,
       args0: [
@@ -232,9 +223,8 @@ Blockly.Blocks["operator_and"] = {
 Blockly.Blocks["operator_or"] = {
   /**
    * Block for "or" boolean comparator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_OR,
       args0: [
@@ -257,9 +247,8 @@ Blockly.Blocks["operator_or"] = {
 Blockly.Blocks["operator_not"] = {
   /**
    * Block for "not" unary boolean operator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_NOT,
       args0: [
@@ -277,9 +266,8 @@ Blockly.Blocks["operator_not"] = {
 Blockly.Blocks["operator_join"] = {
   /**
    * Block for string join operator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_JOIN,
       args0: [
@@ -300,9 +288,8 @@ Blockly.Blocks["operator_join"] = {
 Blockly.Blocks["operator_letter_of"] = {
   /**
    * Block for "letter _ of _" operator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_LETTEROF,
       args0: [
@@ -323,9 +310,8 @@ Blockly.Blocks["operator_letter_of"] = {
 Blockly.Blocks["operator_length"] = {
   /**
    * Block for string length operator.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_LENGTH,
       args0: [
@@ -342,9 +328,8 @@ Blockly.Blocks["operator_length"] = {
 Blockly.Blocks["operator_contains"] = {
   /**
    * Block for _ contains _ operator
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_CONTAINS,
       args0: [
@@ -365,9 +350,8 @@ Blockly.Blocks["operator_contains"] = {
 Blockly.Blocks["operator_mod"] = {
   /**
    * Block for mod two numbers.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_MOD,
       args0: [
@@ -388,9 +372,8 @@ Blockly.Blocks["operator_mod"] = {
 Blockly.Blocks["operator_round"] = {
   /**
    * Block for rounding a numbers.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_ROUND,
       args0: [
@@ -407,9 +390,8 @@ Blockly.Blocks["operator_round"] = {
 Blockly.Blocks["operator_mathop"] = {
   /**
    * Block for "advanced" math ops on a number.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.OPERATORS_MATHOP,
       args0: [

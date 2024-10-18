@@ -24,9 +24,8 @@ Blockly.Blocks["control_forever"] = {
   /**
    * Block for repeat n times (external number).
    * https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#5eke39
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
       id: "control_forever",
@@ -59,9 +58,8 @@ Blockly.Blocks["control_repeat"] = {
   /**
    * Block for repeat n times (external number).
    * https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#so57n9
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
       id: "control_repeat",
@@ -99,9 +97,8 @@ Blockly.Blocks["control_repeat"] = {
 Blockly.Blocks["control_if"] = {
   /**
    * Block for if-then.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       type: "control_if",
       message0: Blockly.Msg.CONTROL_IF,
@@ -127,9 +124,8 @@ Blockly.Blocks["control_if"] = {
 Blockly.Blocks["control_if_else"] = {
   /**
    * Block for if-else.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       type: "control_if_else",
       message0: Blockly.Msg.CONTROL_IF,
@@ -163,13 +159,12 @@ Blockly.Blocks["control_if_else"] = {
 Blockly.Blocks["control_stop"] = {
   /**
    * Block for stop all scripts.
-   * @this Blockly.Block
    */
-  init: function () {
-    var ALL_SCRIPTS = "all";
-    var THIS_SCRIPT = "this script";
-    var OTHER_SCRIPTS = "other scripts in sprite";
-    var stopDropdown = new Blockly.FieldDropdown(
+  init: function (this: Blockly.Block) {
+    const ALL_SCRIPTS = "all";
+    const THIS_SCRIPT = "this script";
+    const OTHER_SCRIPTS = "other scripts in sprite";
+    const stopDropdown = new Blockly.FieldDropdown(
       function () {
         if (
           this.sourceBlock_ &&
@@ -200,9 +195,8 @@ Blockly.Blocks["control_stop"] = {
 Blockly.Blocks["control_wait"] = {
   /**
    * Block to wait (pause) stack.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       id: "control_wait",
       message0: Blockly.Msg.CONTROL_WAIT,
@@ -220,9 +214,8 @@ Blockly.Blocks["control_wait"] = {
 Blockly.Blocks["control_wait_until"] = {
   /**
    * Block to wait until a condition becomes true.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_WAITUNTIL,
       args0: [
@@ -240,9 +233,8 @@ Blockly.Blocks["control_wait_until"] = {
 Blockly.Blocks["control_repeat_until"] = {
   /**
    * Block to repeat until a condition becomes true.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_REPEATUNTIL,
@@ -282,7 +274,7 @@ Blockly.Blocks["control_while"] = {
    * Block to repeat until a condition becomes false.
    * (This is an obsolete "hacked" block, for compatibility with 2.0.)
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_WHILE,
@@ -321,9 +313,8 @@ Blockly.Blocks["control_for_each"] = {
   /**
    * Block for for-each. This is an obsolete block that is implemented for
    * compatibility with Scratch 2.0 projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       type: "control_for_each",
       message0: Blockly.Msg.CONTROL_FOREACH,
@@ -352,9 +343,8 @@ Blockly.Blocks["control_for_each"] = {
 Blockly.Blocks["control_start_as_clone"] = {
   /**
    * Block for "when I start as a clone" hat.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       id: "control_start_as_clone",
       message0: Blockly.Msg.CONTROL_STARTASCLONE,
@@ -372,9 +362,8 @@ Blockly.Blocks["control_create_clone_of_menu"] = {};
 Blockly.Blocks["control_create_clone_of"] = {
   /**
    * Block for "create clone of..."
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       id: "control_start_as_clone",
       message0: Blockly.Msg.CONTROL_CREATECLONEOF,
@@ -392,9 +381,8 @@ Blockly.Blocks["control_create_clone_of"] = {
 Blockly.Blocks["control_delete_this_clone"] = {
   /**
    * Block for "delete this clone."
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_DELETETHISCLONE,
       args0: [],
@@ -407,9 +395,8 @@ Blockly.Blocks["control_get_counter"] = {
   /**
    * Block to get the counter value. This is an obsolete block that is
    * implemented for compatibility with Scratch 2.0 projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_COUNTER,
       extensions: ["colours_control", "output_number"],
@@ -421,9 +408,8 @@ Blockly.Blocks["control_incr_counter"] = {
   /**
    * Block to add one to the counter value. This is an obsolete block that is
    * implemented for compatibility with Scratch 2.0 projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_INCRCOUNTER,
       extensions: ["colours_control", "shape_statement"],
@@ -435,9 +421,8 @@ Blockly.Blocks["control_clear_counter"] = {
   /**
    * Block to clear the counter value. This is an obsolete block that is
    * implemented for compatibility with Scratch 2.0 projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_CLEARCOUNTER,
       extensions: ["colours_control", "shape_statement"],
@@ -457,9 +442,8 @@ Blockly.Blocks["control_all_at_once"] = {
    * reporter that is always true (e.g. "if 1 = 1"). Also note that the
    * Scratch 2.0 spec for this block is "warpSpeed", but the label shows
    * "all at once".
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.CONTROL_ALLATONCE,
       message1: "%1", // Statement

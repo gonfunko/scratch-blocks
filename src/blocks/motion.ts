@@ -23,9 +23,8 @@ import * as Blockly from "blockly/core";
 Blockly.Blocks["motion_movesteps"] = {
   /**
    * Block to move steps.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_MOVESTEPS,
       args0: [
@@ -42,9 +41,8 @@ Blockly.Blocks["motion_movesteps"] = {
 Blockly.Blocks["motion_turnright"] = {
   /**
    * Block to turn right.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
       message0: Blockly.Msg.MOTION_TURNRIGHT,
@@ -68,9 +66,8 @@ Blockly.Blocks["motion_turnright"] = {
 Blockly.Blocks["motion_turnleft"] = {
   /**
    * Block to turn left.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     const ws = this.workspace.options.parentWorkspace || this.workspace;
     this.jsonInit({
       message0: Blockly.Msg.MOTION_TURNLEFT,
@@ -94,9 +91,8 @@ Blockly.Blocks["motion_turnleft"] = {
 Blockly.Blocks["motion_pointindirection"] = {
   /**
    * Block to point in direction.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_POINTINDIRECTION,
       args0: [
@@ -118,9 +114,8 @@ Blockly.Blocks["motion_pointtowards_menu"] = {};
 Blockly.Blocks["motion_pointtowards"] = {
   /**
    * Block to point in direction.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_POINTTOWARDS,
       args0: [
@@ -142,9 +137,8 @@ Blockly.Blocks["motion_goto_menu"] = {};
 Blockly.Blocks["motion_gotoxy"] = {
   /**
    * Block to go to X, Y.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_GOTOXY,
       args0: [
@@ -165,9 +159,8 @@ Blockly.Blocks["motion_gotoxy"] = {
 Blockly.Blocks["motion_goto"] = {
   /**
    * Block to go to a menu item.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_GOTO,
       args0: [
@@ -184,9 +177,8 @@ Blockly.Blocks["motion_goto"] = {
 Blockly.Blocks["motion_glidesecstoxy"] = {
   /**
    * Block to glide for a specified time.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_GLIDESECSTOXY,
       args0: [
@@ -216,9 +208,8 @@ Blockly.Blocks["motion_glideto_menu"] = {};
 Blockly.Blocks["motion_glideto"] = {
   /**
    * Block to glide to a menu item
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_GLIDETO,
       args0: [
@@ -239,9 +230,8 @@ Blockly.Blocks["motion_glideto"] = {
 Blockly.Blocks["motion_changexby"] = {
   /**
    * Block to change X.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_CHANGEXBY,
       args0: [
@@ -258,9 +248,8 @@ Blockly.Blocks["motion_changexby"] = {
 Blockly.Blocks["motion_setx"] = {
   /**
    * Block to set X.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_SETX,
       args0: [
@@ -277,9 +266,8 @@ Blockly.Blocks["motion_setx"] = {
 Blockly.Blocks["motion_changeyby"] = {
   /**
    * Block to change Y.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_CHANGEYBY,
       args0: [
@@ -296,9 +284,8 @@ Blockly.Blocks["motion_changeyby"] = {
 Blockly.Blocks["motion_sety"] = {
   /**
    * Block to set Y.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_SETY,
       args0: [
@@ -315,9 +302,8 @@ Blockly.Blocks["motion_sety"] = {
 Blockly.Blocks["motion_ifonedgebounce"] = {
   /**
    * Block to bounce on edge.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_IFONEDGEBOUNCE,
       extensions: ["colours_motion", "shape_statement"],
@@ -328,9 +314,8 @@ Blockly.Blocks["motion_ifonedgebounce"] = {
 Blockly.Blocks["motion_setrotationstyle"] = {
   /**
    * Block to set rotation style.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_SETROTATIONSTYLE,
       args0: [
@@ -352,9 +337,8 @@ Blockly.Blocks["motion_setrotationstyle"] = {
 Blockly.Blocks["motion_xposition"] = {
   /**
    * Block to report X.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_XPOSITION,
       extensions: ["colours_motion", "output_number", "monitor_block"],
@@ -365,9 +349,8 @@ Blockly.Blocks["motion_xposition"] = {
 Blockly.Blocks["motion_yposition"] = {
   /**
    * Block to report Y.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_YPOSITION,
       extensions: ["colours_motion", "output_number", "monitor_block"],
@@ -378,9 +361,8 @@ Blockly.Blocks["motion_yposition"] = {
 Blockly.Blocks["motion_direction"] = {
   /**
    * Block to report direction.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_DIRECTION,
       extensions: ["colours_motion", "output_number", "monitor_block"],
@@ -393,9 +375,8 @@ Blockly.Blocks["motion_scroll_right"] = {
    * Block to scroll the stage right. Does not actually do anything. This is
    * an obsolete block that is implemented for compatibility with Scratch 2.0
    * projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_SCROLLRIGHT,
       args0: [
@@ -414,9 +395,8 @@ Blockly.Blocks["motion_scroll_up"] = {
    * Block to scroll the stage up. Does not actually do anything. This is an
    * obsolete block that is implemented for compatibility with Scratch 2.0
    * projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_SCROLLUP,
       args0: [
@@ -435,9 +415,8 @@ Blockly.Blocks["motion_align_scene"] = {
    * Block to change the stage's scrolling alignment. Does not actually do
    * anything. This is an obsolete block that is implemented for compatibility
    * with Scratch 2.0 projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_ALIGNSCENE,
       args0: [
@@ -463,9 +442,8 @@ Blockly.Blocks["motion_xscroll"] = {
    * Block to report the stage's scroll position's X value. Does not actually
    * do anything. This is an obsolete block that is implemented for
    * compatibility with Scratch 2.0 projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_XSCROLL,
       extensions: ["colours_motion", "output_number"],
@@ -478,9 +456,8 @@ Blockly.Blocks["motion_yscroll"] = {
    * Block to report the stage's scroll position's Y value. Does not actually
    * do anything. This is an obsolete block that is implemented for
    * compatibility with Scratch 2.0 projects.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.MOTION_YSCROLL,
       extensions: ["colours_motion", "output_number"],

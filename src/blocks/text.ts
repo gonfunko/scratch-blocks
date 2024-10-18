@@ -27,9 +27,8 @@ import * as Blockly from "blockly/core";
 Blockly.Blocks["text"] = {
   /**
    * Block for text value.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [

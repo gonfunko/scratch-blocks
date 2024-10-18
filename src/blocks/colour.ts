@@ -39,7 +39,7 @@ Blockly.Blocks["colour_picker"] = {
   /**
    * Block for colour picker.
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [

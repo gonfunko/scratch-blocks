@@ -28,9 +28,8 @@ import * as Constants from "../constants";
 Blockly.Blocks["math_number"] = {
   /**
    * Block for generic numeric value.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [
@@ -50,9 +49,8 @@ Blockly.Blocks["math_number"] = {
 Blockly.Blocks["math_integer"] = {
   /**
    * Block for integer value (no decimal, + or -).
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [
@@ -72,9 +70,8 @@ Blockly.Blocks["math_integer"] = {
 Blockly.Blocks["math_whole_number"] = {
   /**
    * Block for whole number value, no negatives or decimals.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [
@@ -95,9 +92,8 @@ Blockly.Blocks["math_whole_number"] = {
 Blockly.Blocks["math_positive_number"] = {
   /**
    * Block for positive number value, with decimal.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [
@@ -117,9 +113,8 @@ Blockly.Blocks["math_positive_number"] = {
 Blockly.Blocks["math_angle"] = {
   /**
    * Block for angle picker.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [

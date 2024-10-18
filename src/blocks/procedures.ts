@@ -105,7 +105,7 @@ class DuplicateOnDragDraggable implements Blockly.IDraggable {
  *
  * @returns XML storage element.
  */
-function callerMutationToDom(): Element {
+function callerMutationToDom(this: ProcedureCallBlock): Element {
   const container = document.createElement("mutation");
   container.setAttribute("proccode", this.procCode_);
   container.setAttribute("argumentids", JSON.stringify(this.argumentIds_));
@@ -119,7 +119,7 @@ function callerMutationToDom(): Element {
  *
  * @param xmlElement XML storage element.
  */
-function callerDomToMutation(xmlElement: Element) {
+function callerDomToMutation(this: ProcedureCallBlock, xmlElement: Element) {
   this.procCode_ = xmlElement.getAttribute("proccode");
   this.generateShadows_ = JSON.parse(
     xmlElement.getAttribute("generateshadows")
@@ -137,7 +137,10 @@ function callerDomToMutation(xmlElement: Element) {
  *     generated XML. False if not provided.
  * @returns XML storage element.
  */
-function definitionMutationToDom(opt_generateShadows?: boolean): Element {
+function definitionMutationToDom(
+  this: ProcedurePrototypeBlock | ProcedureDeclarationBlock,
+  opt_generateShadows?: boolean
+): Element {
   const container = document.createElement("mutation");
 
   if (opt_generateShadows) {
@@ -160,7 +163,10 @@ function definitionMutationToDom(opt_generateShadows?: boolean): Element {
  *
  * @param xmlElement XML storage element.
  */
-function definitionDomToMutation(xmlElement: Element) {
+function definitionDomToMutation(
+  this: ProcedurePrototypeBlock | ProcedureDeclarationBlock,
+  xmlElement: Element
+) {
   this.procCode_ = xmlElement.getAttribute("proccode");
   this.warp_ = JSON.parse(xmlElement.getAttribute("warp"));
 
@@ -173,7 +179,7 @@ function definitionDomToMutation(xmlElement: Element) {
     xmlElement.getAttribute("argumentdefaults")
   );
   this.updateDisplay_();
-  if (this.updateArgumentReporterNames_) {
+  if ("updateArgumentReporterNames_" in this) {
     this.updateArgumentReporterNames_(prevArgIds, prevDisplayNames);
   }
 }
@@ -188,7 +194,7 @@ function definitionDomToMutation(xmlElement: Element) {
  *
  * @returns Procedure name.
  */
-function getProcCode(): string {
+function getProcCode(this: ProcedureBlock): string {
   return this.procCode_;
 }
 
@@ -196,7 +202,7 @@ function getProcCode(): string {
  * Update the block's structure and appearance to match the internally stored
  * mutation.
  */
-function updateDisplay_() {
+function updateDisplay_(this: ProcedureBlock) {
   const connectionMap = this.disconnectOldBlocks_();
   this.removeAllInputs_();
   this.createAllInputs_(connectionMap);
@@ -211,13 +217,13 @@ function updateDisplay_() {
  *
  * @returns An object mapping argument IDs to blocks and shadow DOMs.
  */
-function disconnectOldBlocks_(): ConnectionMap {
+function disconnectOldBlocks_(this: ProcedureBlock): ConnectionMap {
   // Remove old stuff
   const connectionMap: ConnectionMap = {};
   for (const input of this.inputList) {
     if (input.connection) {
-      var target = input.connection.targetBlock();
-      var saveInfo = {
+      const target = input.connection.targetBlock() as Blockly.BlockSvg;
+      const saveInfo = {
         shadow: input.connection.getShadowDom(),
         block: target,
       };
@@ -235,7 +241,7 @@ function disconnectOldBlocks_(): ConnectionMap {
  * Remove all inputs on the block, including dummy inputs.
  * Assumes no input has shadow DOM set.
  */
-function removeAllInputs_() {
+function removeAllInputs_(this: ProcedureBlock) {
   // Delete inputs directly instead of with block.removeInput to avoid splicing
   // out of the input list at every index.
   this.inputList.forEach((input: Blockly.Input) => input.dispose());
@@ -248,7 +254,7 @@ function removeAllInputs_() {
  *
  * @param connectionMap An object mapping argument IDs to blocks and shadow DOMs.
  */
-function createAllInputs_(connectionMap: ConnectionMap) {
+function createAllInputs_(this: ProcedureBlock, connectionMap: ConnectionMap) {
   // Split the proc into components, by %n, %b, and %s (ignoring escaped).
   const procComponents = this.procCode_
     .split(/(?=[^\\]%[nbs])/)
@@ -301,7 +307,7 @@ function createAllInputs_(connectionMap: ConnectionMap) {
  * @param connectionMap An object mapping argument IDs to the blocks that were
  *     connected to those IDs at the beginning of the mutation.
  */
-function deleteShadows_(connectionMap: ConnectionMap) {
+function deleteShadows_(this: ProcedureBlock, connectionMap: ConnectionMap) {
   // Get rid of all of the old shadow blocks if they aren't connected.
   if (connectionMap) {
     for (const id in connectionMap) {
@@ -326,7 +332,10 @@ function deleteShadows_(connectionMap: ConnectionMap) {
  *
  * @param text The label text.
  */
-function addLabelField_(text: string) {
+function addLabelField_(
+  this: ProcedureCallBlock | ProcedurePrototypeBlock,
+  text: string
+) {
   this.appendDummyInput().appendField(text);
 }
 
@@ -337,7 +346,7 @@ function addLabelField_(text: string) {
  *
  * @param text The label text.
  */
-function addLabelEditor_(text: string) {
+function addLabelEditor_(this: ProcedureDeclarationBlock, text: string) {
   if (text) {
     this.appendDummyInput(Blockly.utils.idGenerator.genUid()).appendField(
       new FieldTextInputRemovable(text)
@@ -378,7 +387,11 @@ function buildShadowDom_(type: ArgumentType): Element {
  * @param argumentType One of 'b' (boolean), 's' (string) or
  *     'n' (number).
  */
-function attachShadow_(input: Blockly.Input, argumentType: ArgumentType) {
+function attachShadow_(
+  this: ProcedureCallBlock,
+  input: Blockly.Input,
+  argumentType: ArgumentType
+) {
   if (
     argumentType === ArgumentType.NUMBER ||
     argumentType === ArgumentType.STRING
@@ -397,7 +410,7 @@ function attachShadow_(input: Blockly.Input, argumentType: ArgumentType) {
       newBlock.setShadow(true);
       if (!this.isInsertionMarker()) {
         newBlock.initSvg();
-        newBlock.render(false);
+        newBlock.render();
       }
     } finally {
       Blockly.Events.enable();
@@ -421,6 +434,7 @@ function attachShadow_(input: Blockly.Input, argumentType: ArgumentType) {
  * @returns The newly created argument reporter block.
  */
 function createArgumentReporter_(
+  this: ProcedurePrototypeBlock,
   argumentType: ArgumentType,
   displayName: string
 ): Blockly.BlockSvg {
@@ -441,7 +455,7 @@ function createArgumentReporter_(
     newBlock.setFieldValue(displayName, "VALUE");
     if (!this.isInsertionMarker()) {
       newBlock.initSvg();
-      newBlock.render(false);
+      newBlock.render();
     }
   } finally {
     Blockly.Events.enable();
@@ -465,6 +479,7 @@ function createArgumentReporter_(
  * @param input The newly created input to populate.
  */
 function populateArgumentOnCaller_(
+  this: ProcedureCallBlock,
   type: ArgumentType,
   index: number,
   connectionMap: ConnectionMap,
@@ -504,6 +519,7 @@ function populateArgumentOnCaller_(
  * @param input The newly created input to populate.
  */
 function populateArgumentOnPrototype_(
+  this: ProcedurePrototypeBlock,
   type: ArgumentType,
   index: number,
   connectionMap: ConnectionMap,
@@ -547,6 +563,7 @@ function populateArgumentOnPrototype_(
  * @param input The newly created input to populate.
  */
 function populateArgumentOnDeclaration_(
+  this: ProcedureDeclarationBlock,
   type: ArgumentType,
   index: number,
   connectionMap: ConnectionMap,
@@ -620,6 +637,7 @@ function checkOldTypeMatches_(
  * @returns The newly created argument editor block.
  */
 function createArgumentEditor_(
+  this: ProcedureDeclarationBlock,
   argumentType: ArgumentType,
   displayName: string
 ): Blockly.BlockSvg {
@@ -655,7 +673,7 @@ function createArgumentEditor_(
  * Update the serializable information on the block based on the existing inputs
  * and their text.
  */
-function updateDeclarationProcCode_() {
+function updateDeclarationProcCode_(this: ProcedureDeclarationBlock) {
   this.procCode_ = "";
   this.displayNames_ = [];
   this.argumentIds_ = [];
@@ -687,15 +705,15 @@ function updateDeclarationProcCode_() {
 /**
  * Focus on the last argument editor or label editor on the block.
  */
-function focusLastEditor_() {
+function focusLastEditor_(this: ProcedureDeclarationBlock) {
   if (this.inputList.length > 0) {
     const newInput = this.inputList[this.inputList.length - 1];
     if (newInput.type === Blockly.inputs.inputTypes.DUMMY) {
-      newInput.fieldRow[0].showEditor_();
+      newInput.fieldRow[0].showEditor();
     } else if (newInput.type === Blockly.inputs.inputTypes.VALUE) {
       // Inspect the argument editor.
       const target = newInput.connection.targetBlock();
-      target.getField("TEXT").showEditor_();
+      target.getField("TEXT").showEditor();
     }
   }
 }
@@ -703,7 +721,7 @@ function focusLastEditor_() {
 /**
  * Externally-visible function to add a label to the procedure declaration.
  */
-function addLabelExternal() {
+function addLabelExternal(this: ProcedureDeclarationBlock) {
   Blockly.WidgetDiv.hide();
   this.procCode_ = this.procCode_ + " label text";
   this.updateDisplay_();
@@ -714,7 +732,7 @@ function addLabelExternal() {
  * Externally-visible function to add a boolean argument to the procedure
  * declaration.
  */
-function addBooleanExternal() {
+function addBooleanExternal(this: ProcedureDeclarationBlock) {
   Blockly.WidgetDiv.hide();
   this.procCode_ = this.procCode_ + " %b";
   this.displayNames_.push("boolean");
@@ -728,7 +746,7 @@ function addBooleanExternal() {
  * Externally-visible function to add a string/number argument to the procedure
  * declaration.
  */
-function addStringNumberExternal() {
+function addStringNumberExternal(this: ProcedureDeclarationBlock) {
   Blockly.WidgetDiv.hide();
   this.procCode_ = this.procCode_ + " %s";
   this.displayNames_.push("number or text");
@@ -743,7 +761,7 @@ function addStringNumberExternal() {
  *
  * @returns The value of the warp_ property.
  */
-function getWarp(): boolean {
+function getWarp(this: ProcedureDeclarationBlock): boolean {
   return this.warp_;
 }
 
@@ -752,7 +770,7 @@ function getWarp(): boolean {
  *
  * @param warp The value of the warp_ property.
  */
-function setWarp(warp: boolean) {
+function setWarp(this: ProcedureDeclarationBlock, warp: boolean) {
   this.warp_ = warp;
 }
 
@@ -761,7 +779,10 @@ function setWarp(warp: boolean) {
  *
  * @param field The field being removed.
  */
-function removeFieldCallback(field: Blockly.Field) {
+function removeFieldCallback(
+  this: ProcedureDeclarationBlock,
+  field: Blockly.Field
+) {
   // Do not delete if there is only one input
   if (this.inputList.length === 1) {
     return;
@@ -795,9 +816,13 @@ function removeFieldCallback(field: Blockly.Field) {
  *
  * @param field The field being removed.
  */
-function removeArgumentCallback_(field: Blockly.Field) {
-  if (this.parentBlock_ && this.parentBlock_.removeFieldCallback) {
-    this.parentBlock_.removeFieldCallback(field);
+function removeArgumentCallback_(
+  this: ProcedureDeclarationBlock | ProcedureArgumentEditorBlock,
+  field: Blockly.Field
+) {
+  const parent = this.getParent();
+  if (parent && parent.removeFieldCallback) {
+    parent.removeFieldCallback(field);
   }
 }
 
@@ -815,6 +840,7 @@ function removeArgumentCallback_(field: Blockly.Field) {
  * @param prevDisplayNames The previous argument names.
  */
 function updateArgumentReporterNames_(
+  this: ProcedurePrototypeBlock,
   prevArgIds: string[],
   prevDisplayNames: string[]
 ) {
@@ -864,9 +890,8 @@ function updateArgumentReporterNames_(
 Blockly.Blocks["procedures_definition"] = {
   /**
    * Block for defining a procedure with no return value.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: Blockly.Msg.PROCEDURES_DEFINITION,
       args0: [
@@ -887,9 +912,8 @@ Blockly.Blocks["procedures_definition"] = {
 Blockly.Blocks["procedures_call"] = {
   /**
    * Block for calling a procedure with no return value.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: ProcedureCallBlock) {
     this.jsonInit({
       extensions: [
         "colours_more",
@@ -925,9 +949,8 @@ Blockly.Blocks["procedures_prototype"] = {
   /**
    * Block for calling a procedure with no return value, for rendering inside
    * define block.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: ProcedurePrototypeBlock) {
     this.jsonInit({
       extensions: ["colours_more", "shape_statement"],
     });
@@ -961,9 +984,8 @@ Blockly.Blocks["procedures_prototype"] = {
 Blockly.Blocks["procedures_declaration"] = {
   /**
    * The root block in the procedure declaration editor.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: ProcedureDeclarationBlock) {
     this.jsonInit({
       extensions: ["colours_more", "shape_statement"],
     });
@@ -1004,7 +1026,7 @@ Blockly.Blocks["procedures_declaration"] = {
 };
 
 Blockly.Blocks["argument_reporter_boolean"] = {
-  init: function () {
+  init: function (this: Blockly.BlockSvg) {
     this.jsonInit({
       message0: " %1",
       args0: [
@@ -1021,7 +1043,7 @@ Blockly.Blocks["argument_reporter_boolean"] = {
 };
 
 Blockly.Blocks["argument_reporter_string_number"] = {
-  init: function () {
+  init: function (this: Blockly.BlockSvg) {
     this.jsonInit({
       message0: " %1",
       args0: [
@@ -1038,7 +1060,7 @@ Blockly.Blocks["argument_reporter_string_number"] = {
 };
 
 Blockly.Blocks["argument_editor_boolean"] = {
-  init: function () {
+  init: function (this: ProcedureArgumentEditorBlock) {
     this.jsonInit({
       message0: " %1",
       args0: [
@@ -1057,7 +1079,7 @@ Blockly.Blocks["argument_editor_boolean"] = {
 };
 
 Blockly.Blocks["argument_editor_string_number"] = {
-  init: function () {
+  init: function (this: ProcedureArgumentEditorBlock) {
     this.jsonInit({
       message0: " %1",
       args0: [
@@ -1074,3 +1096,63 @@ Blockly.Blocks["argument_editor_string_number"] = {
     this.removeFieldCallback = removeArgumentCallback_.bind(this);
   },
 };
+
+interface ProcedureBlock extends Blockly.BlockSvg {
+  procCode_: string;
+  argumentIds_: string[];
+  warp_: boolean;
+  getProcCode: () => string;
+  removeAllInputs_: () => void;
+  disconnectOldBlocks_: () => ConnectionMap;
+  deleteShadows_: (connectionMap: ConnectionMap) => void;
+  createAllInputs_: (connectionMap: ConnectionMap) => void;
+  updateDisplay_: () => void;
+  populateArgument_: (
+    type: ArgumentType,
+    index: number,
+    connectionMap: ConnectionMap,
+    id: string,
+    input: Blockly.Input
+  ) => void;
+  addProcedureLabel_: (text: string) => void;
+}
+
+interface ProcedureDeclarationBlock extends ProcedureBlock {
+  displayNames_: string[];
+  argumentDefaults_: string[];
+  removeFieldCallback: (field: Blockly.Field) => void;
+  createArgumentEditor_: (
+    argumentType: ArgumentType,
+    displayName: string
+  ) => Blockly.BlockSvg;
+  focusLastEditor_: () => void;
+  getWarp: () => boolean;
+  setWarp: (warp: boolean) => void;
+  addLabelExternal: () => void;
+  addBooleanExternal: () => void;
+  addStringNumberExternal: () => void;
+  onChangeFn: () => void;
+}
+
+interface ProcedureCallBlock extends ProcedureBlock {
+  generateShadows_: boolean;
+  attachShadow_: (input: Blockly.Input, argumentType: ArgumentType) => void;
+  buildShadowDom_: (type: ArgumentType) => Element;
+}
+
+interface ProcedurePrototypeBlock extends ProcedureBlock {
+  displayNames_: string[];
+  argumentDefaults_: string[];
+  createArgumentReporter_: (
+    argumentType: ArgumentType,
+    displayName: string
+  ) => Blockly.BlockSvg;
+  updateArgumentReporterNames_: (
+    prevArgIds: string[],
+    prevDisplayNames: string[]
+  ) => void;
+}
+
+interface ProcedureArgumentEditorBlock extends Blockly.BlockSvg {
+  removeFieldCallback: (field: Blockly.Field) => void;
+}

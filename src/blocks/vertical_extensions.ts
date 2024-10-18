@@ -49,7 +49,7 @@ const colourHelper = function (category: string): () => void {
 /**
  * Extension to set the colours of a text field, which are all the same.
  */
-const COLOUR_TEXTFIELD = function () {
+const COLOUR_TEXTFIELD = function (this: Blockly.Block) {
   colourHelper("textField").apply(this);
 };
 

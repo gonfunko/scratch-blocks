@@ -28,9 +28,8 @@ import * as Constants from "../constants";
 Blockly.Blocks["matrix"] = {
   /**
    * Block for matrix value.
-   * @this Blockly.Block
    */
-  init: function () {
+  init: function (this: Blockly.Block) {
     this.jsonInit({
       message0: "%1",
       args0: [
