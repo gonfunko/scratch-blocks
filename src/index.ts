@@ -52,7 +52,7 @@ import {
   registerFieldColourSlider,
   FieldColourSlider,
 } from "./fields/field_colour_slider.js";
-import { registerFieldDropdown } from "./fields/field_dropdown.js";
+import { registerScratchFieldDropdown } from "./fields/scratch_field_dropdown";
 import { registerFieldMatrix } from "./fields/field_matrix";
 import { registerFieldNote, FieldNote } from "./fields/field_note";
 import { registerScratchFieldNumber } from "./fields/scratch_field_number";
@@ -85,7 +85,7 @@ export {
 export function inject(container: Element, options: Blockly.BlocklyOptions) {
   registerScratchFieldAngle();
   registerFieldColourSlider();
-  registerFieldDropdown();
+  registerScratchFieldDropdown();
   registerFieldMatrix();
   registerFieldNote();
   registerScratchFieldNumber();

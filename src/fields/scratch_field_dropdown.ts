@@ -6,12 +6,12 @@
 
 import * as Blockly from "blockly/core";
 
-class FieldDropdown extends Blockly.FieldDropdown {
-  originalStyle;
+class ScratchFieldDropdown extends Blockly.FieldDropdown {
+  private originalStyle: string;
 
-  showEditor_(event) {
+  showEditor_(event: PointerEvent) {
     super.showEditor_(event);
-    const sourceBlock = this.getSourceBlock();
+    const sourceBlock = this.getSourceBlock() as Blockly.BlockSvg;
     const style = sourceBlock.style;
     if (sourceBlock.isShadow()) {
       this.originalStyle = sourceBlock.getStyleName();
@@ -19,7 +19,9 @@ class FieldDropdown extends Blockly.FieldDropdown {
     } else if (this.borderRect_) {
       this.borderRect_.setAttribute(
         "fill",
-        style.colourQuaternary ?? style.colourTertiary
+        "colourQuaternary" in style
+          ? `${style.colourQuaternary}`
+          : style.colourTertiary
       );
     }
   }
@@ -36,7 +38,7 @@ class FieldDropdown extends Blockly.FieldDropdown {
 /**
  * Register the field and any dependencies.
  */
-export function registerFieldDropdown() {
+export function registerScratchFieldDropdown() {
   Blockly.fieldRegistry.unregister("field_dropdown");
-  Blockly.fieldRegistry.register("field_dropdown", FieldDropdown);
+  Blockly.fieldRegistry.register("field_dropdown", ScratchFieldDropdown);
 }
