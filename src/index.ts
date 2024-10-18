@@ -47,7 +47,7 @@ import "./events/events_block_comment_move.js";
 import "./events/events_block_comment_resize.js";
 import "./events/events_scratch_variable_create.js";
 import { buildShadowFilter } from "./shadows";
-import { registerFieldAngle } from "./fields/field_angle.js";
+import { registerScratchFieldAngle } from "./fields/scratch_field_angle";
 import {
   registerFieldColourSlider,
   FieldColourSlider,
@@ -83,7 +83,7 @@ export {
 } from "./status_indicator_label";
 
 export function inject(container: Element, options: Blockly.BlocklyOptions) {
-  registerFieldAngle();
+  registerScratchFieldAngle();
   registerFieldColourSlider();
   registerFieldDropdown();
   registerFieldMatrix();
