@@ -53,7 +53,7 @@ import {
   FieldColourSlider,
 } from "./fields/field_colour_slider.js";
 import { registerFieldDropdown } from "./fields/field_dropdown.js";
-import { registerFieldMatrix } from "./fields/field_matrix.js";
+import { registerFieldMatrix } from "./fields/field_matrix";
 import { registerFieldNote, FieldNote } from "./fields/field_note";
 import { registerScratchFieldNumber } from "./fields/scratch_field_number";
 import { registerFieldTextInputRemovable } from "./fields/field_textinput_removable";
