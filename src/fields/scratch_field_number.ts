@@ -45,7 +45,10 @@ import { Colours } from "../colours";
  * @extends {Blockly.FieldTextInput}
  * @constructor
  */
-class FieldNumberPicker extends Blockly.FieldTextInput {
+class ScratchFieldNumber extends Blockly.FieldTextInput {
+  private negativeAllowed_ = true;
+  private decimalAllowed_ = true;
+  private exponentialAllowed_ = true;
   /**
    * Fixed width of the num-pad drop-down, in px.
    * @type {number}
@@ -96,7 +99,7 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
     Colours.numPadText +
     '"/></svg>';
 
-  configure_(config) {
+  configure_(config: Blockly.FieldNumberFromJsonConfig) {
     super.configure_(config);
     this.decimalAllowed_ =
       typeof config.precision == "undefined" ||
@@ -114,7 +117,7 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
    * @return {!RegExp} Regular expression for this FieldNumber's restrictor.
    */
   getNumRestrictor() {
-    var pattern = "[\\d]"; // Always allow digits.
+    let pattern = "[\\d]"; // Always allow digits.
     if (this.decimalAllowed_) {
       pattern += "|[\\.]";
     }
@@ -130,11 +133,10 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
   /**
    * Show the inline free-text editor on top of the text and the num-pad if
    * appropriate.
-   * @private
    */
-  showEditor_(e) {
+  showEditor_(e: PointerEvent) {
     // Do not focus on mobile devices so we can show the num-pad
-    var showNumPad = e && e.pointerType === "touch";
+    const showNumPad = e && e.pointerType === "touch";
     super.showEditor_(e, showNumPad);
 
     // Show a numeric keypad in the drop-down on touch
@@ -144,7 +146,7 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
     }
   }
 
-  onHtmlInputKeyDown_(e) {
+  onHtmlInputKeyDown_(e: KeyboardEvent) {
     super.onHtmlInputKeyDown_(e);
     // key can be things like "Backspace", so only validate when it represents a single
     // character so as to allow non-textual input to work as normal.
@@ -158,10 +160,9 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
 
   /**
    * Show the number pad.
-   * @private
    */
-  showNumPad_() {
-    var contentDiv = Blockly.DropDownDiv.getContentDiv();
+  private showNumPad_() {
+    const contentDiv = Blockly.DropDownDiv.getContentDiv();
 
     // Accessibility properties
     contentDiv.setAttribute("role", "menu");
@@ -170,36 +171,37 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
     this.addButtons_(contentDiv);
 
     // Set colour and size of drop-down
+    const sourceBlock = this.getSourceBlock() as Blockly.BlockSvg;
     Blockly.DropDownDiv.setColour(
-      this.sourceBlock_.parentBlock_.getColour(),
-      this.sourceBlock_.getColourTertiary()
+      sourceBlock.getParent().getColour(),
+      sourceBlock.getColourTertiary()
     );
-    contentDiv.style.width = FieldNumberPicker.DROPDOWN_WIDTH + "px";
+    contentDiv.style.width = ScratchFieldNumber.DROPDOWN_WIDTH + "px";
 
     this.position_();
   }
 
   /**
    * Figure out where to place the drop-down, and move it there.
-   * @private
    */
-  position_() {
+  private position_() {
     // Calculate positioning for the drop-down
     // sourceBlock_ is the rendered shadow field input box
-    var scale = this.sourceBlock_.workspace.scale;
-    var bBox = this.sourceBlock_.getHeightWidth();
+    const sourceBlock = this.getSourceBlock() as Blockly.BlockSvg;
+    const scale = sourceBlock.workspace.scale;
+    let bBox = sourceBlock.getHeightWidth();
     bBox.width *= scale;
     bBox.height *= scale;
-    var position = this.getAbsoluteXY_();
+    const position = this.getAbsoluteXY_();
     // If we can fit it, render below the shadow block
-    var primaryX = position.x + bBox.width / 2;
-    var primaryY = position.y + bBox.height;
+    const primaryX = position.x + bBox.width / 2;
+    const primaryY = position.y + bBox.height;
     // If we can't fit it, render above the entire parent block
-    var secondaryX = primaryX;
-    var secondaryY = position.y;
+    const secondaryX = primaryX;
+    const secondaryY = position.y;
 
     Blockly.DropDownDiv.setBoundsElement(
-      this.sourceBlock_.workspace.getParentSvg().parentNode
+      sourceBlock.workspace.getParentSvg().parentElement
     );
     Blockly.DropDownDiv.show(
       this,
@@ -215,17 +217,18 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
   /**
    * Add number, punctuation, and erase buttons to the numeric keypad's content
    * div.
-   * @param {Element} contentDiv The div for the numeric keypad.
-   * @private
+   *
+   * @param contentDiv The div for the numeric keypad.
    */
-  addButtons_(contentDiv) {
-    var buttonColour = this.sourceBlock_.parentBlock_.getColour();
-    var buttonBorderColour = this.sourceBlock_.parentBlock_.getColourTertiary();
+  private addButtons_(contentDiv: Element) {
+    const sourceBlock = this.getSourceBlock() as Blockly.BlockSvg;
+    const buttonColour = sourceBlock.getParent().getColour();
+    const buttonBorderColour = sourceBlock.getParent().getColourTertiary();
 
     // Add numeric keypad buttons
-    var buttons = FieldNumberPicker.NUMPAD_BUTTONS;
-    for (var i = 0, buttonText; (buttonText = buttons[i]); i++) {
-      var button = document.createElement("button");
+    const buttons = ScratchFieldNumber.NUMPAD_BUTTONS;
+    for (let i = 0, buttonText; (buttonText = buttons[i]); i++) {
+      const button = document.createElement("button");
       button.setAttribute("role", "menuitem");
       button.setAttribute("class", "blocklyNumPadButton");
       button.setAttribute(
@@ -258,7 +261,7 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
       contentDiv.appendChild(button);
     }
     // Add erase button to the end
-    var eraseButton = document.createElement("button");
+    const eraseButton = document.createElement("button");
     eraseButton.setAttribute("role", "menuitem");
     eraseButton.setAttribute("class", "blocklyNumPadButton");
     eraseButton.setAttribute(
@@ -272,8 +275,8 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
     );
     eraseButton.title = "Delete";
 
-    var eraseImage = document.createElement("img");
-    eraseImage.src = FieldNumberPicker.NUMPAD_DELETE_ICON;
+    const eraseImage = document.createElement("img");
+    eraseImage.src = ScratchFieldNumber.NUMPAD_DELETE_ICON;
     eraseButton.appendChild(eraseImage);
 
     Blockly.browserEvents.bind(
@@ -288,19 +291,20 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
   /**
    * Call for when a num-pad number or punctuation button is touched.
    * Determine what the user is inputting and update the text field appropriately.
-   * @param {Event} e DOM event triggering the touch.
+   *
+   * @param e DOM event triggering the touch.
    */
-  numPadButtonTouch(e) {
+  numPadButtonTouch(e: PointerEvent) {
     // String of the button (e.g., '7')
-    var spliceValue = e.target.innerText;
+    const spliceValue = (e.target as HTMLElement).innerText;
     // Old value of the text field
-    var oldValue = this.htmlInput_.value;
+    const oldValue = this.htmlInput_.value;
     // Determine the selected portion of the text field
-    var selectionStart = this.htmlInput_.selectionStart;
-    var selectionEnd = this.htmlInput_.selectionEnd;
+    const selectionStart = this.htmlInput_.selectionStart;
+    const selectionEnd = this.htmlInput_.selectionEnd;
 
     // Splice in the new value
-    var newValue =
+    const newValue =
       oldValue.slice(0, selectionStart) +
       spliceValue +
       oldValue.slice(selectionEnd);
@@ -318,14 +322,15 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
   /**
    * Call for when the num-pad erase button is touched.
    * Determine what the user is asking to erase, and erase it.
-   * @param {Event} e DOM event triggering the touch.
+   *
+   * @param e DOM event triggering the touch.
    */
-  numPadEraseButtonTouch(e) {
+  numPadEraseButtonTouch(e: PointerEvent) {
     // Old value of the text field
-    var oldValue = this.htmlInput_.value;
+    const oldValue = this.htmlInput_.value;
     // Determine what is selected to erase (if anything)
-    var selectionStart = this.htmlInput_.selectionStart;
-    var selectionEnd = this.htmlInput_.selectionEnd;
+    let selectionStart = this.htmlInput_.selectionStart;
+    const selectionEnd = this.htmlInput_.selectionEnd;
 
     // If selection is zero-length, shift start to the left 1 character
     if (selectionStart == selectionEnd) {
@@ -333,7 +338,7 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
     }
 
     // Cut out selected range
-    var newValue =
+    const newValue =
       oldValue.slice(0, selectionStart) + oldValue.slice(selectionEnd);
 
     this.updateDisplay_(newValue, selectionStart);
@@ -347,11 +352,11 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
 
   /**
    * Update the displayed value and resize/scroll the text field as needed.
-   * @param {string} newValue The new text to display.
-   * @param {string} newSelection The new index to put the cursor
-   * @private
+   *
+   * @param newValue The new text to display.
+   * @param newSelection The new index to put the cursor
    */
-  updateDisplay_(newValue, newSelection) {
+  private updateDisplay_(newValue: string, newSelection: number) {
     this.setEditorValue_(newValue);
     // Resize and scroll the text field appropriately
     const htmlInput = this.htmlInput_;
@@ -369,12 +374,12 @@ class FieldNumberPicker extends Blockly.FieldTextInput {
   }
 }
 
-FieldNumberPicker.prototype.DEFAULT_VALUE = "";
+ScratchFieldNumber.prototype.DEFAULT_VALUE = "";
 
 /**
  * Register the field and any dependencies.
  */
-export function registerFieldNumber() {
+export function registerScratchFieldNumber() {
   Blockly.fieldRegistry.unregister("field_number");
-  Blockly.fieldRegistry.register("field_number", FieldNumberPicker);
+  Blockly.fieldRegistry.register("field_number", ScratchFieldNumber);
 }

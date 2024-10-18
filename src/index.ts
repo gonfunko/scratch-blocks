@@ -55,7 +55,7 @@ import {
 import { registerFieldDropdown } from "./fields/field_dropdown.js";
 import { registerFieldMatrix } from "./fields/field_matrix.js";
 import { registerFieldNote, FieldNote } from "./fields/field_note.js";
-import { registerFieldNumber } from "./fields/field_number.js";
+import { registerScratchFieldNumber } from "./fields/scratch_field_number";
 import { registerFieldTextInputRemovable } from "./fields/field_textinput_removable";
 import { registerFieldVariableGetter } from "./fields/field_variable_getter";
 import { registerScratchFieldVariable } from "./fields/scratch_field_variable";
@@ -88,7 +88,7 @@ export function inject(container: Element, options: Blockly.BlocklyOptions) {
   registerFieldDropdown();
   registerFieldMatrix();
   registerFieldNote();
-  registerFieldNumber();
+  registerScratchFieldNumber();
   registerFieldTextInputRemovable();
   registerFieldVariableGetter();
   registerScratchFieldVariable();
