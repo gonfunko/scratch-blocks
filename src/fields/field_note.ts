@@ -36,124 +36,87 @@ import * as Blockly from "blockly/core";
  * @constructor
  */
 export class FieldNote extends Blockly.FieldTextInput {
-  constructor(opt_value, opt_validator) {
-    opt_value = opt_value && !isNaN(opt_value) ? String(opt_value) : "0";
-    super(opt_value, opt_validator);
+  /**
+   * Width of the field. Computed when drawing it, and used for animation.
+   */
+  private fieldEditorWidth_ = 0;
 
-    /**
-     * Width of the field. Computed when drawing it, and used for animation.
-     * @type {number}
-     * @private
-     */
-    this.fieldEditorWidth_ = 0;
+  /**
+   * Height of the field. Computed when drawing it.
+   */
+  private fieldEditorHeight_ = 0;
 
-    /**
-     * Height of the field. Computed when drawing it.
-     * @type {number}
-     * @private
-     */
-    this.fieldEditorHeight_ = 0;
+  /**
+   * The piano SVG.
+   */
+  private pianoSVG_: SVGElement | null = null;
 
-    /**
-     * The piano SVG.
-     * @type {SVGElement}
-     * @private
-     */
-    this.pianoSVG_ = null;
+  /**
+   * Array of SVG elements representing the clickable piano keys.
+   */
+  private keySVGs_: SVGElement[] = [];
 
-    /**
-     * Array of SVG elements representing the clickable piano keys.
-     * @type {!Array<SVGElement>}
-     * @private
-     */
-    this.keySVGs_ = [];
+  /**
+   * Note name indicator at the top of the field.
+   */
+  private noteNameText_: SVGElement | null = null;
 
-    /**
-     * Note name indicator at the top of the field.
-     * @type {SVGElement}
-     * @private
-     */
-    this.noteNameText_ = null;
+  /**
+   * Note name indicator on the low C key.
+   */
+  private lowCText_: SVGElement | null = null;
 
-    /**
-     * Note name indicator on the low C key.
-     * @type {SVGElement}
-     * @private
-     */
-    this.lowCText_ = null;
+  /**
+   * Note name indicator on the low C key.
+   */
+  private highCText_: SVGElement | null = null;
 
-    /**
-     * Note name indicator on the low C key.
-     * @type {SVGElement}
-     * @private
-     */
-    this.highCText_ = null;
+  /**
+   * Octave number of the currently displayed range of keys.
+   */
+  private displayedOctave_: number | null = null;
 
-    /**
-     * Octave number of the currently displayed range of keys.
-     * @type {number}
-     * @private
-     */
-    this.displayedOctave_ = null;
+  /**
+   * Current animation position of the piano SVG, as it shifts left or right to
+   * change octaves.
+   */
+  private animationPos_ = 0;
 
-    /**
-     * Current animation position of the piano SVG, as it shifts left or right to
-     * change octaves.
-     * @type {number}
-     * @private
-     */
-    this.animationPos_ = 0;
+  /**
+   * Target position for the animation as the piano SVG shifts left or right.
+   */
+  private animationTarget_ = 0;
 
-    /**
-     * Target position for the animation as the piano SVG shifts left or right.
-     * @type {number}
-     * @private
-     */
-    this.animationTarget_ = 0;
+  /**
+   * A flag indicating that the mouse is currently down. Used in combination with
+   * mouse enter events to update the key selection while dragging.
+   */
+  private mouseIsDown_ = false;
 
-    /**
-     * A flag indicating that the mouse is currently down. Used in combination with
-     * mouse enter events to update the key selection while dragging.
-     * @type {boolean}
-     * @private
-     */
-    this.mouseIsDown_ = false;
+  /**
+   * An array of wrappers for mouse down events on piano keys.
+   */
+  private mouseDownWrappers_: Blockly.browserEvents.Data[] = [];
 
-    /**
-     * An array of wrappers for mouse down events on piano keys.
-     * @type {!Array.<!Array>}
-     * @private
-     */
-    this.mouseDownWrappers_ = [];
+  /**
+   * A wrapper for the mouse up event.
+   */
+  private mouseUpWrapper_: Blockly.browserEvents.Data | null = null;
 
-    /**
-     * A wrapper for the mouse up event.
-     * @type {!Array.<!Array>}
-     * @private
-     */
-    this.mouseUpWrapper_ = null;
+  /**
+   * An array of wrappers for mouse enter events on piano keys.
+   */
+  private mouseEnterWrappers_: Blockly.browserEvents.Data[] = [];
 
-    /**
-     * An array of wrappers for mouse enter events on piano keys.
-     * @type {!Array.<!Array>}
-     * @private
-     */
-    this.mouseEnterWrappers_ = [];
+  /**
+   * A wrapper for the mouse down event on the octave down button.
+   */
+  private octaveDownMouseDownWrapper_: Blockly.browserEvents.Data | null = null;
 
-    /**
-     * A wrapper for the mouse down event on the octave down button.
-     * @type {!Array.<!Array>}
-     * @private
-     */
-    this.octaveDownMouseDownWrapper_ = null;
-
-    /**
-     * A wrapper for the mouse down event on the octave up button.
-     * @type {!Array.<!Array>}
-     * @private
-     */
-    this.octaveUpMouseDownWrapper_ = null;
-  }
+  /**
+   * A wrapper for the mouse down event on the octave up button.
+   */
+  private octaveUpMouseDownWrapper_: Blockly.browserEvents.Data | null = null;
 
   /**
    * Inset in pixels of content displayed in the field, caused by parent properties.
@@ -164,122 +127,88 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Height of the top area of the field, in px.
-   * @type {number}
-   * @const
    */
-  static TOP_MENU_HEIGHT = 32 - FieldNote.INSET;
+  static readonly TOP_MENU_HEIGHT = 32 - FieldNote.INSET;
 
   /**
    * Padding on the top and sides of the field, in px.
-   * @type {number}
-   * @const
    */
-  static EDGE_PADDING = 1;
+  static readonly EDGE_PADDING = 1;
 
   /**
    * Height of the drop shadow on the piano, in px.
-   * @type {number}
-   * @const
    */
-  static SHADOW_HEIGHT = 4;
+  static readonly SHADOW_HEIGHT = 4;
 
   /**
    * Color for the shadow on the piano.
-   * @type {string}
-   * @const
    */
-  static SHADOW_COLOR = "#000";
+  static readonly SHADOW_COLOR = "#000";
 
   /**
    * Opacity for the shadow on the piano.
-   * @type {string}
-   * @const
    */
-  static SHADOW_OPACITY = 0.2;
+  static readonly SHADOW_OPACITY = 0.2;
 
   /**
    * A color for the white piano keys.
-   * @type {string}
-   * @const
    */
-  static WHITE_KEY_COLOR = "#FFFFFF";
+  static readonly WHITE_KEY_COLOR = "#FFFFFF";
 
   /**
    * A color for the black piano keys.
-   * @type {string}
-   * @const
    */
-  static BLACK_KEY_COLOR = "#323133";
+  static readonly BLACK_KEY_COLOR = "#323133";
 
   /**
    * A color for stroke around black piano keys.
-   * @type {string}
-   * @const
    */
-  static BLACK_KEY_STROKE = "#555555";
+  static readonly BLACK_KEY_STROKE = "#555555";
 
   /**
    * A color for the selected state of a piano key.
-   * @type {string}
-   * @const
    */
-  static KEY_SELECTED_COLOR = "#b0d6ff";
+  static readonly KEY_SELECTED_COLOR = "#b0d6ff";
 
   /**
    * The number of white keys in one octave on the piano.
-   * @type {number}
-   * @const
    */
-  static NUM_WHITE_KEYS = 8;
+  static readonly NUM_WHITE_KEYS = 8;
 
   /**
    * Height of a white piano key, in px.
-   * @type {string}
-   * @const
    */
-  static WHITE_KEY_HEIGHT = 72;
+  static readonly WHITE_KEY_HEIGHT = 72;
 
   /**
    * Width of a white piano key, in px.
-   * @type {string}
-   * @const
    */
-  static WHITE_KEY_WIDTH = 40;
+  static readonly WHITE_KEY_WIDTH = 40;
 
   /**
    * Height of a black piano key, in px.
-   * @type {string}
-   * @const
    */
-  static BLACK_KEY_HEIGHT = 40;
+  static readonly BLACK_KEY_HEIGHT = 40;
 
   /**
    * Width of a black piano key, in px.
-   * @type {string}
-   * @const
    */
-  static BLACK_KEY_WIDTH = 32;
+  static readonly BLACK_KEY_WIDTH = 32;
 
   /**
    * Radius of the curved bottom corner of a piano key, in px.
-   * @type {string}
-   * @const
    */
-  static KEY_RADIUS = 6;
+  static readonly KEY_RADIUS = 6;
 
   /**
    * Bottom padding for the labels on C keys.
-   * @type {string}
-   * @const
    */
-  static KEY_LABEL_PADDING = 8;
+  static readonly KEY_LABEL_PADDING = 8;
 
   /**
    * An array of objects with data describing the keys on the piano.
-   * @type {Array.<{name: String, pitch: Number, isBlack: boolean}>}
-   * @const
    */
-  static KEY_INFO = [
+  static readonly KEY_INFO = [
     { name: "C", pitch: 0 },
     { name: "C♯", pitch: 1, isBlack: true },
     { name: "D", pitch: 2 },
@@ -297,48 +226,37 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * The MIDI note number of the highest note selectable on the piano.
-   * @type {number}
-   * @const
    */
-  static MAX_NOTE = 130;
+  static readonly MAX_NOTE = 130;
 
   /**
    * The fraction of the distance to the target location to move the piano at each
    * step of the animation.
-   * @type {number}
-   * @const
    */
-  static ANIMATION_FRACTION = 0.2;
+  static readonly ANIMATION_FRACTION = 0.2;
 
   /**
    * Path to the arrow svg icon, used on the octave buttons.
-   * @type {string}
-   * @const
    */
-  static ARROW_SVG_PATH = "icons/arrow_button.svg";
+  static readonly ARROW_SVG_PATH = "icons/arrow_button.svg";
 
   /**
    * The size of the square octave buttons.
-   * @type {number}
-   * @const
    */
-  static OCTAVE_BUTTON_SIZE = 32;
+  static readonly OCTAVE_BUTTON_SIZE = 32;
 
   /**
    * Construct a FieldNote from a JSON arg object.
-   * @param {!Object} options A JSON object with options.
-   * @returns {!Blockly.FieldNote} The new field instance.
-   * @package
-   * @nocollapse
+   *
+   * @param options A JSON object with options.
+   * @returns The new field instance.
    */
-  static fromJson(options) {
+  static fromJson(options: FieldNoteJsonConfig): FieldNote {
     return new FieldNote(options["note"]);
   }
 
   /**
    * Clean up this FieldNote, as well as the inherited FieldTextInput.
-   * @return {!Function} Closure to call on destruction of the WidgetDiv.
-   * @private
    */
   dispose() {
     super.dispose();
@@ -366,13 +284,12 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Show a field with piano keys.
-   * @private
    */
-  showEditor_(event, quietInput = false) {
+  showEditor_(event: PointerEvent, quietInput = false) {
     super.showEditor_(event, quietInput);
 
     // Build the SVG DOM.
-    var div = Blockly.DropDownDiv.getContentDiv();
+    const div = Blockly.DropDownDiv.getContentDiv();
 
     this.fieldEditorWidth_ =
       FieldNote.NUM_WHITE_KEYS * FieldNote.WHITE_KEY_WIDTH +
@@ -382,7 +299,7 @@ export class FieldNote extends Blockly.FieldTextInput {
       FieldNote.WHITE_KEY_HEIGHT +
       FieldNote.EDGE_PADDING;
 
-    var svg = Blockly.utils.dom.createSvgElement(
+    const svg = Blockly.utils.dom.createSvgElement(
       "svg",
       {
         xmlns: "http://www.w3.org/2000/svg",
@@ -399,12 +316,12 @@ export class FieldNote extends Blockly.FieldTextInput {
     // Since we are adding the keys from left to right in order, they need
     // to be in two groups in order to layer correctly.
     this.pianoSVG_ = Blockly.utils.dom.createSvgElement("g", {}, svg);
-    var whiteKeyGroup = Blockly.utils.dom.createSvgElement(
+    const whiteKeyGroup = Blockly.utils.dom.createSvgElement(
       "g",
       {},
       this.pianoSVG_
     );
-    var blackKeyGroup = Blockly.utils.dom.createSvgElement(
+    const blackKeyGroup = Blockly.utils.dom.createSvgElement(
       "g",
       {},
       this.pianoSVG_
@@ -441,9 +358,9 @@ export class FieldNote extends Blockly.FieldTextInput {
     );
 
     // Note names on the low and high C keys
-    var lowCX = FieldNote.WHITE_KEY_WIDTH / 2;
+    const lowCX = FieldNote.WHITE_KEY_WIDTH / 2;
     this.lowCText_ = this.addCKeyLabel_(lowCX, svg);
-    var highCX =
+    const highCX =
       lowCX + FieldNote.WHITE_KEY_WIDTH * (FieldNote.NUM_WHITE_KEYS - 1);
     this.highCText_ = this.addCKeyLabel_(highCX, svg);
 
@@ -451,7 +368,9 @@ export class FieldNote extends Blockly.FieldTextInput {
     Blockly.utils.dom.createSvgElement(
       "line",
       {
-        stroke: this.sourceBlock_.parentBlock_.getColourTertiary(),
+        stroke: (
+          this.sourceBlock_.getParent() as Blockly.BlockSvg
+        ).getColourTertiary(),
         x1: 0,
         y1: FieldNote.TOP_MENU_HEIGHT,
         x2: this.fieldEditorWidth_,
@@ -475,8 +394,8 @@ export class FieldNote extends Blockly.FieldTextInput {
     );
 
     // Octave buttons
-    this.octaveDownButton = this.addOctaveButton_(0, true, svg);
-    this.octaveUpButton = this.addOctaveButton_(
+    const octaveDownButton = this.addOctaveButton_(0, true, svg);
+    const octaveUpButton = this.addOctaveButton_(
       this.fieldEditorWidth_ +
         FieldNote.INSET * 2 -
         FieldNote.OCTAVE_BUTTON_SIZE,
@@ -485,7 +404,7 @@ export class FieldNote extends Blockly.FieldTextInput {
     );
 
     this.octaveDownMouseDownWrapper_ = Blockly.browserEvents.bind(
-      this.octaveDownButton,
+      octaveDownButton,
       "mousedown",
       this,
       function () {
@@ -493,34 +412,40 @@ export class FieldNote extends Blockly.FieldTextInput {
       }
     );
     this.octaveUpMouseDownWrapper_ = Blockly.browserEvents.bind(
-      this.octaveUpButton,
+      octaveUpButton,
       "mousedown",
       this,
       function () {
         this.changeOctaveBy_(1);
       }
     );
+    const sourceBlock = this.getSourceBlock() as Blockly.BlockSvg;
     Blockly.DropDownDiv.setColour(
-      this.sourceBlock_.parentBlock_.getColour(),
-      this.sourceBlock_.parentBlock_.getColourTertiary()
+      sourceBlock.getParent().getColour(),
+      sourceBlock.getParent().getColourTertiary()
     );
-    Blockly.DropDownDiv.showPositionedByBlock(this, this.sourceBlock_);
+    Blockly.DropDownDiv.showPositionedByBlock(this, sourceBlock);
 
     this.updateSelection_();
   }
 
   /**
    * Add one octave of piano keys drawn using SVG.
-   * @param {number} x The x position of the left edge of this octave of keys.
-   * @param {SVGElement} whiteKeyGroup The group for all white piano keys.
-   * @param {SvgElement} blackKeyGroup The group for all black piano keys.
-   * @param {!Array.<SvgElement>} keySVGarray An array containing all the key SVGs.
-   * @private
+   *
+   * @param x The x position of the left edge of this octave of keys.
+   * @param whiteKeyGroup The group for all white piano keys.
+   * @param blackKeyGroup The group for all black piano keys.
+   * @param keySVGarray An array containing all the key SVGs.
    */
-  addPianoOctave_(x, whiteKeyGroup, blackKeyGroup, keySVGarray) {
-    var xIncrement, width, height, fill, stroke, group;
+  private addPianoOctave_(
+    x: number,
+    whiteKeyGroup: SVGElement,
+    blackKeyGroup: SVGElement,
+    keySVGarray: SVGElement[]
+  ) {
+    let xIncrement, width, height, fill, stroke, group;
     x += FieldNote.EDGE_PADDING / 2;
-    var y = FieldNote.TOP_MENU_HEIGHT;
+    const y = FieldNote.TOP_MENU_HEIGHT;
     for (var i = 0; i < FieldNote.KEY_INFO.length; i++) {
       // Draw a black or white key
       if (FieldNote.KEY_INFO[i].isBlack) {
@@ -537,23 +462,25 @@ export class FieldNote extends Blockly.FieldTextInput {
         width = FieldNote.WHITE_KEY_WIDTH;
         height = FieldNote.WHITE_KEY_HEIGHT;
         fill = FieldNote.WHITE_KEY_COLOR;
-        stroke = this.sourceBlock_.parentBlock_.getColourTertiary();
+        stroke = (
+          this.sourceBlock_.getParent() as Blockly.BlockSvg
+        ).getColourTertiary();
         group = whiteKeyGroup;
       }
-      var attr = {
+      const attr = {
         d: this.getPianoKeyPath_(x, y, width, height),
         fill: fill,
         stroke: stroke,
       };
       x += xIncrement;
 
-      var keySVG = Blockly.utils.dom.createSvgElement("path", attr, group);
+      const keySVG = Blockly.utils.dom.createSvgElement("path", attr, group);
 
       if (keySVGarray) {
         keySVGarray[i] = keySVG;
-        keySVG.setAttribute("data-pitch", FieldNote.KEY_INFO[i].pitch);
-        keySVG.setAttribute("data-name", FieldNote.KEY_INFO[i].name);
-        keySVG.setAttribute("data-isBlack", FieldNote.KEY_INFO[i].isBlack);
+        keySVG.setAttribute("data-pitch", `${FieldNote.KEY_INFO[i].pitch}`);
+        keySVG.setAttribute("data-name", `${FieldNote.KEY_INFO[i].name}`);
+        keySVG.setAttribute("data-isBlack", `${FieldNote.KEY_INFO[i].isBlack}`);
 
         this.mouseDownWrappers_[i] = Blockly.browserEvents.bind(
           keySVG,
@@ -574,14 +501,19 @@ export class FieldNote extends Blockly.FieldTextInput {
   /**
    * Construct the SVG path string for a piano key shape: a rectangle with rounded
    * corners at the bottom.
-   * @param {number} x the x position for the key.
-   * @param {number} y the y position for the key.
-   * @param {number} width the width of the key.
-   * @param {number} height the height of the key.
-   * @returns {string} the SVG path as a string.
-   * @private
+   *
+   * @param x the x position for the key.
+   * @param y the y position for the key.
+   * @param width the width of the key.
+   * @param height the height of the key.
+   * @returns the SVG path as a string.
    */
-  getPianoKeyPath_(x, y, width, height) {
+  private getPianoKeyPath_(
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ): string {
     return (
       "M" +
       x +
@@ -630,16 +562,20 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Add a button for switching the displayed octave of the piano up or down.
-   * @param {number} x The x position of the button.
-   * @param {boolean} flipped If true, the icon should be flipped.
-   * @param {SvgElement} svg The svg element to add the buttons to.
-   * @returns {SvgElement} A group containing the button SVG elements.
-   * @private
+   *
+   * @param x The x position of the button.
+   * @param flipped If true, the icon should be flipped.
+   * @param svg The svg element to add the buttons to.
+   * @returns A group containing the button SVG elements.
    */
-  addOctaveButton_(x, flipped, svg) {
-    var group = Blockly.utils.dom.createSvgElement("g", {}, svg);
-    var imageSize = FieldNote.OCTAVE_BUTTON_SIZE;
-    var arrow = Blockly.utils.dom.createSvgElement(
+  private addOctaveButton_(
+    x: number,
+    flipped: boolean,
+    svg: SVGElement
+  ): SVGElement {
+    const group = Blockly.utils.dom.createSvgElement("g", {}, svg);
+    const imageSize = FieldNote.OCTAVE_BUTTON_SIZE;
+    const arrow = Blockly.utils.dom.createSvgElement(
       "image",
       {
         width: imageSize,
@@ -657,7 +593,9 @@ export class FieldNote extends Blockly.FieldTextInput {
     Blockly.utils.dom.createSvgElement(
       "line",
       {
-        stroke: this.sourceBlock_.parentBlock_.getColourTertiary(),
+        stroke: (
+          this.sourceBlock_.getParent() as Blockly.BlockSvg
+        ).getColourTertiary(),
         x1: x - FieldNote.INSET,
         y1: 0,
         x2: x - FieldNote.INSET,
@@ -666,7 +604,8 @@ export class FieldNote extends Blockly.FieldTextInput {
       group
     );
     if (flipped) {
-      var translateX = -1 * FieldNote.OCTAVE_BUTTON_SIZE + FieldNote.INSET * 2;
+      const translateX =
+        -1 * FieldNote.OCTAVE_BUTTON_SIZE + FieldNote.INSET * 2;
       group.setAttribute(
         "transform",
         "scale(-1, 1) " + "translate(" + translateX + ", 0)"
@@ -677,12 +616,12 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Add an SVG text label for display on the C keys of the piano.
-   * @param {number} x The x position for the label.
-   * @param {SvgElement} svg The SVG element to add the label to.
-   * @returns {SvgElement} The SVG element containing the label.
-   * @private
+   *
+   * @param x The x position for the label.
+   * @param svg The SVG element to add the label to.
+   * @returns The SVG element containing the label.
    */
-  addCKeyLabel_(x, svg) {
+  private addCKeyLabel_(x: number, svg: SVGElement): SVGElement {
     return Blockly.utils.dom.createSvgElement(
       "text",
       {
@@ -700,10 +639,10 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Set the visibility of the C key labels.
-   * @param {boolean} visible If true, set labels to be visible.
-   * @private
+   *
+   * @param visible If true, set labels to be visible.
    */
-  setCKeyLabelsVisible_(visible) {
+  private setCKeyLabelsVisible_(visible: boolean) {
     if (visible) {
       this.fadeSvgToOpacity_(this.lowCText_, 1);
       this.fadeSvgToOpacity_(this.highCText_, 1);
@@ -715,11 +654,11 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Animate an SVG to fade it in or out to a target opacity.
-   * @param {SvgElement} svg The SVG element to apply the fade to.
-   * @param {number} opacity The target opacity.
-   * @private
+   *
+   * @param svg The SVG element to apply the fade to.
+   * @param opacity The target opacity.
    */
-  fadeSvgToOpacity_(svg, opacity) {
+  private fadeSvgToOpacity_(svg: SVGElement, opacity: number) {
     svg.setAttribute(
       "style",
       "opacity: " + opacity + "; transition: opacity 0.1s;"
@@ -728,10 +667,10 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Handle the mouse down event on a piano key.
-   * @param {!Event} e Mouse down event.
-   * @private
+   *
+   * @param e Mouse down event.
    */
-  onMouseDownOnKey_(e) {
+  private onMouseDownOnKey_(e: PointerEvent) {
     this.mouseIsDown_ = true;
     this.mouseUpWrapper_ = Blockly.browserEvents.bind(
       document.body,
@@ -744,9 +683,8 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Handle the mouse up event following a mouse down on a piano key.
-   * @private
    */
-  onMouseUp_() {
+  private onMouseUp_() {
     this.mouseIsDown_ = false;
     Blockly.browserEvents.unbind(this.mouseUpWrapper_);
     this.mouseUpWrapper_ = null;
@@ -754,10 +692,10 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Handle the event when the mouse enters a piano key.
-   * @param {!Event} e Mouse enter event.
-   * @private
+   *
+   * @param e Mouse enter event.
    */
-  onMouseEnter_(e) {
+  private onMouseEnter_(e: PointerEvent) {
     if (this.mouseIsDown_) {
       this.selectNoteWithMouseEvent_(e);
     }
@@ -765,21 +703,21 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Use the data in a mouse event to select a new note, and play it.
-   * @param {!Event} e Mouse event.
-   * @private
+   *
+   * @param e Mouse event.
    */
-  selectNoteWithMouseEvent_(e) {
-    var newNoteNum =
-      Number(e.target.getAttribute("data-pitch")) + this.displayedOctave_ * 12;
+  private selectNoteWithMouseEvent_(e: PointerEvent) {
+    const newNoteNum =
+      Number((e.target as HTMLElement).getAttribute("data-pitch")) +
+      this.displayedOctave_ * 12;
     this.setEditorValue_(newNoteNum);
     this.playNoteInternal_();
   }
 
   /**
    * Play a note, by calling the externally overriden play note function.
-   * @private
    */
-  playNoteInternal_() {
+  private playNoteInternal_() {
     if (FieldNote.playNote_) {
       FieldNote.playNote_(Number(this.getValue()), "Music");
     }
@@ -788,32 +726,32 @@ export class FieldNote extends Blockly.FieldTextInput {
   /**
    * Function to play a musical note corresponding to the key selected.
    * Overridden externally.
-   * @param {number} noteNum the MIDI note number to play.
-   * @param {string} id An id to select a scratch extension to play the note.
-   * @private
+   *
+   * @param noteNum the MIDI note number to play.
+   * @param id An id to select a scratch extension to play the note.
    */
-  static playNote_ = function (/* noteNum, id*/) {
+  static playNote_ = function (noteNum: number, id: string) {
     return;
   };
 
   /**
    * Change the selected note by a number of octaves, and start the animation.
-   * @param {number} octaves The number of octaves to change by.
-   * @private
+   *
+   * @param octaves The number of octaves to change by.
    */
-  changeOctaveBy_(octaves) {
+  private changeOctaveBy_(octaves: number) {
     this.displayedOctave_ += octaves;
     if (this.displayedOctave_ < 0) {
       this.displayedOctave_ = 0;
       return;
     }
-    var maxOctave = Math.floor(FieldNote.MAX_NOTE / 12);
+    const maxOctave = Math.floor(FieldNote.MAX_NOTE / 12);
     if (this.displayedOctave_ > maxOctave) {
       this.displayedOctave_ = maxOctave;
       return;
     }
 
-    var newNote = Number(this.getText()) + octaves * 12;
+    const newNote = Number(this.getText()) + octaves * 12;
     this.setEditorValue_(newNote);
 
     this.animationTarget_ = this.fieldEditorWidth_ * octaves * -1;
@@ -824,10 +762,9 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Animate the piano up or down an octave by sliding it to the left or right.
-   * @private
    */
-  stepOctaveAnimation_() {
-    var absDiff = Math.abs(this.animationPos_ - this.animationTarget_);
+  private stepOctaveAnimation_() {
+    const absDiff = Math.abs(this.animationPos_ - this.animationTarget_);
     if (absDiff < 1) {
       this.pianoSVG_.setAttribute("transform", "translate(0, 0)");
       this.setCKeyLabelsVisible_(true);
@@ -844,7 +781,7 @@ export class FieldNote extends Blockly.FieldTextInput {
     requestAnimationFrame(this.stepOctaveAnimation_.bind(this));
   }
 
-  doValueUpdate_(newValue) {
+  doValueUpdate_(newValue: string) {
     super.doValueUpdate_(newValue);
 
     if (!this.textElement_) {
@@ -857,20 +794,19 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * For a MIDI note number, find the index of the corresponding piano key.
-   * @param {number} noteNum The note number.
-   * @returns {number} The index of the piano key.
-   * @private
+   *
+   * @param noteNum The note number.
+   * @returns The index of the piano key.
    */
-  noteNumToKeyIndex_(noteNum) {
+  private noteNumToKeyIndex_(noteNum: number): number {
     return Math.floor(noteNum) - this.displayedOctave_ * 12;
   }
 
   /**
    * Update the selected note and labels on the field.
-   * @private
    */
-  updateSelection_() {
-    var noteNum = Number(this.getText());
+  private updateSelection_() {
+    const noteNum = Number(this.getText());
 
     // If the note is outside the currently displayed octave, update it
     if (
@@ -881,11 +817,11 @@ export class FieldNote extends Blockly.FieldTextInput {
       this.displayedOctave_ = Math.floor(noteNum / 12);
     }
 
-    var index = this.noteNumToKeyIndex_(noteNum);
+    const index = this.noteNumToKeyIndex_(noteNum);
 
     // Clear the highlight on all keys
     this.keySVGs_.forEach(function (svg) {
-      var isBlack = svg.getAttribute("data-isBlack");
+      const isBlack = svg.getAttribute("data-isBlack");
       if (isBlack === "true") {
         svg.setAttribute("fill", FieldNote.BLACK_KEY_COLOR);
       } else {
@@ -896,11 +832,11 @@ export class FieldNote extends Blockly.FieldTextInput {
     if (this.keySVGs_[index]) {
       this.keySVGs_[index].setAttribute("fill", FieldNote.KEY_SELECTED_COLOR);
       // Update the note name text
-      var noteName = FieldNote.KEY_INFO[index].name;
+      const noteName = FieldNote.KEY_INFO[index].name;
       this.noteNameText_.textContent =
         noteName + " (" + Math.floor(noteNum) + ")";
       // Update the low and high C note names
-      var lowCNum = this.displayedOctave_ * 12;
+      const lowCNum = this.displayedOctave_ * 12;
       this.lowCText_.textContent = "C(" + lowCNum + ")";
       this.highCText_.textContent = "C(" + (lowCNum + 12) + ")";
     }
@@ -908,14 +844,15 @@ export class FieldNote extends Blockly.FieldTextInput {
 
   /**
    * Ensure that only a valid MIDI note number may be entered.
-   * @param {string} text The user's text.
-   * @return {?string} A string representing a valid note number, or null if invalid.
+   *
+   * @param text The user's text.
+   * @returns A string representing a valid note number, or null if invalid.
    */
-  doClassValidation_(text) {
+  doClassValidation_(text: string): string | null {
     if (text === null) {
       return null;
     }
-    var n = parseFloat(text || 0);
+    var n = parseFloat(text || "0");
     if (isNaN(n)) {
       return null;
     }
@@ -927,6 +864,10 @@ export class FieldNote extends Blockly.FieldTextInput {
     }
     return String(n);
   }
+}
+
+interface FieldNoteJsonConfig extends Blockly.FieldTextInputFromJsonConfig {
+  note: string;
 }
 
 /**
