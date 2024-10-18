@@ -28,20 +28,39 @@ import * as Blockly from "blockly/core";
 
 class ScratchFieldAngle extends Blockly.FieldNumber {
   /**
-   * Construct a FieldAngle from a JSON arg object.
-   * @param options A JSON object with options (angle).
-   * @returns The new field instance.
+   * The highlighted portion of the angle picker circle, between 0º and the
+   * selected angle.
    */
-  fromJson(options: ScratchFieldAngleJsonConfig): ScratchFieldAngle {
-    return new ScratchFieldAngle(options["angle"]);
-  }
-
   private gauge?: SVGPathElement;
+
+  /**
+   * The line to the angle picker handle.
+   */
   private line?: SVGLineElement;
+
+  /**
+   * The grabbable handle used to choose an angle.
+   */
   private handle?: SVGGElement;
+
+  /**
+   * The arrow graphic shown on the grab handle.
+   */
   private arrow?: SVGImageElement;
+
+  /**
+   * Opaque identifier used to unbind event listener in dispose().
+   */
   private mouseDownWrapper: Blockly.browserEvents.Data;
+
+  /**
+   * Opaque identifier used to unbind event listener in dispose().
+   */
   private mouseMoveWrapper: Blockly.browserEvents.Data;
+
+  /**
+   * Opaque identifier used to unbind event listener in dispose().
+   */
   private mouseUpWrapper: Blockly.browserEvents.Data;
 
   /**
@@ -87,24 +106,25 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
   /**
    * Radius of drag handle
    */
-  handleRADIUS = 10;
+  HANDLE_RADIUS = 10;
 
   /**
    * Width of drag handle arrow
    */
-  ARROW_WIDTH = this.handleRADIUS;
+  ARROW_WIDTH = this.HANDLE_RADIUS;
 
   /**
-   * Half the stroke-width used for the "glow" around the drag handle, rounded up to nearest whole pixel
+   * Half the stroke-width used for the "glow" around the drag handle, rounded
+   * up to nearest whole pixel.
    */
 
-  handleGLOW_WIDTH = 3;
+  HANDLE_GLOW_WIDTH = 3;
 
   /**
    * Radius of protractor circle.  Slightly smaller than protractor size since
    * otherwise SVG crops off half the border at the edges.
    */
-  RADIUS = this.HALF - this.handleRADIUS - this.handleGLOW_WIDTH;
+  RADIUS = this.HALF - this.HANDLE_RADIUS - this.HANDLE_GLOW_WIDTH;
 
   /**
    * Radius of central dot circle.
@@ -117,9 +137,7 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
   ARROW_SVG_PATH = "icons/arrow.svg";
 
   /**
-   * Clean up this FieldAngle, as well as the inherited FieldTextInput.
-   * @return {!Function} Closure to call on destruction of the WidgetDiv.
-   * @private
+   * Clean up this FieldAngle, as well as the inherited FieldNumber.
    */
   dispose() {
     super.dispose();
@@ -143,9 +161,9 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
     // If there is an existing drop-down someone else owns, hide it immediately and clear it.
     Blockly.DropDownDiv.hideWithoutAnimation();
     Blockly.DropDownDiv.clearContent();
-    var div = Blockly.DropDownDiv.getContentDiv();
+    const div = Blockly.DropDownDiv.getContentDiv();
     // Build the SVG DOM.
-    var svg = Blockly.utils.dom.createSvgElement(
+    const svg = Blockly.utils.dom.createSvgElement(
       "svg",
       {
         xmlns: "http://www.w3.org/2000/svg",
@@ -178,7 +196,7 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
       { class: "blocklyAngleGauge" },
       svg
     );
-    // The moving line, x2 and y2 are set in updateGraph_
+    // The moving line, x2 and y2 are set in updateGraph
     this.line = Blockly.utils.dom.createSvgElement(
       "line",
       {
@@ -189,7 +207,7 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
       svg
     );
     // The fixed vertical line at the offset
-    var offsetRadians = (Math.PI * this.OFFSET) / 180;
+    const offsetRadians = (Math.PI * this.OFFSET) / 180;
     Blockly.utils.dom.createSvgElement(
       "line",
       {
@@ -202,7 +220,7 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
       svg
     );
     // Draw markers around the edge.
-    for (var angle = 0; angle < 360; angle += 15) {
+    for (let angle = 0; angle < 360; angle += 15) {
       Blockly.utils.dom.createSvgElement(
         "line",
         {
@@ -235,7 +253,7 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
       {
         cx: 0,
         cy: 0,
-        r: this.handleRADIUS,
+        r: this.HANDLE_RADIUS,
         class: "blocklyAngleDragHandle",
       },
       this.handle
@@ -275,12 +293,11 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
       this.onMouseDown
     );
 
-    this.updateGraph_();
+    this.updateGraph();
   }
 
   /**
    * Set the angle to match the mouse's position.
-   * @param {!Event} e Mouse move event.
    */
   onMouseDown() {
     this.mouseMoveWrapper = Blockly.browserEvents.bind(
@@ -299,7 +316,6 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
 
   /**
    * Set the angle to match the mouse's position.
-   * @param {!Event} e Mouse move event.
    */
   onMouseUp() {
     Blockly.browserEvents.unbind(this.mouseMoveWrapper);
@@ -312,10 +328,10 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
    */
   onMouseMove(e: PointerEvent) {
     e.preventDefault();
-    var bBox = this.gauge.ownerSVGElement.getBoundingClientRect();
-    var dx = e.clientX - bBox.left - this.HALF;
-    var dy = e.clientY - bBox.top - this.HALF;
-    var angle = Math.atan(-dy / dx);
+    const bBox = this.gauge.ownerSVGElement.getBoundingClientRect();
+    const dx = e.clientX - bBox.left - this.HALF;
+    const dy = e.clientY - bBox.top - this.HALF;
+    let angle = Math.atan(-dy / dx);
     if (isNaN(angle)) {
       // This shouldn't happen, but let's not let this error propagate further.
       return;
@@ -343,27 +359,27 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
   /**
    * Redraw the graph with the current angle.
    */
-  private updateGraph_() {
+  private updateGraph() {
     if (!this.gauge) {
       return;
     }
-    var angleDegrees = (Number(this.getValue()) % 360) + this.OFFSET;
-    var angleRadians = this.toRadians(angleDegrees);
-    var path = ["M ", this.HALF, ",", this.HALF];
-    var x2 = this.HALF;
-    var y2 = this.HALF;
+    const angleDegrees = (Number(this.getValue()) % 360) + this.OFFSET;
+    let angleRadians = this.toRadians(angleDegrees);
+    const path = ["M ", this.HALF, ",", this.HALF];
+    let x2 = this.HALF;
+    let y2 = this.HALF;
     if (!isNaN(angleRadians)) {
-      var angle1 = this.toRadians(this.OFFSET);
-      var x1 = Math.cos(angle1) * this.RADIUS;
-      var y1 = Math.sin(angle1) * -this.RADIUS;
+      const angle1 = this.toRadians(this.OFFSET);
+      const x1 = Math.cos(angle1) * this.RADIUS;
+      const y1 = Math.sin(angle1) * -this.RADIUS;
       if (this.CLOCKWISE) {
         angleRadians = 2 * angle1 - angleRadians;
       }
       x2 += Math.cos(angleRadians) * this.RADIUS;
       y2 -= Math.sin(angleRadians) * this.RADIUS;
       // Use large arc only if input value is greater than wrap
-      var largeFlag = Math.abs(angleDegrees - this.OFFSET) > 180 ? 1 : 0;
-      var sweepFlag = Number(this.CLOCKWISE);
+      const largeFlag = Math.abs(angleDegrees - this.OFFSET) > 180 ? 1 : 0;
+      let sweepFlag = Number(this.CLOCKWISE);
       if (angleDegrees < this.OFFSET) {
         sweepFlag = 1 - sweepFlag; // Sweep opposite direction if less than the offset
       }
@@ -405,13 +421,13 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
   /**
    * Ensure that only an angle may be entered.
    * @param text The user's text.
-   * @return A string representing a valid angle, or null if invalid.
+   * @returns A string representing a valid angle, or null if invalid.
    */
   doClassValidation_(text: string): number | null {
     if (text === null) {
       return null;
     }
-    var n = parseFloat(text || "0");
+    let n = parseFloat(text || "0");
     if (isNaN(n)) {
       return null;
     }
@@ -427,7 +443,7 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
 
   doValueUpdate_(newValue: number) {
     super.doValueUpdate_(newValue);
-    this.updateGraph_();
+    this.updateGraph();
   }
 
   toDegrees(radians: number) {
@@ -436,6 +452,16 @@ class ScratchFieldAngle extends Blockly.FieldNumber {
 
   toRadians(degrees: number) {
     return (degrees * Math.PI) / 180;
+  }
+
+  /**
+   * Construct a FieldAngle from a JSON arg object.
+   *
+   * @param options A JSON object with options (angle).
+   * @returns The new field instance.
+   */
+  fromJson(options: ScratchFieldAngleJsonConfig): ScratchFieldAngle {
+    return new ScratchFieldAngle(options["angle"]);
   }
 }
 
