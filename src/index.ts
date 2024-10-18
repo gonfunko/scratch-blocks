@@ -51,7 +51,7 @@ import { registerScratchFieldAngle } from "./fields/scratch_field_angle";
 import {
   registerFieldColourSlider,
   FieldColourSlider,
-} from "./fields/field_colour_slider.js";
+} from "./fields/field_colour_slider";
 import { registerScratchFieldDropdown } from "./fields/scratch_field_dropdown";
 import { registerFieldMatrix } from "./fields/field_matrix";
 import { registerFieldNote, FieldNote } from "./fields/field_note";
