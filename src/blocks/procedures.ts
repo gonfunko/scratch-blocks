@@ -23,7 +23,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { FieldTextInputRemovable } from "../fields/field_textinput_removable.js";
+import { FieldTextInputRemovable } from "../fields/field_textinput_removable";
 import type { ScratchDragger } from "../scratch_dragger";
 
 /**
@@ -1117,7 +1117,7 @@ interface ProcedureBlock extends Blockly.BlockSvg {
   addProcedureLabel_: (text: string) => void;
 }
 
-interface ProcedureDeclarationBlock extends ProcedureBlock {
+export interface ProcedureDeclarationBlock extends ProcedureBlock {
   displayNames_: string[];
   argumentDefaults_: string[];
   removeFieldCallback: (field: Blockly.Field) => void;

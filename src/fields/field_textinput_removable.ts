@@ -23,21 +23,14 @@
  * @author pkaplan@media.mit.edu (Paul Kaplan)
  */
 import * as Blockly from "blockly/core";
+import type { ProcedureDeclarationBlock } from "../blocks/procedures";
 
 /**
  * Class for an editable text field displaying a deletion icon when selected.
- * @param {string} text The initial content of the field.
- * @param {Function=} opt_validator An optional function that is called
- *     to validate any constraints on what the user entered.  Takes the new
- *     text as an argument and returns either the accepted text, a replacement
- *     text, or null to abort the change.
- * @param {RegExp=} opt_restrictor An optional regular expression to restrict
- *     typed text to. Text that doesn't match the restrictor will never show
- *     in the text field.
- * @extends {Blockly.FieldTextInput}
- * @constructor
  */
 export class FieldTextInputRemovable extends Blockly.FieldTextInput {
+  private removeButtonMouseWrapper_?: Blockly.browserEvents.Data;
+
   /**
    * Show the inline free-text editor on top of the text with the remove button.
    */
@@ -68,11 +61,12 @@ export class FieldTextInputRemovable extends Blockly.FieldTextInput {
   /**
    * Function to call when remove button is called. Checks for removeFieldCallback
    * on sourceBlock and calls it if possible.
-   * @private
    */
-  removeCallback_() {
-    if (this.sourceBlock_ && this.sourceBlock_.removeFieldCallback) {
-      this.sourceBlock_.removeFieldCallback(this);
+  private removeCallback_() {
+    if (this.sourceBlock_ && "removeFieldCallback" in this.sourceBlock_) {
+      (this.sourceBlock_ as ProcedureDeclarationBlock).removeFieldCallback(
+        this
+      );
     } else {
       console.warn("Expected a source block with removeFieldCallback");
     }
@@ -81,13 +75,16 @@ export class FieldTextInputRemovable extends Blockly.FieldTextInput {
   /**
    * Helper function to construct a FieldTextInputRemovable from a JSON arg object,
    * dereferencing any string table references.
-   * @param {!Object} options A JSON object with options (text, class, and
-   *                          spellcheck).
-   * @returns {!Blockly.FieldTextInputRemovable} The new text input.
-   * @public
+   *
+   * @param options A JSON object with options (text, class, and spellcheck).
+   * @returns The new text input.
    */
-  fromJson(options) {
-    const text = Blockly.utils.replaceMessageReferences(options["text"]);
+  fromJson(
+    options: Blockly.FieldTextInputFromJsonConfig
+  ): FieldTextInputRemovable {
+    const text = Blockly.utils.parsing.replaceMessageReferences(
+      options["text"]
+    );
     const field = new FieldTextInputRemovable(text, null, options);
     if (typeof options["spellcheck"] == "boolean") {
       field.setSpellcheck(options["spellcheck"]);
