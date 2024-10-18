@@ -57,7 +57,7 @@ import { registerFieldMatrix } from "./fields/field_matrix.js";
 import { registerFieldNote, FieldNote } from "./fields/field_note.js";
 import { registerFieldNumber } from "./fields/field_number.js";
 import { registerFieldTextInputRemovable } from "./fields/field_textinput_removable.js";
-import { registerFieldVariableGetter } from "./fields/field_variable_getter.js";
+import { registerFieldVariableGetter } from "./fields/field_variable_getter";
 import { registerScratchFieldVariable } from "./fields/scratch_field_variable";
 import { registerFieldVerticalSeparator } from "./fields/field_vertical_separator";
 import { registerRecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater";

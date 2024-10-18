@@ -27,29 +27,36 @@ import * as Blockly from "blockly/core";
 
 /**
  * Class for a variable getter field.
- * @param {string} allowedVariableType The type of variables this field can display.
  */
 class FieldVariableGetter extends Blockly.FieldLabel {
-  constructor(allowedVariableType = "") {
+  private variable: Blockly.IVariableModel<Blockly.IVariableState> | null =
+    null;
+
+  /**
+   * Creates a new FieldVariableGetter.
+   *
+   * @param allowedVariableType The type of variables this field can display.
+   */
+  constructor(private allowedVariableType = "") {
     super(Blockly.Field.SKIP_SETUP);
     this.SERIALIZABLE = true;
-    this.allowedVariableType = allowedVariableType;
-    this.variable = null;
   }
 
   /**
    * Returns the ID of this field's variable.
-   * @return {string} The ID of this field's variable.
+   *
+   * @returns The ID of this field's variable.
    */
-  getValue() {
+  getValue(): string {
     return this.variable?.getId() ?? "";
   }
 
   /**
    * Returns the name of this field's variable.
-   * @return {string} The name of this field's variable.
+   *
+   * @returns The name of this field's variable.
    */
-  getText() {
+  getText(): string {
     return this.variable?.getName() ?? "";
   }
 
@@ -57,19 +64,19 @@ class FieldVariableGetter extends Blockly.FieldLabel {
    * Get the variable model for the variable associated with this field.
    * Not guaranteed to be in the variable map on the workspace (e.g. if accessed
    * after the variable has been deleted).
-   * @return {?Blockly.VariableModel} the selected variable, or null if none was
-   *     selected.
-   * @package
+   *
+   * @returns the selected variable, or null if none was selected.
    */
-  getVariable() {
+  getVariable(): Blockly.IVariableModel<Blockly.IVariableState> | null {
     return this.variable;
   }
 
   /**
    * Updates this field's variable to one with the given ID.
-   * @param {string} newVariableId ID of a variable this field should represent.
+   *
+   * @param newVariableId ID of a variable this field should represent.
    */
-  doValueUpdate_(newVariableId) {
+  doValueUpdate_(newVariableId: string) {
     super.doValueUpdate_(newVariableId);
     const workspace = this.getSourceBlock().workspace;
     this.variable = Blockly.Variables.getVariable(workspace, newVariableId);
@@ -85,20 +92,24 @@ class FieldVariableGetter extends Blockly.FieldLabel {
     this.forceRerender();
   }
 
-  static fromJson(options) {
+  static fromJson(options: FieldVariableGetterConfig) {
     return new FieldVariableGetter(options["allowedVariableType"]);
   }
 
-  fromXml(element) {
+  fromXml(element: Element) {
     this.setValue(element.getAttribute("id"));
   }
 
-  toXml(element) {
+  toXml(element: Element): Element {
     element.setAttribute("id", this.variable.getId());
     element.setAttribute("variabletype", this.variable.getType());
     element.textContent = this.variable.getName();
     return element;
   }
+}
+
+interface FieldVariableGetterConfig extends Blockly.FieldLabelConfig {
+  allowedVariableType?: string;
 }
 
 /**
