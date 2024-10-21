@@ -5,10 +5,21 @@
  */
 
 import * as Blockly from "blockly/core";
-import { BlockCommentBase } from "./events_block_comment_base";
+import {
+  BlockCommentBase,
+  BlockCommentBaseJson,
+} from "./events_block_comment_base";
+import type { ScratchCommentBubble } from "../scratch_comment_bubble";
 
 class BlockCommentCreate extends BlockCommentBase {
-  constructor(opt_blockComment) {
+  json: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+
+  constructor(opt_blockComment?: ScratchCommentBubble) {
     super(opt_blockComment);
     this.type = "block_comment_create";
     const size = opt_blockComment.getSize();
@@ -25,24 +36,39 @@ class BlockCommentCreate extends BlockCommentBase {
     this.recordUndo = false;
   }
 
-  toJson() {
+  toJson(): BlockCommentCreateJson {
     return {
       ...super.toJson(),
-      json: this.json,
+      ...this.json,
     };
   }
 
-  static fromJson(json, workspace, event) {
-    const newEvent = super.fromJson(json, workspace, event);
+  static fromJson(
+    json: BlockCommentCreateJson,
+    workspace: Blockly.Workspace,
+    event?: any
+  ): BlockCommentCreate {
+    const newEvent = super.fromJson(
+      json,
+      workspace,
+      event ?? new BlockCommentCreate()
+    ) as BlockCommentCreate;
     newEvent.json = {
-      x: json["json"]["x"],
-      y: json["json"]["y"],
-      width: json["json"]["width"],
-      height: json["json"]["height"],
+      x: json["x"],
+      y: json["y"],
+      width: json["width"],
+      height: json["height"],
     };
 
     return newEvent;
   }
+}
+
+interface BlockCommentCreateJson extends BlockCommentBaseJson {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 Blockly.registry.register(
