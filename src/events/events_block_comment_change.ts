@@ -5,10 +5,21 @@
  */
 
 import * as Blockly from "blockly/core";
-import { BlockCommentBase } from "./events_block_comment_base";
+import {
+  BlockCommentBase,
+  BlockCommentBaseJson,
+} from "./events_block_comment_base";
+import type { ScratchCommentBubble } from "../scratch_comment_bubble";
 
 class BlockCommentChange extends BlockCommentBase {
-  constructor(opt_blockComment, oldContents, newContents) {
+  oldContents_: string;
+  newContents_: string;
+
+  constructor(
+    opt_blockComment?: ScratchCommentBubble,
+    oldContents?: string,
+    newContents?: string
+  ) {
     super(opt_blockComment);
     this.type = "block_comment_change";
     this.oldContents_ = oldContents;
@@ -19,7 +30,7 @@ class BlockCommentChange extends BlockCommentBase {
     this.recordUndo = false;
   }
 
-  toJson() {
+  toJson(): BlockCommentChangeJson {
     return {
       ...super.toJson(),
       newContents: this.newContents_,
@@ -27,13 +38,26 @@ class BlockCommentChange extends BlockCommentBase {
     };
   }
 
-  static fromJson(json, workspace, event) {
-    const newEvent = super.fromJson(json, workspace, event);
+  static fromJson(
+    json: BlockCommentChangeJson,
+    workspace: Blockly.Workspace,
+    event?: any
+  ): BlockCommentChange {
+    const newEvent = super.fromJson(
+      json,
+      workspace,
+      event ?? new BlockCommentChange()
+    ) as BlockCommentChange;
     newEvent.newContents_ = json["newContents"];
     newEvent.oldContents_ = json["oldContents"];
 
     return newEvent;
   }
+}
+
+interface BlockCommentChangeJson extends BlockCommentBaseJson {
+  newContents: string;
+  oldContents: string;
 }
 
 Blockly.registry.register(
