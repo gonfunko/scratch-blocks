@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { BowlerHat } from "./bowler_hat.js";
+import { BowlerHat } from "./bowler_hat";
 
 export class RenderInfo extends Blockly.zelos.RenderInfo {
   populateTopRow_() {

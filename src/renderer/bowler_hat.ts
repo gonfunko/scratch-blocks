@@ -7,7 +7,7 @@
 import * as Blockly from "blockly/core";
 
 export class BowlerHat extends Blockly.blockRendering.Hat {
-  constructor(constants) {
+  constructor(constants: Blockly.blockRendering.ConstantProvider) {
     super(constants);
     // Calculated dynamically by computeBounds_().
     this.width = 0;
