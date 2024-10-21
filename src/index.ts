@@ -40,7 +40,7 @@ import "./scratch_variable_model";
 import "./scratch_connection_checker";
 import "./flyout_checkbox_icon";
 import "./events/events_block_comment_change";
-import "./events/events_block_comment_collapse.js";
+import "./events/events_block_comment_collapse";
 import "./events/events_block_comment_create.js";
 import "./events/events_block_comment_delete.js";
 import "./events/events_block_comment_move.js";
