@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { BlockCommentBase } from "./events_block_comment_base.js";
+import { BlockCommentBase } from "./events_block_comment_base";
 
 class BlockCommentResize extends BlockCommentBase {
   constructor(opt_blockComment, oldSize, newSize) {
