@@ -51,11 +51,14 @@ export class RenderInfo extends Blockly.zelos.RenderInfo {
         Blockly.blockRendering.Types.isHat(e)
       );
       hat.width = this.width;
-      this.topRow.measure(true);
+      this.topRow.measure();
     }
   }
 
-  getInRowSpacing_(prev, next) {
+  getInRowSpacing_(
+    prev: Blockly.blockRendering.Measurable,
+    next: Blockly.blockRendering.Measurable
+  ): number {
     if (
       this.isBowlerHatBlock() &&
       ((prev && Blockly.blockRendering.Types.isHat(prev)) ||
@@ -68,7 +71,10 @@ export class RenderInfo extends Blockly.zelos.RenderInfo {
     return super.getInRowSpacing_(prev, next);
   }
 
-  getSpacerRowHeight_(prev, next) {
+  getSpacerRowHeight_(
+    prev: Blockly.blockRendering.Row,
+    next: Blockly.blockRendering.Row
+  ): number {
     if (this.isBowlerHatBlock() && prev === this.topRow) {
       return 0;
     }
@@ -76,14 +82,20 @@ export class RenderInfo extends Blockly.zelos.RenderInfo {
     return super.getSpacerRowHeight_(prev, next);
   }
 
-  getElemCenterline_(row, elem) {
+  getElemCenterline_(
+    row: Blockly.blockRendering.Row,
+    elem: Blockly.blockRendering.Measurable
+  ): number {
     if (this.isBowlerHatBlock() && Blockly.blockRendering.Types.isField(elem)) {
       return row.yPos + row.height / 2;
     } else if (
+      "isScratchExtension" in this.block_ &&
       this.block_.isScratchExtension &&
       Blockly.blockRendering.Types.isField(elem) &&
-      elem.field instanceof Blockly.FieldImage &&
-      elem.field === this.block_.inputList[0].fieldRow[0] &&
+      (elem as Blockly.blockRendering.Field).field instanceof
+        Blockly.FieldImage &&
+      (elem as Blockly.blockRendering.Field).field ===
+        this.block_.inputList[0].fieldRow[0] &&
       this.block_.previousConnection
     ) {
       // Vertically center the icon on extension blocks.
