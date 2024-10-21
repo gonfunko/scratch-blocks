@@ -42,7 +42,7 @@ import "./flyout_checkbox_icon";
 import "./events/events_block_comment_change";
 import "./events/events_block_comment_collapse";
 import "./events/events_block_comment_create";
-import "./events/events_block_comment_delete.js";
+import "./events/events_block_comment_delete";
 import "./events/events_block_comment_move.js";
 import "./events/events_block_comment_resize.js";
 import "./events/events_scratch_variable_create.js";

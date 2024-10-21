@@ -6,9 +6,13 @@
 
 import * as Blockly from "blockly/core";
 import { BlockCommentBase } from "./events_block_comment_base";
+import type { ScratchCommentBubble } from "../scratch_comment_bubble";
 
 class BlockCommentDelete extends BlockCommentBase {
-  constructor(opt_blockComment, sourceBlock) {
+  constructor(
+    opt_blockComment?: ScratchCommentBubble,
+    sourceBlock?: Blockly.Block
+  ) {
     super(opt_blockComment);
     this.type = "block_comment_delete";
     this.blockId = sourceBlock.id;
