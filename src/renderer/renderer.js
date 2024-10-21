@@ -8,7 +8,7 @@ import * as Blockly from "blockly/core";
 import { Drawer } from "./drawer";
 import { RenderInfo } from "./render_info.js";
 import { ConstantProvider } from "./constants";
-import { PathObject } from "./path_object.js";
+import { PathObject } from "./path_object";
 
 /**
  * Custom renderer for Scratch-style blocks.

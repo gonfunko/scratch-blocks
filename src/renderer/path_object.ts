@@ -15,9 +15,9 @@ export class PathObject extends Blockly.zelos.PathObject {
    * Apply the stored colours to the block's path, taking into account whether
    * the paths belong to a shadow block.
    *
-   * @param {!Blockly.BlockSvg} block The source block.
+   * @param block The source block.
    */
-  applyColour(block) {
+  applyColour(block: Blockly.BlockSvg) {
     super.applyColour(block);
 
     // These blocks are special in that, while they are technically shadow
