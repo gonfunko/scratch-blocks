@@ -17,53 +17,55 @@ export class ScratchRenderer extends Blockly.zelos.Renderer {
   /**
    * Create a new instance of the renderer's drawer.
    *
-   * @param {!Blockly.BlockSvg} block The block to render.
-   * @param info {!Blockly.blockRendering.RenderInfo} An object containing all
-   *     information needed to render this block.
-   * @returns {!Drawer} The drawer.
+   * @param block The block to render.
+   * @param infoAn object containing all the information needed to render this
+   *     block.
+   * @returns The drawer.
    */
-  makeDrawer_(block, info) {
+  makeDrawer_(block: Blockly.BlockSvg, info: RenderInfo): Drawer {
     return new Drawer(block, info);
   }
 
   /**
    * Create a new instance of the renderer's render info object.
    *
-   * @param {!Blockly.BlockSvg} block The block to measure.
-   * @returns {!RenderInfo} The render info object.
+   * @param block The block to measure.
+   * @returns The render info object.
    */
-  makeRenderInfo_(block) {
+  makeRenderInfo_(block: Blockly.BlockSvg): RenderInfo {
     return new RenderInfo(this, block);
   }
 
   /**
    * Create a new instance of the renderer's constant provider.
    *
-   * @returns {!ConstantProvider} The constant provider.
+   * @returns The constant provider.
    */
-  makeConstants_() {
+  makeConstants_(): ConstantProvider {
     return new ConstantProvider();
   }
 
   /**
    * Create a new instance of a renderer path object.
    *
-   * @param {!SVGElement} root The root SVG element.
-   * @param {!Blockly.BlockStyle} style The style object to use for colouring.
-   * @returns {!PathObject} The renderer path object.
+   * @param root The root SVG element.
+   * @param style The style object to use for colouring.
+   * @returns The renderer path object.
    */
-  makePathObject(root, style) {
+  makePathObject(
+    root: SVGElement,
+    style: Blockly.Theme.BlockStyle
+  ): PathObject {
     return new PathObject(root, style, this.getConstants());
   }
 
   /**
    * Determine whether or not to highlight a connection.
    *
-   * @param {!Blockly.RenderedConnection} connection The connection to determine
-   *     whether or not to highlight.
-   * @returns {boolean} True if we should highlight the connection.
+   * @param connection The connection to determine whether or not to highlight.
+   * @returns True if we should highlight the connection.
    */
-  shouldHighlightConnection(connection) {
+  shouldHighlightConnection(connection: Blockly.RenderedConnection): boolean {
     return (
       connection.type === Blockly.ConnectionType.INPUT_VALUE &&
       connection.getCheck()?.includes("Boolean")

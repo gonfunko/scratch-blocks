@@ -23,7 +23,7 @@ import "./blocks/sound";
 import * as scratchBlocksUtils from "./scratch_blocks_utils.js";
 import * as ScratchVariables from "./variables";
 import "./css";
-import "./renderer/renderer.js";
+import "./renderer/renderer";
 import * as contextMenuItems from "./context_menu_items";
 import {
   ContinuousToolbox,
