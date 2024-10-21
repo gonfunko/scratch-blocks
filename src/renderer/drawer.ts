@@ -5,9 +5,11 @@
  */
 
 import * as Blockly from "blockly/core";
+import type { RenderInfo } from "./render_info";
 
 export class Drawer extends Blockly.zelos.Drawer {
-  drawStatementInput_(row) {
+  info_: RenderInfo;
+  drawStatementInput_(row: Blockly.blockRendering.Row) {
     if (this.info_.isBowlerHatBlock()) {
       // Bowler hat blocks have straight sides with no C-shape/indentation for
       // statement blocks.
@@ -18,14 +20,17 @@ export class Drawer extends Blockly.zelos.Drawer {
     }
   }
 
-  drawRightSideRow_(row) {
+  drawRightSideRow_(row: Blockly.blockRendering.Row) {
     if (
       this.info_.isBowlerHatBlock() &&
       Blockly.blockRendering.Types.isSpacer(row)
     ) {
       // Multi-row bowler hat blocks are not supported, this may need
       // adjustment to do so.
-      Blockly.blockRendering.Drawer.prototype.drawRightSideRow_.call(this, row);
+      this.outlinePath_ += Blockly.utils.svgPaths.lineOnAxis(
+        "V",
+        row.yPos + row.height
+      );
     } else {
       super.drawRightSideRow_(row);
     }
