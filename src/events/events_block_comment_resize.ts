@@ -5,26 +5,51 @@
  */
 
 import * as Blockly from "blockly/core";
-import { BlockCommentBase } from "./events_block_comment_base";
+import {
+  BlockCommentBase,
+  BlockCommentBaseJson,
+} from "./events_block_comment_base";
+import type { ScratchCommentBubble } from "../scratch_comment_bubble";
 
 class BlockCommentResize extends BlockCommentBase {
-  constructor(opt_blockComment, oldSize, newSize) {
+  oldSize: Blockly.utils.Size;
+  newSize: Blockly.utils.Size;
+
+  constructor(
+    opt_blockComment?: ScratchCommentBubble,
+    oldSize?: Blockly.utils.Size,
+    newSize?: Blockly.utils.Size
+  ) {
     super(opt_blockComment);
     this.type = "block_comment_resize";
     this.oldSize = oldSize;
     this.newSize = newSize;
   }
 
-  toJson() {
+  toJson(): BlockCommentResizeJson {
     return {
       ...super.toJson(),
-      newSize: this.newSize,
-      oldSize: this.oldSize,
+      newSize: {
+        width: this.newSize.width,
+        height: this.newSize.height,
+      },
+      oldSize: {
+        width: this.oldSize.width,
+        height: this.oldSize.height,
+      },
     };
   }
 
-  static fromJson(json, workspace, event) {
-    const newEvent = super.fromJson(json, workspace, event);
+  static fromJson(
+    json: BlockCommentResizeJson,
+    workspace: Blockly.Workspace,
+    event?: any
+  ): BlockCommentResize {
+    const newEvent = super.fromJson(
+      json,
+      workspace,
+      event ?? new BlockCommentResize()
+    ) as BlockCommentResize;
     newEvent.newSize = new Blockly.utils.Size(
       json["newSize"]["width"],
       json["newSize"]["height"]
@@ -37,12 +62,23 @@ class BlockCommentResize extends BlockCommentBase {
     return newEvent;
   }
 
-  run(forward) {
+  run(forward: boolean) {
     const workspace = this.getEventWorkspace_();
     const block = workspace?.getBlockById(this.blockId);
     const comment = block?.getIcon(Blockly.icons.IconType.COMMENT);
     comment?.setBubbleSize(forward ? this.newSize : this.oldSize);
   }
+}
+
+interface BlockCommentResizeJson extends BlockCommentBaseJson {
+  newSize: {
+    width: number;
+    height: number;
+  };
+  oldSize: {
+    width: number;
+    height: number;
+  };
 }
 
 Blockly.registry.register(

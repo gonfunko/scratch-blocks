@@ -44,7 +44,7 @@ import "./events/events_block_comment_collapse";
 import "./events/events_block_comment_create";
 import "./events/events_block_comment_delete";
 import "./events/events_block_comment_move";
-import "./events/events_block_comment_resize.js";
+import "./events/events_block_comment_resize";
 import "./events/events_scratch_variable_create.js";
 import { buildShadowFilter } from "./shadows";
 import { registerScratchFieldAngle } from "./fields/scratch_field_angle";
