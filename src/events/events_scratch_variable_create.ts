@@ -5,9 +5,13 @@
  */
 
 import * as Blockly from "blockly/core";
+import { ScratchVariableModel } from "../scratch_variable_model";
 
 class ScratchVariableCreate extends Blockly.Events.VarCreate {
-  constructor(variable) {
+  isLocal: boolean;
+  isCloud: boolean;
+
+  constructor(variable?: ScratchVariableModel) {
     super(variable);
     if (!variable) return;
 
@@ -15,30 +19,34 @@ class ScratchVariableCreate extends Blockly.Events.VarCreate {
     this.isCloud = variable.isCloud;
   }
 
-  toJson() {
-    const json = super.toJson();
-    json["isLocal"] = this.isLocal;
-    json["isCloud"] = this.isCloud;
-    return json;
+  toJson(): ScratchVariableCreateJson {
+    return {
+      ...super.toJson(),
+      isLocal: this.isLocal,
+      isCloud: this.isCloud,
+    };
   }
 
-  static fromJson(json, workspace, event) {
-    const newEvent = super.fromJson(json, workspace, event);
+  static fromJson(
+    json: ScratchVariableCreateJson,
+    workspace: Blockly.Workspace,
+    event?: any
+  ): ScratchVariableCreate {
+    const newEvent = super.fromJson(
+      json,
+      workspace,
+      event ?? new ScratchVariableCreate()
+    ) as ScratchVariableCreate;
     newEvent.isLocal = json["isLocal"];
     newEvent.isCloud = json["isCloud"];
     return newEvent;
   }
 
-  run(forward) {
+  run(forward: boolean) {
     const workspace = this.getEventWorkspace_();
     const variableMap = workspace.getVariableMap();
     if (forward) {
-      const VariableModel = Blockly.registry.getObject(
-        Blockly.registry.Type.VARIABLE_MODEL,
-        Blockly.registry.DEFAULT,
-        true
-      );
-      const variable = new VariableModel(
+      const variable = new ScratchVariableModel(
         workspace,
         this.varName,
         this.varType,
@@ -57,6 +65,11 @@ class ScratchVariableCreate extends Blockly.Events.VarCreate {
       }
     }
   }
+}
+
+interface ScratchVariableCreateJson extends Blockly.Events.VarCreateJson {
+  isCloud: boolean;
+  isLocal: boolean;
 }
 
 Blockly.registry.register(

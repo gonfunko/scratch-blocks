@@ -11,7 +11,7 @@ import * as Blockly from "blockly/core";
  */
 export class ScratchVariableModel extends Blockly.VariableModel {
   constructor(
-    workspace: Blockly.WorkspaceSvg,
+    workspace: Blockly.Workspace,
     name: string,
     type: string,
     id: string,
