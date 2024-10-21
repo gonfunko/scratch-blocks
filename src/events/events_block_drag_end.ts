@@ -7,7 +7,10 @@
 import * as Blockly from "blockly/core";
 
 export class BlockDragEnd extends Blockly.Events.BlockBase {
-  constructor(block, isOutside) {
+  isOutside: boolean;
+  xml: Element | DocumentFragment;
+
+  constructor(block?: Blockly.Block, isOutside?: boolean) {
     super(block);
     this.type = "endDrag";
     this.isOutside = isOutside;
@@ -15,19 +18,32 @@ export class BlockDragEnd extends Blockly.Events.BlockBase {
     this.xml = Blockly.Xml.blockToDom(block, true);
   }
 
-  toJson() {
+  toJson(): BlockDragEndJson {
     return {
       ...super.toJson(),
       isOutside: this.isOutside,
-      xml: this.xml,
+      xml: Blockly.utils.xml.domToText(this.xml),
     };
   }
 
-  static fromJson(json, workspace, event) {
-    const newEvent = super.fromJson(json, workspace, event);
+  static fromJson(
+    json: BlockDragEndJson,
+    workspace: Blockly.Workspace,
+    event?: any
+  ): BlockDragEnd {
+    const newEvent = super.fromJson(
+      json,
+      workspace,
+      event ?? new BlockDragEnd()
+    ) as BlockDragEnd;
     newEvent.isOutside = json["isOutside"];
-    newEvent.xml = json["xml"];
+    newEvent.xml = Blockly.utils.xml.textToDom(json["xml"]);
 
     return newEvent;
   }
+}
+
+interface BlockDragEndJson extends Blockly.Events.BlockBaseJson {
+  isOutside: boolean;
+  xml: string;
 }
