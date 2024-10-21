@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { BlockDragOutside } from "./events/events_block_drag_outside.js";
+import { BlockDragOutside } from "./events/events_block_drag_outside";
 import { BlockDragEnd } from "./events/events_block_drag_end";
 import { isProcedureBlock, getCallers } from "./procedures";
 
@@ -83,7 +83,7 @@ export class ScratchDragger extends Blockly.dragging.Dragger {
       const outOfBounds = !this.isInsideWorkspace(event);
       if (outOfBounds !== this.draggedOutOfBounds) {
         const event = new BlockDragOutside(
-          this.getDragRoot(this.draggable),
+          this.getDragRoot(this.draggable) as Blockly.BlockSvg,
           outOfBounds
         );
         Blockly.Events.fire(event);
