@@ -5,7 +5,6 @@
  */
 
 import * as Blockly from "blockly/core";
-import { cssVarify } from "../colours";
 
 export class ConstantProvider extends Blockly.zelos.ConstantProvider {
   REPLACEMENT_GLOW_COLOUR = "#ffffff";
@@ -18,27 +17,42 @@ export class ConstantProvider extends Blockly.zelos.ConstantProvider {
    * styles contain any raw color values, corresponding CSS variables will be
    * created/overridden so that those colors can be dynamically referenced in
    * stylesheets.
-   * @param {!Blockly.Theme} The new theme to apply.
+   *
+   * @param theme The new theme to apply.
    */
-  setTheme(theme) {
-    const root = document.querySelector(":root");
+  setTheme(theme: Blockly.Theme) {
+    const root = document.querySelector(":root") as HTMLElement;
     for (const [key, colour] of Object.entries(theme.blockStyles)) {
-      if (typeof colour === "string") {
+      if (typeof colour !== "object") {
         const varKey = `--colour-${key}`;
         root.style.setProperty(varKey, colour);
       } else {
-        theme.setBlockStyle(`${key}_selected`, {
-          colourPrimary: colour.colourQuaternary ?? colour.colourTertiary,
-          colourSecondary: colour.colourQuaternary ?? colour.colourTertiary,
-          colourTertiary: colour.colourQuaternary ?? colour.colourTertiary,
-          colourQuaternary: colour.colourQuaternary ?? colour.colourTertiary,
-        });
+        const style = {
+          colourPrimary:
+            "colourQuaternary" in colour
+              ? `${colour.colourQuaternary}`
+              : colour.colourTertiary,
+          colourSecondary:
+            "colourQuaternary" in colour
+              ? `${colour.colourQuaternary}`
+              : colour.colourTertiary,
+          colourTertiary:
+            "colourQuaternary" in colour
+              ? `${colour.colourQuaternary}`
+              : colour.colourTertiary,
+          colourQuaternary:
+            "colourQuaternary" in colour
+              ? `${colour.colourQuaternary}`
+              : colour.colourTertiary,
+          hat: "",
+        };
+        theme.setBlockStyle(`${key}_selected`, style);
       }
     }
     super.setTheme(theme);
   }
 
-  createDom(svg, tagName, selector) {
+  createDom(svg: SVGElement, tagName: string, selector: string) {
     super.createDom(svg, tagName, selector);
     this.selectedGlowFilterId = "";
   }
