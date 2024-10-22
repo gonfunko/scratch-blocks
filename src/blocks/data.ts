@@ -20,7 +20,7 @@
 
 import * as Blockly from "blockly/core";
 import * as Constants from "../constants";
-import * as scratchBlocksUtils from "../scratch_blocks_utils.js";
+import * as scratchBlocksUtils from "../scratch_blocks_utils";
 import { renameVariable } from "../variables";
 import type { ScratchFieldVariable } from "../fields/scratch_field_variable";
 import type { ScratchVariableModel } from "../scratch_variable_model";

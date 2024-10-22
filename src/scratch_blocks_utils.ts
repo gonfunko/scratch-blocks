@@ -26,11 +26,12 @@ import * as Blockly from "blockly/core";
 
 /**
  * Compare strings with natural number sorting.
- * @param {string} str1 First input.
- * @param {string} str2 Second input.
- * @return {number} -1, 0, or 1 to signify greater than, equality, or less than.
+ *
+ * @param str1 First input.
+ * @param str2 Second input.
+ * @returns -1, 0, or 1 to signify greater than, equality, or less than.
  */
-export function compareStrings(str1, str2) {
+export function compareStrings(str1: string, str2: string): number {
   return str1.localeCompare(str2, [], {
     sensitivity: "base",
     numeric: true,
