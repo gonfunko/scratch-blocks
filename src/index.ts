@@ -29,7 +29,7 @@ import {
   registerContinuousToolbox,
   ContinuousMetrics,
 } from "@blockly/continuous-toolbox";
-import { CheckableContinuousFlyout } from "./checkable_continuous_flyout.js";
+import { CheckableContinuousFlyout } from "./checkable_continuous_flyout";
 import { buildGlowFilter, glowStack } from "./glows";
 import { ScratchContinuousToolbox } from "./scratch_continuous_toolbox";
 import "./scratch_comment_icon";

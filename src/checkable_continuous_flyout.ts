@@ -13,10 +13,9 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
   /**
    * Creates a new CheckableContinuousFlyout.
    *
-   * @param {!Blockly.Options} workspaceOptions Configuration options for the
-   *     flyout workspace.
+   * @param workspaceOptions Configuration options for the flyout workspace.
    */
-  constructor(workspaceOptions) {
+  constructor(workspaceOptions: Blockly.Options) {
     workspaceOptions.modalInputs = false;
     super(workspaceOptions);
     this.tabWidth_ = 0;
@@ -27,10 +26,10 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
   /**
    * Serializes a block to JSON in order to copy it to the main workspace.
    *
-   * @param {!Blockly.BlockSvg} block The block to serialize.
-   * @returns {!Object} A JSON representation of the block.
+   * @param block The block to serialize.
+   * @returns A JSON representation of the block.
    */
-  serializeBlock(block) {
+  protected serializeBlock(block: Blockly.BlockSvg) {
     const json = super.serializeBlock(block);
     // Delete the serialized block's ID so that a new one is generated when it is
     // placed on the workspace. Otherwise, the block on the workspace may be
@@ -42,11 +41,11 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
 
   /**
    * Set the state of a checkbox by block ID.
-   * @param {string} blockId ID of the block whose checkbox should be set
-   * @param {boolean} value Value to set the checkbox to.
-   * @public
+   *
+   * @param blockId ID of the block whose checkbox should be set
+   * @param value Value to set the checkbox to.
    */
-  setCheckboxState(blockId, value) {
+  setCheckboxState(blockId: string, value: boolean) {
     this.getWorkspace()
       .getBlockById(blockId)
       ?.getIcon("checkbox")
@@ -61,7 +60,7 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
     return 250;
   }
 
-  reflowInternal_() {
+  protected reflowInternal_() {
     super.reflowInternal_();
 
     if (this.RTL) {
