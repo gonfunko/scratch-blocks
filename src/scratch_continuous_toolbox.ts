@@ -62,12 +62,12 @@ export class ScratchContinuousToolbox extends ContinuousToolbox {
    */
   forceRerender() {
     const selectedCategoryName = this.selectedItem_?.getName();
-    super.refreshSelection();
+    this.getFlyout().show(this.getInitialFlyoutContents());
+    this.selectCategoryByName(selectedCategoryName);
     let callback;
     while ((callback = this.postRenderCallbacks.shift())) {
       callback();
     }
-    this.selectCategoryByName(selectedCategoryName);
   }
 
   /**

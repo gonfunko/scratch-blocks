@@ -6,7 +6,7 @@
 
 import * as Blockly from "blockly/core";
 import { ContinuousFlyout } from "@blockly/continuous-toolbox";
-import { RecyclableBlockFlyoutInflater } from "./recyclable_block_flyout_inflater";
+import { CheckboxBubble } from "./checkbox_bubble";
 import { StatusIndicatorLabel } from "./status_indicator_label";
 
 export class CheckableContinuousFlyout extends ContinuousFlyout {
@@ -19,22 +19,9 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
   constructor(workspaceOptions) {
     workspaceOptions.modalInputs = false;
     super(workspaceOptions);
-    this.tabWidth_ = -2;
+    this.tabWidth_ = 0;
     this.MARGIN = 12;
     this.GAP_Y = 12;
-  }
-
-  /**
-   * Displays the given contents in the flyout.
-   *
-   * @param {!Object} flyoutDef The new contents to show in the flyout.
-   */
-  show(flyoutDef) {
-    super.show(flyoutDef);
-    const inflater = this.getInflaterForType("block");
-    if (inflater instanceof RecyclableBlockFlyoutInflater) {
-      inflater.emptyRecycledBlocks();
-    }
   }
 
   /**
@@ -74,55 +61,29 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
     return 250;
   }
 
-  /**
-   * Sets whether or not block recycling is enabled in the flyout.
-   *
-   * @param {boolean} enabled True if recycling should be enabled.
-   */
-  setRecyclingEnabled(enabled) {
-    const inflater = this.getInflaterForType("block");
-    if (inflater instanceof RecyclableBlockFlyoutInflater) {
-      inflater.setRecyclingEnabled(enabled);
-    }
-  }
+  reflowInternal_() {
+    super.reflowInternal_();
 
-  /**
-   * Records scroll position for each category in the toolbox.
-   * The scroll position is determined by the coordinates of each category's
-   * label after the entire flyout has been rendered.
-   * @package
-   */
-  recordScrollPositions() {
-    // TODO(#211) Remove this once the continuous toolbox has been updated.
-    this.scrollPositions = [];
-    const categoryLabels = this.getContents()
-      .filter(
-        (item) =>
-          (item.type === "label" || item.type === "status_indicator_label") &&
-          item.element.isLabel() &&
-          this.getParentToolbox_().getCategoryByName(
-            item.element.getButtonText()
-          )
-      )
-      .map((item) => item.element);
-    for (const [index, label] of categoryLabels.entries()) {
-      this.scrollPositions.push({
-        name: label.getButtonText(),
-        position: label.getPosition(),
-      });
+    if (this.RTL) {
+      // The parent implementation assumes that the flyout grows to fit its
+      // contents, and adjusts blocks in RTL mode accordingly. In Scratch, the
+      // flyout width is fixed (and blocks may exceed it), so re-adjust blocks
+      // accordingly based on the actual fixed width.
+      for (const item of this.getContents()) {
+        const oldX = item.getElement().getBoundingRectangle().left;
+        let newX =
+          this.getWidth() / this.workspace_.scale -
+          item.getElement().getBoundingRectangle().getWidth() -
+          this.MARGIN;
+        if (
+          "checkboxInFlyout" in item.getElement() &&
+          item.getElement().checkboxInFlyout
+        ) {
+          newX -= CheckboxBubble.CHECKBOX_SIZE + CheckboxBubble.CHECKBOX_MARGIN;
+        }
+        item.getElement().moveBy(newX - oldX, 0);
+      }
     }
-  }
-
-  /**
-   * Positions the contents of the flyout.
-   *
-   * @param {!Blockly.FlyoutItem[]} The flyout items to position.
-   */
-  layout_(contents) {
-    // TODO(#211) Remove this once the continuous toolbox has been updated.
-    // Bypass the continuous flyout's layout method until the plugin is
-    // updated for the new flyout API.
-    Blockly.VerticalFlyout.prototype.layout_.call(this, contents);
   }
 
   /**

@@ -21,14 +21,14 @@ class StatusIndicatorLabelFlyoutInflater extends Blockly.LabelFlyoutInflater {
   load(
     state: Blockly.utils.toolbox.LabelInfo,
     flyoutWorkspace: Blockly.WorkspaceSvg
-  ): StatusIndicatorLabel {
+  ): Blockly.FlyoutItem {
     const label = new StatusIndicatorLabel(
       flyoutWorkspace,
       flyoutWorkspace.targetWorkspace,
       state
     );
     label.show();
-    return label;
+    return new Blockly.FlyoutItem(label, "status_indicator_label", true);
   }
 }
 
