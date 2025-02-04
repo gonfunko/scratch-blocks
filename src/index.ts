@@ -106,7 +106,6 @@ export function inject(container: Element, options: Blockly.BlocklyOptions) {
     },
   });
   const workspace = Blockly.inject(container, options);
-  (window as any).ws = workspace;
 
   buildGlowFilter(workspace);
   buildShadowFilter(workspace);
