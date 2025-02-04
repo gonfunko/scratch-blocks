@@ -8,6 +8,7 @@ import * as Blockly from "blockly/core";
 import { ContinuousFlyout } from "@blockly/continuous-toolbox";
 import { CheckboxBubble } from "./checkbox_bubble";
 import { StatusIndicatorLabel } from "./status_indicator_label";
+import { STATUS_INDICATOR_LABEL_TYPE } from "./status_indicator_label_flyout_inflater";
 
 export class CheckableContinuousFlyout extends ContinuousFlyout {
   /**
@@ -83,6 +84,19 @@ export class CheckableContinuousFlyout extends ContinuousFlyout {
         item.getElement().moveBy(newX - oldX, 0);
       }
     }
+  }
+
+  /**
+   * Validates that the given toolbox item represents a label.
+   *
+   * @param item The toolbox item to check.
+   * @returns True if the item represents a label in the flyout.
+   */
+  protected toolboxItemIsLabel(item: Blockly.FlyoutItem) {
+    return (
+      item.getType() === STATUS_INDICATOR_LABEL_TYPE ||
+      super.toolboxItemIsLabel(item)
+    );
   }
 
   /**
