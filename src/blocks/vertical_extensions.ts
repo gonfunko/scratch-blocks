@@ -159,6 +159,8 @@ const PROCEDURE_DEF_CONTEXTMENU = function (this: Blockly.Block) {
       ) {
         // Add the edit option at the end.
         menuOptions.push(ScratchProcedures.makeEditOption(this));
+        // duplicate for testing
+        menuOptions.push(ScratchProcedures.makeEditOption(this));
 
         // Find and remove the duplicate option
         for (let i = 0, option; (option = menuOptions[i]); i++) {
