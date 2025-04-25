@@ -440,7 +440,7 @@ export function isProcedureBlock(
 ): block is ProcedureBlock {
   return (
     block.type === Constants.PROCEDURES_CALL_BLOCK_TYPE ||
-    isProcedureDeclarationPart()
+    isProcedureDeclarationPart(block)
   );
 }
 
