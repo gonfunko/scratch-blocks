@@ -6,6 +6,7 @@
 
 import * as Blockly from "blockly/core";
 import { isProcedureDeclarationPart } from "./procedures";
+import * as Constants from "./constants";
 
 /**
  * Registers a block delete option that ignores shadows in the block count.
@@ -22,7 +23,8 @@ export function registerDeleteBlock() {
       if (
         !scope.block.isInFlyout &&
         scope.block.isDeletable() &&
-        !isProcedureDeclarationPart(scope.block)
+        !isProcedureDeclarationPart(scope.block) &&
+        !scope.block.type === Constants.PROCEDURES_DEFINITION_BLOCK_TYPE
       ) {
         return "enabled";
       }
