@@ -24,7 +24,7 @@ export function registerDeleteBlock() {
         !scope.block.isInFlyout &&
         scope.block.isDeletable() &&
         !isProcedureDeclarationPart(scope.block) &&
-        !scope.block.type === Constants.PROCEDURES_DEFINITION_BLOCK_TYPE
+        scope.block.type !== Constants.PROCEDURES_DEFINITION_BLOCK_TYPE
       ) {
         return "enabled";
       }
