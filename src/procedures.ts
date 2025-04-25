@@ -415,6 +415,21 @@ function deleteProcedureDefCallback(
 }
 
 /**
+ * Returns whether the given block is a part of a procedure hat.
+ *
+ * @param block The block to check.
+ * @returns True if the block is a procedure hat block part, otherwise false.
+ */
+export function isProcedureDeclarationPart(
+  block: Blockly.BlockSvg
+): block is ProcedureBlock {
+  return (
+    block.type === Constants.PROCEDURES_DECLARATION_BLOCK_TYPE ||
+    block.type === Constants.PROCEDURES_PROTOTYPE_BLOCK_TYPE
+  );
+}
+
+/**
  * Returns whether the given block is a procedure block and narrows its type.
  *
  * @param block The block to check.
@@ -425,8 +440,7 @@ export function isProcedureBlock(
 ): block is ProcedureBlock {
   return (
     block.type === Constants.PROCEDURES_CALL_BLOCK_TYPE ||
-    block.type === Constants.PROCEDURES_DECLARATION_BLOCK_TYPE ||
-    block.type === Constants.PROCEDURES_PROTOTYPE_BLOCK_TYPE
+    isProcedureDeclarationPart()
   );
 }
 
