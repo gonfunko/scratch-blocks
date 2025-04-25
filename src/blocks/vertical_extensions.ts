@@ -159,18 +159,31 @@ const PROCEDURE_DEF_CONTEXTMENU = function (this: Blockly.Block) {
       ) {
         // Add the edit option at the end.
         menuOptions.push(ScratchProcedures.makeEditOption(this));
-        // duplicate for testing
-        menuOptions.push(ScratchProcedures.makeEditOption(this));
 
-        // Find and remove the duplicate option
+        // Find and remove the duplicate option,
+        // and update the delete option
         for (let i = 0, option; (option = menuOptions[i]); i++) {
-          if (option.text == Blockly.Msg.DUPLICATE) {
+          if (
+            option.text == Blockly.Msg.DUPLICATE_BLOCK
+          ) {
             menuOptions.splice(i, 1);
-            break;
+          } else if (
+            option.text == Blockly.Msg.DELETE_BLOCK
+          ) {
+            const newOption =  {
+              callback: this.checkAndDelete,
+              enabled: option.enabled,
+              text: option.text,
+            };
+            // @ts-expect-error
+            newOption.scope = option.scope;
+            // @ts-expect-error
+            newOption.weight = option.weight;
+            menuOptions.splice(i, 1, newOption);
           }
         }
       },
-      checkAndDelete: function () {
+      checkAndDelete: (function () {
         const input = this.getInput("custom_block");
         // this is the root block, not the shadow block.
         if (input && input.connection && input.connection.targetBlock()) {
@@ -183,7 +196,7 @@ const PROCEDURE_DEF_CONTEXTMENU = function (this: Blockly.Block) {
             alert(Blockly.Msg.PROCEDURE_USED);
           }
         }
-      },
+      }).bind(this),
     },
     true
   );
