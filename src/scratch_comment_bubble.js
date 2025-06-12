@@ -168,11 +168,11 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
   }
 
   getFocusableElement() {
-    return this.this.getSvgRoot();
+    return this.getSvgRoot();
   }
 
   getFocusableTree() {
-    return this.sourceBlock.workspace;
+    return this.workspace;
   }
 
   onNodeFocus() {}

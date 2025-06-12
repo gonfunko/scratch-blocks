@@ -205,6 +205,10 @@ export class ScratchCommentIcon
     super.dispose();
   }
 
+  canBeFocused() {
+    return false;
+  }
+
   /**
    * Fires a block comment create event corresponding to this icon's comment.
    */
