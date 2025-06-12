@@ -5,7 +5,7 @@
  */
 
 import * as Blockly from "blockly/core";
-import { ScratchCommentBubble } from "./scratch_comment_bubble.js";
+import { ScratchCommentBubble } from "./scratch_comment_bubble";
 
 interface CommentState {
   text: string;
