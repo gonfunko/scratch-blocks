@@ -196,6 +196,10 @@ export class ScratchCommentIcon
     this.commentBubble.setCollapsed(!visible);
   }
 
+  getBubble() {
+    return this.commentBubble;
+  }
+
   dispose() {
     this.commentBubble.dispose();
     super.dispose();

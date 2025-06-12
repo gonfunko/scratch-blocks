@@ -166,4 +166,20 @@ export class ScratchCommentBubble extends Blockly.comments.CommentView {
     }
     super.dispose();
   }
+
+  getFocusableElement() {
+    return this.this.getSvgRoot();
+  }
+
+  getFocusableTree() {
+    return this.sourceBlock.workspace;
+  }
+
+  onNodeFocus() {}
+
+  onNodeBlur() {}
+
+  canBeFocused() {
+    return true;
+  }
 }
