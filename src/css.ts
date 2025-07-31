@@ -1011,12 +1011,12 @@ const styles = `
     z-index: 20000;  /* Arbitrary, but some apps depend on it... */
   }
 
-  .blocklyDropDownDiv .blocklyMenu .blocklyMenuItem:hover {
-    background: var(--colour-menuHover);
+  .blocklyDropDownDiv .blocklyMenu .blocklyMenuItem.blocklyMenuItemHighlight {
+    background-color: var(--colour-menuHover);
   }
 
-  .blocklyWidgetDiv .blocklyMenu .blocklyMenuItem:hover {
-    background: var(--colour-contextualMenuHover);
+  .blocklyWidgetDiv .blocklyMenu .blocklyMenuItem.blocklyMenuItemHighlight {
+    background-color: var(--colour-contextualMenuHover);
   }
 
   .blocklyWidgetDiv .blocklyMenu .blocklyMenuItemDisabled.blocklyMenuItem:hover {
@@ -1168,13 +1168,12 @@ const styles = `
     color: #4c97ff;
   }
   .blocklyDropDownDiv .blocklyMenuItem {
-    color: #fff;
     font-weight: bold;
     min-height: 32px;
     padding: 4px 7em 4px 28px;
   }
-  .high-contrast-theme.blocklyDropDownDiv .blocklyMenuItem {
-    color: #000;
+  .scratch-renderer.blocklyDropDownDiv .blocklyMenuItem .blocklyMenuItemContent {
+    color: var(--colour-text);
   }
   .blocklyToolboxSelected .blocklyTreeLabel {
     color: var(--colour-toolboxText);
