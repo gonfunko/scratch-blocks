@@ -702,16 +702,16 @@ const styles = `
   }
 
   .blocklyAngleCenterPoint {
-    stroke: #fff;
+    stroke: var(--colour-text);
     stroke-width: 1;
-    fill: #fff;
+    fill: var(--colour-text);
   }
 
   .blocklyAngleDragHandle {
-    stroke: #fff;
+    stroke: var(--colour-text);
     stroke-width: 5;
     stroke-opacity: 0.25;
-    fill: #fff;
+    fill: var(--colour-text);
     cursor: pointer;
   }
 
@@ -720,18 +720,18 @@ const styles = `
   }
 
   .blocklyAngleMarks {
-    stroke: #fff;
+    stroke: var(--colour-text);
     stroke-width: 1;
     stroke-opacity: 0.5;
   }
 
   .blocklyAngleGauge {
-    fill: #fff;
+    fill: var(--colour-text);
     fill-opacity: 0.20;
   }
 
   .blocklyAngleLine {
-    stroke: #fff;
+    stroke: var(--colour-text);
     stroke-width: 1;
     stroke-linecap: round;
     pointer-events: none;
