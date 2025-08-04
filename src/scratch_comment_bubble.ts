@@ -129,9 +129,10 @@ export class ScratchCommentBubble
   }
 
   dropAnchor() {
+    const verticalOffset = 16;
     this.moveTo(
       this.anchor.x + 40 * (this.workspace.RTL ? -1 : 1),
-      this.anchor.y - 16
+      this.anchor.y - verticalOffset
     );
     const location = this.getRelativeToSurfaceXY();
     this.anchorChain = Blockly.utils.dom.createSvgElement(
@@ -140,7 +141,7 @@ export class ScratchCommentBubble
         x1: this.anchor.x - location.x,
         y1: this.anchor.y - location.y,
         x2: (this.getSize().width / 2) * (this.workspace.RTL ? -1 : 1),
-        y2: 16,
+        y2: verticalOffset,
         style: `stroke: ${this.sourceBlock.getColourTertiary()}; stroke-width: 1`,
       },
       this.getSvgRoot()
