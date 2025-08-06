@@ -129,6 +129,7 @@ Blockly.ContextMenuRegistry.registry.unregister("blockInline");
 Blockly.ContextMenuItems.registerCommentOptions();
 Blockly.ContextMenuRegistry.registry.unregister("blockDelete");
 contextMenuItems.registerDeleteBlock();
+contextMenuItems.registerDuplicateBlock();
 Blockly.ContextMenuRegistry.registry.unregister("workspaceDelete");
 contextMenuItems.registerDeleteAll();
 Blockly.comments.CommentView.defaultCommentSize = new Blockly.utils.Size(
