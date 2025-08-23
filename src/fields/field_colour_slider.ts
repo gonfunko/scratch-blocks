@@ -308,6 +308,7 @@ export class FieldColourSlider extends FieldColour {
 
     Blockly.DropDownDiv.setColour("#ffffff", "#dddddd");
     Blockly.DropDownDiv.showPositionedByBlock(
+      // @ts-ignore
       this,
       this.getSourceBlock() as Blockly.BlockSvg
     );
@@ -395,5 +396,6 @@ export class FieldColourSlider extends FieldColour {
  * Register the field and any dependencies.
  */
 export function registerFieldColourSlider() {
+  // @ts-ignore
   Blockly.fieldRegistry.register("field_colour_slider", FieldColourSlider);
 }

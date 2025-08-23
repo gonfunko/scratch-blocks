@@ -24,6 +24,7 @@ export class FlyoutCheckboxIcon
     }
   }
 
+  // @ts-ignore
   getType(): Blockly.icons.IconType<FlyoutCheckboxIcon> {
     return this.type;
   }

@@ -9,6 +9,7 @@ import * as Blockly from "blockly/core";
 /**
  * A checkbox shown next to reporter blocks in the flyout.
  */
+// @ts-ignore
 export class CheckboxBubble
   implements Blockly.IBubble, Blockly.IRenderedElement
 {

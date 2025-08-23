@@ -29,19 +29,19 @@ export class ConstantProvider extends Blockly.zelos.ConstantProvider {
       } else {
         const style = {
           colourPrimary:
-            "colourQuaternary" in colour
+            "colourQuaternary" in colour && Boolean(colour.colourQuaternary)
               ? `${colour.colourQuaternary}`
               : colour.colourTertiary,
           colourSecondary:
-            "colourQuaternary" in colour
+            "colourQuaternary" in colour && Boolean(colour.colourQuaternary)
               ? `${colour.colourQuaternary}`
               : colour.colourTertiary,
           colourTertiary:
-            "colourQuaternary" in colour
+            "colourQuaternary" in colour && Boolean(colour.colourQuaternary)
               ? `${colour.colourQuaternary}`
               : colour.colourTertiary,
           colourQuaternary:
-            "colourQuaternary" in colour
+            "colourQuaternary" in colour && Boolean(colour.colourQuaternary)
               ? `${colour.colourQuaternary}`
               : colour.colourTertiary,
           hat: "",

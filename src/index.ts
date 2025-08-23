@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* BEGIN RG ADDITION */
+export * from "./colours";
+/* END RG ADDITION */
+
 import * as Blockly from "blockly/core";
 import "./blocks/colour";
 import "./blocks/math";
@@ -20,7 +24,13 @@ import "./blocks/operators";
 import "./blocks/procedures";
 import "./blocks/sensing";
 import "./blocks/sound";
-import * as scratchBlocksUtils from "./scratch_blocks_utils";
+/* BEGIN RG ADDITION */
+import * as scratchBlocksUtilsModule from "./scratch_blocks_utils";
+const scratchBlocksUtils = {
+  ...scratchBlocksUtilsModule,
+}
+export { scratchBlocksUtils };
+/* END RG ADDITION */
 import * as ScratchVariables from "./variables";
 import "./css";
 import "./renderer/renderer";
@@ -71,7 +81,6 @@ export * from "./procedures";
 export * from "../msg/scratch_msgs.js";
 export * from "./constants";
 export { glowStack };
-export { scratchBlocksUtils };
 export { CheckableContinuousFlyout };
 export { ScratchVariables };
 export { contextMenuItems };
@@ -82,6 +91,11 @@ export {
   StatusButtonState,
 } from "./status_indicator_label";
 export * from "./xml";
+
+/* BEGIN RG ADDITION */
+import { StatusIndicatorLabel } from "./status_indicator_label";
+export { StatusIndicatorLabel as FlyoutExtensionCategoryHeader };
+/* END RG ADDITION */
 
 export function inject(container: Element, options: Blockly.BlocklyOptions) {
   registerScratchFieldAngle();
@@ -107,6 +121,7 @@ export function inject(container: Element, options: Blockly.BlocklyOptions) {
       metricsManager: ContinuousMetrics,
     },
   });
+  
   const workspace = Blockly.inject(container, options);
 
   buildGlowFilter(workspace);

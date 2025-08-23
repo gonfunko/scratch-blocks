@@ -134,6 +134,7 @@ const OUTPUT_BOOLEAN = function (this: Blockly.Block) {
  * flyout to toggle display of their current value in a chip on the stage.
  */
 const MONITOR_BLOCK = function (this: Blockly.BlockSvg) {
+  // @ts-ignore
   this.addIcon(new FlyoutCheckboxIcon(this));
   (this as any).checkboxInFlyout = true;
 };

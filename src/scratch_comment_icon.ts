@@ -19,6 +19,7 @@ interface CommentState {
 /**
  * Custom comment icon that draws no icon indicator, used for block comments.
  */
+// @ts-ignore
 export class ScratchCommentIcon
   extends Blockly.icons.Icon
   implements Blockly.ISerializable, Blockly.IHasBubble

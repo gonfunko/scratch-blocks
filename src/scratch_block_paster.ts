@@ -38,6 +38,7 @@ class ScratchBlockPaster extends Blockly.clipboard.BlockPaster {
     // been turned off) if needed.
     const commentIcon = block.getIcon(Blockly.icons.IconType.COMMENT);
     if (commentIcon) {
+      // @ts-ignore
       (commentIcon as ScratchCommentIcon).fireCreateEvent();
     }
 
