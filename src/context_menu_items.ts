@@ -18,7 +18,10 @@ export function registerDeleteBlock() {
         : Blockly.Msg["DELETE_X_BLOCKS"].replace("%1", `${descendantCount}`);
     },
     preconditionFn(scope: Blockly.ContextMenuRegistry.Scope) {
-      if (!scope.block.isInFlyout && scope.block.isDeletable()) {
+      if (
+        !scope.block.isInFlyout &&
+        scope.block.isDeletable()
+      ) {
         return "enabled";
       }
       return "hidden";
